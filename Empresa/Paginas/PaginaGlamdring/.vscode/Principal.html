@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Software Enterprise</title>
+    <link rel="stylesheet" href="EstiloPrincipal.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="logo.png" alt="Enterprise Logo" class="logo">
+            <h1 class="enterprise-name">Fake Software Enterprise</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-right">
+            <button class="btn">Sign In</button>
+            <button class="btn">Sign Up</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h2>S</h2>
+            <p>Some descriptive text goes here.</p>
+            <img src="another-image.png" alt="Additional Image" class="hero-image">
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <p>Content after the hero section...</p>
+    </section>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const overlay = document.querySelector('.overlay');
+            const scrollPosition = window.scrollY;
+
+            // Adjust opacity based on scroll position
+            overlay.style.opacity = Math.min(scrollPosition / 300, 1);
+        });
+    </script>
+</body>
+</html>
