@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="EstiloPrincipal.css"> <!-- Link to your main CSS file -->
+    <link rel="icon" href="res/Imagenes/EmpresaLogo(NoText-1to1).png" type="image/png">
+</head>
+<body>
+    <!--Header Section-->
+    <header class="header">
+        <div class="header-center">
+            <a href="Principal.html" class="enterprise-name-button">
+                <img src="res/Imagenes/EmpresaLogo(NoText-Mono).png" alt="Enterprise Logo" class="logo">
+                <h1 class="enterprise-name">Glamdring</h1>
+            </a>
+        </div>
+        <div class="header-right">
+            <button class="btn">Sign In</button>
+            <button class="btn">Sign Up</button>
+        </div>
+        <nav class="nav-menu">
+            <button class="menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="Nosotros.html">Nosotros</a></li>
+                <li><a href="Productos.html">Productos</a></li>
+                <li><a href="Contactos.html">Contactos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-video" style="background-image: url('res/Imagenes/chandler-denise-Lgaw-BnaAAI-unsplash.jpg');"></div>
+        <div class="hero-content">
+            <h1 class="large-text">TRABAJANDO EN NUEVOS PROYECTOS...</h1>
+        </div>
+
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-media">
+        <div class="social-media">
+            <a href="https://instagram.com" target="_blank" class="social-icon">
+                <img src="res/Imagenes/instagram-white-icon.png" alt="Instagram">
+            </a>
+            <a href="https://facebook.com" target="_blank" class="social-icon">
+                <img src="res/Imagenes/icons8-facebook-50.png" alt="Facebook">
+            </a>
+            <a href="https://tiktok.com" target="_blank" class="social-icon">
+                <img src="res/Imagenes/icons8-tiktok-50.png" alt="TikTok">
+            </a>
+            <a href="https://github.com/Glamdring-SW" target="_blank" class="social-icon">
+                <img src="res/Imagenes/icons8-github-50.png" alt="GitHub">
+            </a>
+        </div>
+    </section>
+
+    <script>
+        let lastScrollTop = 0;
+        const header = document.querySelector('.header');
+        const menuButton = document.querySelector('.nav-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        window.addEventListener('scroll', function() {
+            let currentScroll = window.scrollY;
+
+            if (currentScroll < lastScrollTop) {
+                header.style.top = '0';
+                menuButton.style.top = '0';
+            } else {
+                header.style.top = '-100px';
+                menuButton.style.top = '-100px';
+            }
+
+            if (currentScroll > lastScrollTop) {
+                navLinks.classList.remove('show-menu');
+            }
+
+            if (currentScroll < lastScrollTop) {
+                menuButton.style.opacity = '1';
+                menuButton.style.visibility = 'visible';
+            } else {
+                menuButton.style.opacity = '0';
+                menuButton.style.visibility = 'hidden';
+            }
+
+            lastScrollTop = currentScroll;
+
+            const overlay = document.querySelector('.overlay');
+            const scrollPosition = window.scrollY;
+
+            const maxScroll = 500;
+            const opacity = Math.min(scrollPosition / maxScroll, 1);
+
+            overlay.style.backgroundColor = `rgba(0, 0, 0, ${0.3 + opacity * 0.7})`; // Adjust 0.3 and 0.7 to control color intensity
+        });
+
+        const menuBtn = document.querySelector('.menu-btn');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show-menu');
+        });
+    </script>
+</body>
+</html>
