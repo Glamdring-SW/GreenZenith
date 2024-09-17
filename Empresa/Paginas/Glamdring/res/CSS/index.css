@@ -1,0 +1,289 @@
+@font-face {
+  font-family: "helmet";
+  src: url("../Fuentes/HelmetNeue-Regular.otf") format("truetype");
+}
+@font-face {
+  font-family: "futuraBold";
+  src: url("../Fuentes/FuturaBoldfont.ttf") format("truetype");
+}
+@font-face {
+  font-family: "futuraBook";
+  src: url("../Fuentes/FuturaBookfont.ttf") format("truetype");
+}
+@font-face {
+  font-family: "futuraMedium";
+  src: url("../Fuentes/FuturaMedium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "futuraItalic";
+  src: url("../Fuentes/FuturaMediumItalic.ttf") format("truetype");
+}
+
+@keyframes loadMenu {
+  from {
+    top: -75px;
+  }
+  to {
+    top: 0;
+  }
+}
+@keyframes loadVideoStart {
+  from {
+    top: 10vh;
+    width: 0%;
+    height: 0%;
+  }
+  to {
+    top: 0vh;
+    width: 50%;
+    height: 100%;
+  }
+}
+@keyframes loadTextSloganStart {
+  from {
+    left: -30%;
+  }
+  to {
+    left: 20%;
+  }
+}
+@keyframes loadTextSloganEnd {
+  from {
+    top: 225px;
+    left: 105%;
+  }
+  to {
+    top: 0px;
+    left: 55%;
+  }
+}
+@keyframes wiggle {
+  0% {
+    transform: rotate(1deg);
+  }
+  10% {
+    transform: rotate(2deg);
+  }
+  20% {
+    transform: rotate(3deg);
+  }
+  30% {
+    transform: rotate(2deg);
+  }
+  40% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(-1deg);
+  }
+  70% {
+    transform: rotate(-2deg);
+  }
+  80% {
+    transform: rotate(-3deg);
+  }
+  90% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(-1deg);
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.navbar {
+  background-color: #0c63d4;
+  font-family: "futuraBook";
+  height: 5vw;
+  overflow: hidden;
+  position: fixed;
+  top: 0vh;
+  width: 100.25%;
+  z-index: 100;
+  left: -0.25%;
+}
+.navbar a {
+  animation-name: loadMenu;
+  color: #fff;
+  float: right;
+  font-size: 2vw;
+  height: 200%;
+  padding: 1vw;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 200ms;
+  transition: color 200ms;
+}
+.navbar a.img {
+  animation-duration: 1000ms;
+  float: left;
+  padding: 0.25vw 0vw 0vw 0.5vw;
+}
+.navbar a.img img {
+  width: 25vw;
+}
+.navbar a.first {
+  animation-duration: 1500ms;
+}
+.navbar a.second {
+  animation-duration: 2000ms;
+}
+.navbar a.third {
+  animation-duration: 2500ms;
+}
+.navbar a.end {
+  animation-duration: 3000ms;
+  padding-right: 2vw;
+}
+.navbar a:hover {
+  background-color: #b8b8b8;
+  color: black;
+  height: 200%;
+}
+.navbar a.img:hover {
+  background-color: #0c63d4;
+}
+
+.presentation {
+  position: relative;
+  display: block;
+  top: 5vw;
+  align-items: center;
+  background-color: #fff;
+  overflow: hidden;
+}
+.presentation p {
+  position: inherit;
+  justify-content: center;
+  font-family: "futuraItalic";
+  font-size: 2.5vw;
+  color: #000;
+}
+.presentation p.sloganStart {
+  animation-name: loadTextSloganStart;
+  animation-duration: 1000ms;
+  left: 20%;
+  width: max-content;
+}
+.presentation p.sloganEnd {
+  animation-name: loadTextSloganEnd;
+  animation-duration: 1400ms;
+  left: 55%;
+  width: max-content;
+}
+.presentation video {
+  position: inherit;
+  display: block;
+  margin: auto;
+  width: 50%;
+  height: 100%;
+  animation-name: loadVideoStart;
+  animation-duration: 1400ms;
+}
+
+.misvisobj {
+  background-image: linear-gradient(to bottom, #0b55b6, #0699dd);
+  border-radius: 1vw;
+  column-gap: 2.5vw;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  left: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2.5vw;
+  position: absolute;
+  top: 55vw;
+  width: 70vw;
+}
+.misvisobj p {
+  padding-left: 2.5vw;
+  border-radius: 1.5vw;
+  margin-bottom: 1vw;
+  font-family: "futuraMedium";
+}
+.misvisobj p.main {
+  margin-top: 0px;
+  background-image: linear-gradient(to bottom, #1075c7, #1666cf);
+  color: #fff;
+  padding-bottom: 1vw;
+  padding-top: 1vw;
+  font-family: "futuraItalic";
+  font-size: 3vw;
+  font-weight: bolder;
+}
+.misvisobj p.main:hover {
+  animation-name: wiggle;
+  animation-duration: 100ms;
+}
+.misvisobj p.content {
+  background-image: linear-gradient(to bottom, #1666cf, #2186ca);
+  color: #fff;
+  font-size: 1.5vw;
+  padding: 1vw;
+  text-align: justify;
+}
+.misvisobj img.icon {
+  height: 3vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  width: 3vw;
+}
+.misvisobj img.description {
+  border-radius: 2vw;
+  width: 20vw;
+  height: 12.5vw;
+  margin: auto;
+  left: 20%;
+}
+.misvisobj img.description:hover {
+  animation-name: wiggle;
+  animation-duration: 100ms;
+}
+
+.extrasZone {
+  position: absolute;
+  top: 115vw;
+  border-top-style: solid;
+  border-top-color: #cacaca;
+  border-top-width: 0.2vw;
+  background-color: #eeeeee;
+  left: -0.5%;
+  width: 96.5%;
+  height: max-content;
+  padding: 3vw;
+  display: flex;
+}
+.extrasZone a {
+  position: absolute;
+  text-decoration: none;
+  color: #b8b8b8;
+  font-size: 1.5vw;
+  left: 35vw;
+  height: max-content;
+  font-family: "futuraBook";
+}
+.extrasZone a.cont1 {
+  top: 3vw;
+}
+.extrasZone a.cont2 {
+  top: 6vw;
+}
+.extrasZone a:visited {
+  color: #b8b8b8;
+}
+.extrasZone a.image {
+  position: relative;
+  left: 0vw;
+}
+.extrasZone img {
+  position: relative;
+  left: 55vw;
+  width: 5vw;
+}
