@@ -31,12 +31,10 @@
   from {
     top: 10vh;
     width: 0%;
-    height: 0%;
   }
   to {
     top: 0vh;
     width: 50%;
-    height: 100%;
   }
 }
 @keyframes loadTextSloganStart {
@@ -92,21 +90,39 @@
     transform: rotate(-1deg);
   }
 }
+@keyframes activeNavBar {
+  from {
+    background-color: #0c63d4;
+  }
+  to {
+    background-color: #b8b8b8;
+  }
+}
+
+html {
+  background-image: url(../Imagenes/Background.png);
+}
 
 body {
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  height: 100%;
+  margin: 0;
   overflow-x: hidden;
+  padding: 0;
+  width: 100%;
 }
 
 .navbar {
   background-color: #0c63d4;
+  border-radius: 0.5vw;
   font-family: "futuraBook";
   height: 5vw;
   overflow: hidden;
   position: fixed;
   top: 0vh;
-  width: 100.25%;
+  width: 100%;
   z-index: 100;
-  left: -0.25%;
 }
 .navbar a {
   animation-name: loadMenu;
@@ -118,8 +134,7 @@ body {
   position: relative;
   text-align: center;
   text-decoration: none;
-  transition: background-color 200ms;
-  transition: color 200ms;
+  transition: background-color 250ms, color 250ms;
 }
 .navbar a.img {
   animation-duration: 1000ms;
@@ -137,10 +152,14 @@ body {
 }
 .navbar a.third {
   animation-duration: 2500ms;
-}
-.navbar a.end {
-  animation-duration: 3000ms;
   padding-right: 2vw;
+}
+.navbar a.active {
+  animation-duration: 2000ms;
+  animation-name: loadMenu, activeNavBar;
+  background-color: #b8b8b8;
+  color: black;
+  height: 100vw;
 }
 .navbar a:hover {
   background-color: #b8b8b8;
@@ -152,40 +171,40 @@ body {
 }
 
 .presentation {
-  position: relative;
-  display: block;
-  top: 5vw;
   align-items: center;
-  background-color: #fff;
-  overflow: hidden;
+  display: block;
+  height: 45vw;
+  position: relative;
+  top: 5vw;
 }
 .presentation p {
-  position: inherit;
-  justify-content: center;
+  color: #000;
   font-family: "futuraItalic";
   font-size: 2.5vw;
-  color: #000;
+  justify-content: center;
+  position: inherit;
 }
 .presentation p.sloganStart {
-  animation-name: loadTextSloganStart;
   animation-duration: 1000ms;
+  animation-name: loadTextSloganStart;
   left: 20%;
   width: max-content;
 }
 .presentation p.sloganEnd {
-  animation-name: loadTextSloganEnd;
   animation-duration: 1400ms;
+  animation-name: loadTextSloganEnd;
   left: 55%;
   width: max-content;
 }
 .presentation video {
-  position: inherit;
+  animation-duration: 1400ms;
+  animation-name: loadVideoStart;
+  background-size: cover;
   display: block;
   margin: auto;
+  object-fit: cover;
+  position: inherit;
   width: 50%;
-  height: 100%;
-  animation-name: loadVideoStart;
-  animation-duration: 1400ms;
 }
 
 .misvisobj {
@@ -194,33 +213,32 @@ body {
   column-gap: 2.5vw;
   display: grid;
   grid-template-columns: auto auto auto;
-  left: 10%;
   margin-left: auto;
   margin-right: auto;
   padding: 2.5vw;
-  position: absolute;
-  top: 55vw;
+  position: relative;
+  top: 5vw;
   width: 70vw;
 }
 .misvisobj p {
-  padding-left: 2.5vw;
   border-radius: 1.5vw;
-  margin-bottom: 1vw;
   font-family: "futuraMedium";
+  margin-bottom: 1vw;
+  padding-left: 2.5vw;
 }
 .misvisobj p.main {
-  margin-top: 0px;
   background-image: linear-gradient(to bottom, #1075c7, #1666cf);
   color: #fff;
-  padding-bottom: 1vw;
-  padding-top: 1vw;
   font-family: "futuraItalic";
   font-size: 3vw;
-  font-weight: bolder;
+  font-weight: 900;
+  margin-top: 0px;
+  padding-bottom: 1vw;
+  padding-top: 1vw;
 }
 .misvisobj p.main:hover {
-  animation-name: wiggle;
   animation-duration: 100ms;
+  animation-name: wiggle;
 }
 .misvisobj p.content {
   background-image: linear-gradient(to bottom, #1666cf, #2186ca);
@@ -237,37 +255,37 @@ body {
 }
 .misvisobj img.description {
   border-radius: 2vw;
-  width: 20vw;
   height: 12.5vw;
-  margin: auto;
   left: 20%;
+  margin: auto;
+  width: 20vw;
 }
 .misvisobj img.description:hover {
-  animation-name: wiggle;
   animation-duration: 100ms;
+  animation-name: wiggle;
 }
 
 .extrasZone {
-  position: absolute;
-  top: 115vw;
-  border-top-style: solid;
-  border-top-color: #cacaca;
-  border-top-width: 0.2vw;
   background-color: #eeeeee;
-  left: -0.5%;
-  width: 96.5%;
-  height: max-content;
-  padding: 3vw;
+  border-top-color: #cacaca;
+  border-top-style: solid;
+  border-top-width: 0.5vw;
   display: flex;
+  height: 10vw;
+  margin-top: 12vw;
+  position: relative;
+  width: 100%;
+  z-index: 99;
 }
 .extrasZone a {
+  color: #999999;
+  font-family: "futuraBook";
+  font-size: 1.5vw;
+  font-weight: 900;
+  height: max-content;
+  left: 35vw;
   position: absolute;
   text-decoration: none;
-  color: #b8b8b8;
-  font-size: 1.5vw;
-  left: 35vw;
-  height: max-content;
-  font-family: "futuraBook";
 }
 .extrasZone a.cont1 {
   top: 3vw;
@@ -275,15 +293,156 @@ body {
 .extrasZone a.cont2 {
   top: 6vw;
 }
-.extrasZone a:visited {
-  color: #b8b8b8;
-}
 .extrasZone a.image {
+  height: max-content;
+  left: 55vw;
   position: relative;
-  left: 0vw;
+  top: 3vw;
+  width: max-content;
 }
 .extrasZone img {
-  position: relative;
-  left: 55vw;
+  filter: invert(80%);
   width: 5vw;
+  height: 5vw;
+}
+
+@media screen and (max-width: 1280px) {
+  @keyframes loadVideoStart {
+    from {
+      top: 10vh;
+      width: 0%;
+    }
+    to {
+      top: 0vh;
+      width: 75%;
+    }
+  }
+  @keyframes loadTextSloganStart {
+    from {
+      left: -40%;
+    }
+    to {
+      left: 10%;
+    }
+  }
+
+  .navbar {
+    height: 6vw;
+  }
+  .navbar a {
+    font-size: 3vw;
+  }
+
+  .presentation {
+    height: 65vw;
+  }
+  .presentation p {
+    font-size: 4vw;
+  }
+  .presentation p.sloganStart {
+    left: 10%;
+  }
+  .presentation video {
+    width: 75%;
+  }
+
+  .extrasZone {
+    height: 12vw;
+  }
+  .extrasZone a {
+    font-size: 2vw;
+    left: 30vw;
+  }
+  .extrasZone a.cont1 {
+    top: 2.5vw;
+  }
+  .extrasZone a.cont2 {
+    top: 6.5vw;
+  }
+  .extrasZone img {
+    width: 6vw;
+    height: 6vw;
+    top: 2vw;
+  }
+}
+@media screen and (max-width: 640px) {
+  @keyframes loadVideoStart {
+    from {
+      top: 10vh;
+      width: 0%;
+    }
+    to {
+      top: 0vh;
+      width: 85%;
+    }
+  }
+  @keyframes loadTextSloganStart {
+    from {
+      left: -45%;
+    }
+    to {
+      left: 5%;
+    }
+  }
+  .navbar {
+    height: 7.5vw;
+  }
+  .navbar a {
+    font-size: 3.5vw;
+    font-weight: 800;
+  }
+  .navbar a.img img {
+    width: 35vw;
+  }
+  .presentation p.sloganStart {
+    left: 5%;
+  }
+  .presentation video {
+    width: 85%;
+  }
+
+  .misvisobj {
+    top: 10vw;
+    width: 90vw;
+  }
+  .misvisobj p.main {
+    font-size: 4.5vw;
+    font-weight: 900;
+  }
+  .misvisobj p.content {
+    font-size: 2.5vw;
+    font-weight: 500;
+    text-align: justify;
+  }
+  .misvisobj img.icon {
+    height: 5vw;
+    width: 5vw;
+  }
+  .misvisobj img.description {
+    height: 15vw;
+    width: 25vw;
+  }
+
+  .extrasZone {
+    height: 14vw;
+  }
+  .extrasZone a {
+    font-size: 3vw;
+    font-weight: 900;
+    left: 25vw;
+  }
+  .extrasZone a.cont1 {
+    top: 2.5vw;
+  }
+  .extrasZone a.cont2 {
+    top: 7.5vw;
+  }
+  .extrasZone a.image {
+    left: 65vw;
+    top: 3vw;
+  }
+  .extrasZone img {
+    width: 8vw;
+    height: 8vw;
+  }
 }

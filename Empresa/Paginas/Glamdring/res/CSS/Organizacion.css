@@ -1,0 +1,74 @@
+@keyframes loadUpper {
+  from {
+    top: -10vw;
+  }
+  to {
+    top: 0vw;
+  }
+}
+@keyframes loadLower {
+  from {
+    top: 50vw;
+  }
+  to {
+    top: 0vw;
+  }
+}
+
+.organization {
+  overflow: hidden;
+  height: max-content;
+  position: relative;
+  top: 6vw;
+}
+.organization p {
+  animation-duration: 1000ms;
+  animation-name: loadUpper;
+  font-family: "futuraMedium";
+  font-size: 2.5vw;
+  left: 15%;
+  position: relative;
+  text-align: center;
+  width: max-content;
+}
+.organization img {
+  animation-duration: 1000ms;
+  animation-name: loadLower;
+  border-color: #000;
+  border-radius: 2vw;
+  border-style: solid;
+  height: 25vw;
+  left: 20%;
+  position: relative;
+  width: 60vw;
+}
+
+@media screen and (max-width: 1280px) {
+  .organization {
+    top: 7.5vw;
+  }
+  .organization p {
+    font-size: 3vw;
+    left: 7.5%;
+  }
+  .organization img {
+    height: 30vw;
+    left: 10%;
+    width: 80vw;
+  }
+}
+@media screen and (max-width: 640px) {
+  .organization {
+    top: 8vw;
+  }
+  .organization p {
+    font-size: 4vw;
+    left: 5%;
+    width: 90%;
+  }
+  .organization img {
+    height: 40vw;
+    left: 0.5%;
+    width: 96vw;
+  }
+}

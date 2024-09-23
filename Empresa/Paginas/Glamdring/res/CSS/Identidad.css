@@ -1,0 +1,147 @@
+@keyframes leftLoad {
+  from {
+    left: 125vw;
+  }
+  to {
+    left: 0vw;
+  }
+}
+@keyframes rightLoad {
+  from {
+    left: -125vw;
+  }
+  to {
+    left: 0vw;
+  }
+}
+
+.mainContainer {
+  overflow: hidden;
+  position: relative;
+  top: 6vw;
+}
+
+.mainContainer .section {
+  background-image: linear-gradient(to bottom, #ddedf8, #add1fa);
+  border-radius: 2vw;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  margin: 2vw 1vw 2vw 3vw;
+  padding: 1vw;
+  position: relative;
+  width: min-content;
+}
+.mainContainer .leftAnim1 {
+  animation-name: leftLoad;
+  animation-duration: 1000ms;
+}
+.mainContainer .rightAnim1 {
+  animation-name: rightLoad;
+  animation-duration: 1500ms;
+}
+.mainContainer .leftAnim2 {
+  animation-name: leftLoad;
+  animation-duration: 2000ms;
+}
+.mainContainer .rightAnim2 {
+  animation-name: rightLoad;
+  animation-duration: 2500ms;
+}
+.mainContainer .section p {
+  display: inline;
+  font-family: "futuraBook";
+  font-size: 4vw;
+  font-weight: 900;
+  grid-column: 1 / 3;
+  margin: 0.5vw;
+  margin: 1vw;
+  position: relative;
+}
+.mainContainer .section img {
+  background-color: #97c5fa;
+  border-radius: 2.5vw;
+  display: inline;
+  float: left;
+  height: 16vw;
+  margin: auto;
+  padding: 1vw;
+  position: relative;
+  width: 16vw;
+}
+.mainContainer .section img:hover {
+  animation-duration: 100ms;
+  animation-name: wiggle;
+}
+.mainContainer .section ul {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0.5vw;
+  padding-left: 2vw;
+  position: relative;
+  text-align: justify;
+  width: 70vw;
+}
+.mainContainer .section ul.var1 {
+  list-style-type: none;
+  padding-left: 0.5vw;
+  padding-right: 1.5vw;
+}
+.mainContainer .section ul.var2 {
+  list-style-type: circle;
+}
+.mainContainer .section ul.var3 {
+  list-style-type: square;
+}
+.mainContainer .section ul.var4 {
+  list-style-type: disc;
+}
+.mainContainer .section li {
+  font-family: "futuraMedium";
+  font-size: 1.5vw;
+  font-weight: 300;
+  vertical-align: middle;
+}
+.mainContainer .section li.single {
+  font-family: "futuraMedium";
+  font-size: 2vw;
+  font-weight: 300;
+  vertical-align: middle;
+}
+.mainContainer .section span {
+  font-weight: 900;
+}
+
+@media screen and (max-width: 640px) {
+  .mainContainer .section p {
+    font-size: 5vw;
+  }
+  .mainContainer .section img {
+    height: 0vw;
+    visibility: collapse;
+    width: 0vw;
+  }
+  .mainContainer .section ul {
+    grid-column: 1 / 3;
+    padding-left: 1vw;
+    width: 90vw;
+  }
+  .mainContainer .section ul.var2 {
+    list-style-type: none;
+  }
+  .mainContainer .section ul.var3 {
+    list-style-type: none;
+  }
+  .mainContainer .section ul.var4 {
+    list-style-type: none;
+  }
+  .mainContainer .section li {
+    font-size: 2.5vw;
+    font-weight: 400;
+  }
+  .mainContainer .section li.single {
+    font-size: 2.5vw;
+    font-weight: 400;
+  }
+}

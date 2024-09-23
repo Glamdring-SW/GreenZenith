@@ -1,0 +1,90 @@
+@keyframes loadProyect {
+  from {
+    top: -150vw;
+  }
+  to {
+    top: 0vw;
+  }
+}
+
+.proyects {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  position: relative;
+  top: 8vw;
+}
+.proyects .placeholder {
+  visibility: collapse;
+}
+.proyects .proyectType {
+  background-color: #87d82bc9;
+  border-radius: 1vw;
+  margin: auto;
+  padding: 1vw;
+  position: relative;
+  width: max-content;
+}
+.proyects .loadAnim1 {
+  animation-duration: 800ms;
+  animation-name: loadProyect;
+}
+.proyects .loadAnim2 {
+  animation-duration: 1200ms;
+  animation-name: loadProyect;
+}
+.proyects .loadAnim3 {
+  animation-duration: 1600ms;
+  animation-name: loadProyect;
+}
+.proyectType .nameProyect {
+  font-family: "futuraMedium";
+  font-size: 3vw;
+  font-weight: 600;
+  margin: auto;
+  position: relative;
+  width: max-content;
+}
+.proyectType a .logoProyect {
+  border-radius: 2vw;
+  height: 25vw;
+  padding: 0.5vw;
+  position: relative;
+  width: 25vw;
+}
+.proyectType a .logoProyect:hover {
+  animation-duration: 100ms;
+  animation-name: wiggle;
+}
+.proyectType .descProyect {
+  font-family: "futuraBook";
+  font-size: 1.5vw;
+  font-weight: 400;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  width: 25vw;
+}
+
+@media screen and (max-width: 640px) {
+  .proyects {
+    grid-template-columns: auto;
+    position: relative;
+    top: 9vw;
+  }
+  .proyects .proyectType {
+    padding: 3vw;
+  }
+  .proyectType .nameProyect {
+    font-size: 10vw;
+    font-weight: 500;
+  }
+  .proyectType a .logoProyect {
+    border-radius: 3vw;
+    height: 75vw;
+    width: 75vw;
+  }
+  .proyectType .descProyect {
+    font-size: 4vw;
+    width: 75vw;
+  }
+}
