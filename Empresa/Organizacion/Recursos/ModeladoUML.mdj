@@ -4490,7 +4490,7 @@
 													"font": "Arial;13;1",
 													"left": 21,
 													"top": 151,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "User"
 												},
@@ -4525,7 +4525,7 @@
 											"font": "Arial;13;0",
 											"left": 16,
 											"top": 144,
-											"width": 866,
+											"width": 804,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGSbuUMuVsNRTE="
@@ -4562,7 +4562,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 174,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-id: int",
 													"horizontalAlignment": 0
@@ -4579,7 +4579,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 189,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-username: String",
 													"horizontalAlignment": 0
@@ -4596,7 +4596,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 204,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-email: String",
 													"horizontalAlignment": 0
@@ -4613,7 +4613,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 219,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-age: int",
 													"horizontalAlignment": 0
@@ -4630,9 +4630,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 234,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "-profilePicture: BufferedImage",
+													"text": "-profilePicture: Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -4647,7 +4647,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 249,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-location: Location",
 													"horizontalAlignment": 0
@@ -4664,7 +4664,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 264,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-password: String",
 													"horizontalAlignment": 0
@@ -4681,7 +4681,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 279,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-plants: Plant[]",
 													"horizontalAlignment": 0
@@ -4698,7 +4698,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 294,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-Products: Product[]",
 													"horizontalAlignment": 0
@@ -4715,7 +4715,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 309,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "-cart: Cart",
 													"horizontalAlignment": 0
@@ -4724,7 +4724,7 @@
 											"font": "Arial;13;0",
 											"left": 16,
 											"top": 169,
-											"width": 866,
+											"width": 804,
 											"height": 158
 										},
 										{
@@ -4749,7 +4749,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 332,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+User(id: int)",
 													"horizontalAlignment": 0
@@ -4766,7 +4766,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 347,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+User(email: String, password: String)",
 													"horizontalAlignment": 0
@@ -4783,9 +4783,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 362,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "+User(username: String, email: String, age: int, profilePicture: BufferedImage, location: Location, password: String)",
+													"text": "+User(username: String, email: String, age: int, profilePicture: Image, location: Location, password: String)",
 													"horizontalAlignment": 0
 												},
 												{
@@ -4800,7 +4800,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 377,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getId(): int",
 													"horizontalAlignment": 0
@@ -4817,7 +4817,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 392,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getUsername(): String",
 													"horizontalAlignment": 0
@@ -4834,7 +4834,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 407,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getEmail(): String",
 													"horizontalAlignment": 0
@@ -4851,7 +4851,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 422,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getAge(): int",
 													"horizontalAlignment": 0
@@ -4868,9 +4868,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 437,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "+getProfilePicture(): BufferedImage",
+													"text": "+getProfilePicture(): Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -4885,7 +4885,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 452,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getLocation(): Location",
 													"horizontalAlignment": 0
@@ -4902,7 +4902,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 467,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getPlants(): Plant[]",
 													"horizontalAlignment": 0
@@ -4919,7 +4919,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 482,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getProducts(): Product[]",
 													"horizontalAlignment": 0
@@ -4936,7 +4936,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 497,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+getCart(): Cart",
 													"horizontalAlignment": 0
@@ -4953,7 +4953,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 512,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+setUsername(username: String): void",
 													"horizontalAlignment": 0
@@ -4970,7 +4970,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 527,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+setEmail(email: String): void",
 													"horizontalAlignment": 0
@@ -4987,7 +4987,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 542,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+setAge(age: int): void",
 													"horizontalAlignment": 0
@@ -5004,9 +5004,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 557,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "+setProfilePicture(profilePicture: BufferedImage): void",
+													"text": "+setProfilePicture(profilePicture: Image): void",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5021,7 +5021,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 572,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+setLocation(location: Location): void",
 													"horizontalAlignment": 0
@@ -5038,7 +5038,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 587,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+setPassword(oldPassword: String, newPassword: String): void",
 													"horizontalAlignment": 0
@@ -5055,7 +5055,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 602,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+createCart(): void",
 													"horizontalAlignment": 0
@@ -5072,9 +5072,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 617,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "+addPlant(plantName: String, plantPicture: BufferedImage, plantingDate: LocalDate, schedule: LocalTime, description: String, quantity: int)",
+													"text": "+addPlant(plantName: String, plantPicture: Image, plantingDate: LocalDate, schedule: LocalTime, description: String, quantity: int)",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5089,9 +5089,9 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 632,
-													"width": 856,
+													"width": 794,
 													"height": 13,
-													"text": "+addProduct(plantSale: Plant, productTitle: String, productDescription: String, productImage: BufferedImage, price: BigDecimal, quantity: int): void",
+													"text": "+addProduct(plantSale: Plant, productTitle: String, productDescription: String, productImage: Image, price: BigDecimal, quantity: int): void",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5106,7 +5106,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 647,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+addProductToCart(product: Product): void",
 													"horizontalAlignment": 0
@@ -5123,7 +5123,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 662,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+hasPlants(): boolean",
 													"horizontalAlignment": 0
@@ -5140,7 +5140,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 677,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+hasProducts(): boolean",
 													"horizontalAlignment": 0
@@ -5157,7 +5157,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 692,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+hasCart(): boolean",
 													"horizontalAlignment": 0
@@ -5174,7 +5174,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 707,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+close(): void",
 													"horizontalAlignment": 0
@@ -5191,7 +5191,7 @@
 													"font": "Arial;13;0",
 													"left": 21,
 													"top": 722,
-													"width": 856,
+													"width": 794,
 													"height": 13,
 													"text": "+delete(): void",
 													"horizontalAlignment": 0
@@ -5200,7 +5200,7 @@
 											"font": "Arial;13;0",
 											"left": 16,
 											"top": 327,
-											"width": 866,
+											"width": 804,
 											"height": 413
 										},
 										{
@@ -5240,7 +5240,7 @@
 									"containerChangeable": true,
 									"left": 16,
 									"top": 144,
-									"width": 866,
+									"width": 804,
 									"height": 596,
 									"nameCompartment": {
 										"$ref": "AAAAAAGSbuUMuVsMhfE="
@@ -5299,7 +5299,7 @@
 													"font": "Arial;13;1",
 													"left": 989,
 													"top": 151,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "Plant"
 												},
@@ -5334,7 +5334,7 @@
 											"font": "Arial;13;0",
 											"left": 984,
 											"top": 144,
-											"width": 881,
+											"width": 818,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGSbuUdlls3n8Q="
@@ -5371,7 +5371,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 174,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-id: int",
 													"horizontalAlignment": 0
@@ -5388,7 +5388,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 189,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-owner: User",
 													"horizontalAlignment": 0
@@ -5405,7 +5405,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 204,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-plantName: String",
 													"horizontalAlignment": 0
@@ -5422,9 +5422,9 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 219,
-													"width": 871,
+													"width": 808,
 													"height": 13,
-													"text": "-plantPicture: BufferedImage",
+													"text": "-plantPicture: Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5439,7 +5439,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 234,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-plantingDate: LocalDate",
 													"horizontalAlignment": 0
@@ -5456,7 +5456,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 249,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-schedule: LocalTime[]",
 													"horizontalAlignment": 0
@@ -5473,7 +5473,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 264,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-description: String",
 													"horizontalAlignment": 0
@@ -5490,7 +5490,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 279,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "-quantity: int",
 													"horizontalAlignment": 0
@@ -5499,7 +5499,7 @@
 											"font": "Arial;13;0",
 											"left": 984,
 											"top": 169,
-											"width": 881,
+											"width": 818,
 											"height": 128
 										},
 										{
@@ -5524,7 +5524,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 302,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+Plant(id: int)",
 													"horizontalAlignment": 0
@@ -5541,7 +5541,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 317,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+Plant(plantName: String)",
 													"horizontalAlignment": 0
@@ -5558,9 +5558,9 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 332,
-													"width": 871,
+													"width": 808,
 													"height": 13,
-													"text": "+Plant(owner: User, plantName: String, plantPicture: BufferedImage, plantingDate: LocalDate, schedule: LocalTime[], description: String, quantity: int)",
+													"text": "+Plant(owner: User, plantName: String, plantPicture: Image, plantingDate: LocalDate, schedule: LocalTime, description: String, quantity: int)",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5575,7 +5575,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 347,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getId(): int",
 													"horizontalAlignment": 0
@@ -5592,7 +5592,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 362,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getOwner(): User",
 													"horizontalAlignment": 0
@@ -5609,7 +5609,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 377,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getPlantName(): String",
 													"horizontalAlignment": 0
@@ -5626,9 +5626,9 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 392,
-													"width": 871,
+													"width": 808,
 													"height": 13,
-													"text": "+getPlantPicture(): BufferedImage",
+													"text": "+getPlantPicture(): Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5643,7 +5643,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 407,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getPlantingDate(): LocalDate",
 													"horizontalAlignment": 0
@@ -5660,7 +5660,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 422,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getSchedule(): LocalTime[]",
 													"horizontalAlignment": 0
@@ -5677,7 +5677,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 437,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getDescription(): String",
 													"horizontalAlignment": 0
@@ -5694,7 +5694,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 452,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+getQuantity(): int",
 													"horizontalAlignment": 0
@@ -5711,7 +5711,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 467,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+setPlantName(plantName: String): void",
 													"horizontalAlignment": 0
@@ -5728,9 +5728,9 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 482,
-													"width": 871,
+													"width": 808,
 													"height": 13,
-													"text": "+setPlantPicture(plantPicture: BufferedImage): void",
+													"text": "+setPlantPicture(plantPicture: Image): void",
 													"horizontalAlignment": 0
 												},
 												{
@@ -5745,7 +5745,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 497,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+setSchedule(schedule: LocalTime[]): void",
 													"horizontalAlignment": 0
@@ -5762,7 +5762,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 512,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+setDescription(description: String): void",
 													"horizontalAlignment": 0
@@ -5779,7 +5779,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 527,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+setQuantity(quantity: int): void",
 													"horizontalAlignment": 0
@@ -5796,7 +5796,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 542,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+decreaseQuantityBy1(): void",
 													"horizontalAlignment": 0
@@ -5813,7 +5813,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 557,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+close(): void",
 													"horizontalAlignment": 0
@@ -5830,7 +5830,7 @@
 													"font": "Arial;13;0",
 													"left": 989,
 													"top": 572,
-													"width": 871,
+													"width": 808,
 													"height": 13,
 													"text": "+delete(): void",
 													"horizontalAlignment": 0
@@ -5839,7 +5839,7 @@
 											"font": "Arial;13;0",
 											"left": 984,
 											"top": 297,
-											"width": 881,
+											"width": 818,
 											"height": 293
 										},
 										{
@@ -5879,7 +5879,7 @@
 									"containerChangeable": true,
 									"left": 984,
 									"top": 144,
-									"width": 881,
+									"width": 818,
 									"height": 446,
 									"nameCompartment": {
 										"$ref": "AAAAAAGSbuUdlls2mII="
@@ -6080,7 +6080,7 @@
 													"top": 746,
 													"width": 862.392578125,
 													"height": 13,
-													"text": "-productImage: BufferedImage",
+													"text": "-productImage: Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -6182,7 +6182,7 @@
 													"top": 829,
 													"width": 862.392578125,
 													"height": 13,
-													"text": "+Product(plantSale: Plant, productTitle: String, productDescription: String, productImage: BufferedImage, price: BigDecimal, quantity: int)",
+													"text": "+Product(plantSale: Plant, productTitle: String, productDescription: String, productImage: Image, price: BigDecimal, quantity: int)",
 													"horizontalAlignment": 0
 												},
 												{
@@ -6250,7 +6250,7 @@
 													"top": 889,
 													"width": 862.392578125,
 													"height": 13,
-													"text": "+getProductPicture(): BufferedImage",
+													"text": "+getProductPicture(): Image",
 													"horizontalAlignment": 0
 												},
 												{
@@ -6335,7 +6335,7 @@
 													"top": 964,
 													"width": 862.392578125,
 													"height": 13,
-													"text": "+setProductImage(productImage: BufferedImage): void",
+													"text": "+setProductImage(productImage: Image): void",
 													"horizontalAlignment": 0
 												},
 												{
@@ -7534,7 +7534,7 @@
 									"tail": {
 										"$ref": "AAAAAAGSbz5dlGAcvtU="
 									},
-									"points": "872:824;872:739"
+									"points": "872:824;872:720;819:720"
 								},
 								{
 									"_type": "UMLNoteLinkView",
@@ -8269,7 +8269,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 931,
+											"left": 900,
 											"top": 383,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -8290,7 +8290,7 @@
 											},
 											"visible": null,
 											"font": "Arial;13;0",
-											"left": 931,
+											"left": 900,
 											"top": 398,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -8311,7 +8311,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 932,
+											"left": 901,
 											"top": 353,
 											"height": 13,
 											"alpha": -1.5707963267948966,
@@ -8395,7 +8395,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 906,
+											"left": 844,
 											"top": 382,
 											"height": 13,
 											"alpha": -0.5235987755982988,
@@ -8415,7 +8415,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 909,
+											"left": 847,
 											"top": 396,
 											"height": 13,
 											"alpha": -0.7853981633974483,
@@ -8435,7 +8435,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 902,
+											"left": 840,
 											"top": 355,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -8484,7 +8484,7 @@
 									"tail": {
 										"$ref": "AAAAAAGSbuUdlls1eCs="
 									},
-									"points": "984:374;881:374",
+									"points": "984:374;819:374",
 									"showVisibility": true,
 									"nameLabel": {
 										"$ref": "AAAAAAGSc8zpMV/N4sY="
@@ -8882,7 +8882,7 @@
 									},
 									"name": "profilePicture",
 									"visibility": "private",
-									"type": "BufferedImage"
+									"type": "Image"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -9027,7 +9027,7 @@
 												"$ref": "AAAAAAGSbwghely+Biw="
 											},
 											"name": "profilePicture",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -9139,7 +9139,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGSbweCilx4704="
 											},
-											"type": "BufferedImage",
+											"type": "Image",
 											"direction": "return"
 										}
 									]
@@ -9321,7 +9321,7 @@
 												"$ref": "AAAAAAGSbwfblFyp2co="
 											},
 											"name": "profilePicture",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -9442,7 +9442,7 @@
 												"$ref": "AAAAAAGSc9YVhwHz4eM="
 											},
 											"name": "plantPicture",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -9535,7 +9535,7 @@
 												"$ref": "AAAAAAGSc9oOXStS4u4="
 											},
 											"name": "productImage",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -9928,7 +9928,7 @@
 									},
 									"name": "plantPicture",
 									"visibility": "private",
-									"type": "BufferedImage"
+									"type": "Image"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -10045,7 +10045,7 @@
 												"$ref": "AAAAAAGSbzEs6l8eejs="
 											},
 											"name": "plantPicture",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -10063,7 +10063,7 @@
 												"$ref": "AAAAAAGSbzEs6l8eejs="
 											},
 											"name": "schedule",
-											"type": "LocalTime[]"
+											"type": "LocalTime"
 										},
 										{
 											"_type": "UMLParameter",
@@ -10158,7 +10158,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGSbzelIl9wNuY="
 											},
-											"type": "BufferedImage",
+											"type": "Image",
 											"direction": "return"
 										}
 									]
@@ -10282,7 +10282,7 @@
 												"$ref": "AAAAAAGSbzkXZl+ojHA="
 											},
 											"name": "plantPicture",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -10554,7 +10554,7 @@
 									},
 									"name": "productImage",
 									"visibility": "private",
-									"type": "BufferedImage"
+									"type": "Image"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -10660,7 +10660,7 @@
 												"$ref": "AAAAAAGScvLAnImVQts="
 											},
 											"name": "productImage",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
@@ -10755,7 +10755,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGScvfsmooA26k="
 											},
-											"type": "BufferedImage",
+											"type": "Image",
 											"direction": "return"
 										}
 									]
@@ -10869,7 +10869,7 @@
 												"$ref": "AAAAAAGScvmUFYozDAc="
 											},
 											"name": "productImage",
-											"type": "BufferedImage"
+											"type": "Image"
 										},
 										{
 											"_type": "UMLParameter",
