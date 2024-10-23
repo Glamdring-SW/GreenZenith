@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('fonts/Agrandir') format('otf');
+    font-weight: normal;
+    font-style: normal;
+  }  
+body {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'CustomFont', sans-serif;
+  }
+.image-container {
+    max-width: 70vw;
+    margin: 0 auto;
+}
+.responsive-img {
+    width: 100%;
+    height: auto;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
