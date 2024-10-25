@@ -25,4 +25,10 @@ public class GZDBSuperManager {
         tableTypes = gzdbc.getTableTypes(table);
     }
 
+    public GZDBSuperManager(GZDBTables table, String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
+        gzdbc = new GZDBConnector(urlDB, usernameDB, passwordDB);
+        tableFields = gzdbc.getTableFields(table);
+        tableTypes = gzdbc.getTableTypes(table);
+    }
+
 }
