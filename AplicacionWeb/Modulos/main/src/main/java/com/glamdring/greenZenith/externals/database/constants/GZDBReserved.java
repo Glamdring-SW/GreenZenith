@@ -8,7 +8,7 @@ public enum GZDBReserved {
     SET("SET"),
     FIELD("Field"),
     TYPE("Type"),
-    BOOLEAN("tinyint(1)"),
+    BOOLEAN("tinyint"),
     INT("int"),
     DECIMAL("decimal"),
     VARCHAR("varchar"),

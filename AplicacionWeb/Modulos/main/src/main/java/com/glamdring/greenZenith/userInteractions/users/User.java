@@ -7,14 +7,14 @@ import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.externals.database.constants.GZDBActions;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.externals.locations.Location;
-import com.glamdring.greenZenith.handlers.UserConnector;
+import com.glamdring.greenZenith.handlers.GZDBSuperManager;
 import com.glamdring.greenZenith.userInteractions.Attributable;
 import com.glamdring.greenZenith.userInteractions.Killable;
 import com.glamdring.greenZenith.userInteractions.plants.PlantList;
 import com.glamdring.greenZenith.userInteractions.products.Cart;
 import com.glamdring.greenZenith.userInteractions.products.ProductList;
 
-public class User extends UserConnector implements Attributable, Killable {
+public class User extends GZDBSuperManager implements Attributable, Killable {
 
     private int id;
     private String username;
@@ -29,7 +29,7 @@ public class User extends UserConnector implements Attributable, Killable {
     private Cart cart;
 
     public User(int id) throws InvalidUserException, GZDBResultException {
-        super();
+        super(GZDBTables.USER);
         insertMap.put("ID", id);
         resultMap = gzdbc.makeAction(GZDBActions.SELECT, GZDBTables.USER, insertMap, restrictionMap);
         this.id = id;
@@ -47,7 +47,7 @@ public class User extends UserConnector implements Attributable, Killable {
     }
 
     public User(String email, String password) throws InvalidUserException, GZDBResultException {
-        super();
+        super(GZDBTables.USER);
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
         resultMap = gzdbc.makeAction(GZDBActions.SELECT, GZDBTables.USER, insertMap, restrictionMap);
@@ -65,8 +65,9 @@ public class User extends UserConnector implements Attributable, Killable {
         //this.cart = ;
     }
 
-    public User(int age, String email, /*Location location,*/ String password, /*BufferedImage profilePicture,*/ String username) throws InvalidUserException, GZDBResultException {
-        super();
+    public User(String username, String email, String password, int age
+    /*Location location, BufferedImage profilePicture,*/) throws InvalidUserException, GZDBResultException {
+        super(GZDBTables.USER);
         insertMap.put("PUsername", username);
         insertMap.put("Email", email);
         insertMap.put("Age", age);
@@ -159,4 +160,5 @@ public class User extends UserConnector implements Attributable, Killable {
     @Override
     public void delete() {
     }
+
 }

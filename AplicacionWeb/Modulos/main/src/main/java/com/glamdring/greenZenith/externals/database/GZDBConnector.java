@@ -1,10 +1,10 @@
 package com.glamdring.greenZenith.externals.database;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
@@ -16,19 +16,19 @@ public class GZDBConnector {
 
     // final private String driverName = "com.mysql.cj.jdbc.Driver";
     final private String urlDB = "jdbc:mysql://localhost:3306/GreenZenith";
-    final private String usernameDB = "Administrator";
+    final private String usernameDB = "root";
     final private String passwordDB = "1234";
 
     private Connection connection;
-    private CallableStatement callableStatement;
+    private PreparedStatement preparedStatement;
     private GZDBExecutor executor;
-    private HashMap<String, Object> resultMap;
+    private LinkedHashMap<String, Object> resultMap;
 
     public GZDBConnector() throws GZDBResultException {
         try {
             connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR);
+            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
         }
     }
 
@@ -36,13 +36,13 @@ public class GZDBConnector {
         try {
             connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR);
+            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
         }
     }
 
-    public HashMap<String, Object> makeAction(GZDBActions action, GZDBTables table, HashMap<String, Object> insertMap, HashMap<String, Object> restrictionMap) throws GZDBResultException {
-        executor = new GZDBExecutor(callableStatement, connection, action, table);
-        resultMap = new HashMap<>();
+    public LinkedHashMap<String, Object> makeAction(GZDBActions action, GZDBTables table, LinkedHashMap<String, Object> insertMap, LinkedHashMap<String, Object> restrictionMap) throws GZDBResultException {
+        executor = new GZDBExecutor(preparedStatement, connection, action, table);
+        resultMap = new LinkedHashMap<>();
 
         switch (action) {
             case INSERT -> {
@@ -50,14 +50,14 @@ public class GZDBConnector {
                     executor.executeInsert(insertMap);
                     resultMap.put("RESULT_STATE", (Boolean) true);
                 } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap);
+                    throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap, e);
                 }
             }
             case SELECT -> {
                 try {
                     resultMap = executor.executeSelect(insertMap);
                 } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.SELECT, insertMap);
+                    throw new GZDBResultException(GZDBExceptionMessages.SELECT, insertMap, e);
                 }
             }
             case UPDATE -> {
@@ -65,7 +65,7 @@ public class GZDBConnector {
                     executor.executeUpdate(insertMap, restrictionMap);
                     resultMap.put("RESULT_STATE", (Boolean) true);
                 } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.UPDATE, insertMap);
+                    throw new GZDBResultException(GZDBExceptionMessages.UPDATE, insertMap, e);
                 }
             }
             case DELETE -> {
@@ -73,31 +73,31 @@ public class GZDBConnector {
                     executor.executeDelete(insertMap);
                     resultMap.put("RESULT_STATE", (Boolean) true);
                 } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.DELETE, insertMap);
+                    throw new GZDBResultException(GZDBExceptionMessages.DELETE, insertMap, e);
                 }
             }
             default -> {
-                throw new GZDBResultException(GZDBExceptionMessages.UNREACHABLE_CASE, insertMap);
+                throw new GZDBResultException(GZDBExceptionMessages.UNREACHABLE_CASE);
             }
         }
         return resultMap;
     }
 
     public HashSet<String> getTableFields(GZDBTables table) throws GZDBResultException {
-        executor = new GZDBExecutor(callableStatement, connection, GZDBActions.SELECT, table);
+        executor = new GZDBExecutor(preparedStatement, connection, GZDBActions.SELECT, table);
         try {
             return executor.getTableFields();
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
         }
     }
 
-    public HashMap<String, String> getTableTypes(GZDBTables table) throws GZDBResultException {
-        executor = new GZDBExecutor(callableStatement, connection, GZDBActions.SELECT, table);
+    public LinkedHashMap<String, String> getTableTypes(GZDBTables table) throws GZDBResultException {
+        executor = new GZDBExecutor(preparedStatement, connection, GZDBActions.SELECT, table);
         try {
             return executor.getTableTypes();
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
         }
     }
 }

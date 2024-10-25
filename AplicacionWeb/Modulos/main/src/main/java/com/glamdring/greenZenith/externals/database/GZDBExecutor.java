@@ -2,15 +2,16 @@ package com.glamdring.greenZenith.externals.database;
 
 import java.math.BigDecimal;
 import java.sql.Blob;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
@@ -27,7 +28,6 @@ public class GZDBExecutor {
     private final char EQUAL_CHAR = 61;
     private final char QUESTION_CHAR = 63;
 
-    private final String DESCRIBE_TABLE = "DESCRIBE ?";
     private final String AND_OPERATOR = "AND";
 
     private StringBuilder statementBuilder;
@@ -35,19 +35,18 @@ public class GZDBExecutor {
     private final Connection connection;
     private final GZDBActions action;
     private final GZDBTables table;
-    private CallableStatement callableStatement;
+    private PreparedStatement preparedStatement;
 
-    public GZDBExecutor(CallableStatement callableStatement, Connection connection, GZDBActions action, GZDBTables table) {
-        this.callableStatement = callableStatement;
+    public GZDBExecutor(PreparedStatement preparedStatement, Connection connection, GZDBActions action, GZDBTables table) {
+        this.preparedStatement = preparedStatement;
         this.connection = connection;
         this.action = action;
         this.table = table;
     }
 
     private ResultSet describeTable() throws SQLException {
-        callableStatement = connection.prepareCall(DESCRIBE_TABLE);
-        callableStatement.setString(1, table.getTable());
-        ResultSet resultDescriptionSet = callableStatement.executeQuery();
+        preparedStatement = connection.prepareStatement("DESCRIBE " + table.getTable());
+        ResultSet resultDescriptionSet = preparedStatement.executeQuery();
         return resultDescriptionSet;
     }
 
@@ -60,8 +59,8 @@ public class GZDBExecutor {
         return fieldsSet;
     }
 
-    public HashMap<String, String> getTableTypes() throws SQLException {
-        HashMap<String, String> typesMap = new HashMap<>();
+    public LinkedHashMap<String, String> getTableTypes() throws SQLException {
+        LinkedHashMap<String, String> typesMap = new LinkedHashMap<>();
         ResultSet resultSet = describeTable();
         while (resultSet.next()) {
             typesMap.put(
@@ -71,8 +70,8 @@ public class GZDBExecutor {
         return typesMap;
     }
 
-    private HashMap<String, Object> getResultMapWithWhereClause(ResultSet resultSet, HashMap<String, String> typesMap) throws SQLException {
-        HashMap<String, Object> resultMap = new HashMap<>();
+    private LinkedHashMap<String, Object> getResultMapWithWhereClause(ResultSet resultSet, LinkedHashMap<String, String> typesMap) throws SQLException {
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         while (resultSet.next()) {
             for (String outputField : typesMap.keySet()) {
                 if (typesMap.get(outputField).contains(GZDBReserved.BOOLEAN.getKeyword())) {
@@ -99,84 +98,94 @@ public class GZDBExecutor {
         return resultMap;
     }
 
-    private CallableStatement setCallableStatementArguments(CallableStatement callableStatement, HashMap<String, Object> inputMap, HashMap<String, String> typesMap) throws SQLException {
+    private PreparedStatement setPreparedStatementArguments(PreparedStatement preparedStatement, LinkedHashMap<String, Object> inputMap, LinkedHashMap<String, String> typesMap) throws SQLException {
+        int index = 1;
         for (String inputField : inputMap.keySet()) {
-            if (typesMap.get(inputField).contains(GZDBReserved.BOOLEAN.getKeyword())) {
-                callableStatement.setBoolean(inputField, (Boolean) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.INT.getKeyword())) {
-                callableStatement.setInt(inputField, (Integer) inputMap.get(inputField));
+            if (typesMap.get(inputField).equals(GZDBReserved.BOOLEAN.getKeyword())) {
+                preparedStatement.setBoolean(index, (Boolean) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.INT.getKeyword())) {
+                preparedStatement.setInt(index, (Integer) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.DECIMAL.getKeyword())) {
-                callableStatement.setBigDecimal(inputField, (BigDecimal) inputMap.get(inputField));
+                preparedStatement.setBigDecimal(index, (BigDecimal) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.VARCHAR.getKeyword())) {
-                callableStatement.setString(inputField, (String) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.TEXT.getKeyword())) {
-                callableStatement.setString(inputField, (String) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.DATE.getKeyword())) {
-                callableStatement.setDate(inputField, (Date) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.TIME.getKeyword())) {
-                callableStatement.setTime(inputField, (Time) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.DATETIME.getKeyword())) {
-                callableStatement.setTimestamp(inputField, (Timestamp) inputMap.get(inputField));
-            } else if (typesMap.get(inputField).contains(GZDBReserved.MEDIUMBLOB.getKeyword())) {
-                callableStatement.setBlob(inputField, (Blob) inputMap.get(inputField));
+                preparedStatement.setString(index, (String) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.TEXT.getKeyword())) {
+                preparedStatement.setString(index, (String) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.DATE.getKeyword())) {
+                preparedStatement.setDate(index, (Date) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.TIME.getKeyword())) {
+                preparedStatement.setTime(index, (Time) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.DATETIME.getKeyword())) {
+                preparedStatement.setTimestamp(index, (Timestamp) inputMap.get(inputField));
+            } else if (typesMap.get(inputField).equals(GZDBReserved.MEDIUMBLOB.getKeyword())) {
+                preparedStatement.setBlob(index, (Blob) inputMap.get(inputField));
             }
+            index++;
         }
-        return callableStatement;
+        return preparedStatement;
     }
 
-    private CallableStatement setCallableStatementArguments(CallableStatement callableStatement, HashMap<String, Object> inputMap1, HashMap<String, Object> inputMap2, HashMap<String, String> typesMap) throws SQLException, GZDBResultException {
+    private PreparedStatement setPreparedStatementArguments(PreparedStatement preparedStatement, LinkedHashMap<String, Object> inputMap1, LinkedHashMap<String, Object> inputMap2, LinkedHashMap<String, String> typesMap) throws SQLException, GZDBResultException {
+        int index = 1;
         Set<String> keys1 = inputMap1.keySet();
         Set<String> keys2 = inputMap2.keySet();
         keys1.retainAll(keys2);
         if (keys1.isEmpty()) {
             throw new GZDBResultException(GZDBExceptionMessages.KEYINPUT_2, inputMap2);
         }
-        HashMap<String, Object> inputMap = new HashMap<>();
+        LinkedHashMap<String, Object> inputMap = new LinkedHashMap<>();
         inputMap.putAll(inputMap1);
         inputMap.putAll(inputMap2);
         for (String inputField : inputMap.keySet()) {
             if (typesMap.get(inputField).contains(GZDBReserved.BOOLEAN.getKeyword())) {
-                callableStatement.setBoolean(inputField, (Boolean) inputMap.get(inputField));
+                preparedStatement.setBoolean(index, (Boolean) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.INT.getKeyword())) {
-                callableStatement.setInt(inputField, (Integer) inputMap.get(inputField));
+                preparedStatement.setInt(index, (Integer) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.DECIMAL.getKeyword())) {
-                callableStatement.setBigDecimal(inputField, (BigDecimal) inputMap.get(inputField));
+                preparedStatement.setBigDecimal(index, (BigDecimal) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.VARCHAR.getKeyword())) {
-                callableStatement.setString(inputField, (String) inputMap.get(inputField));
+                preparedStatement.setString(index, (String) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.TEXT.getKeyword())) {
-                callableStatement.setString(inputField, (String) inputMap.get(inputField));
+                preparedStatement.setString(index, (String) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.DATE.getKeyword())) {
-                callableStatement.setDate(inputField, (Date) inputMap.get(inputField));
+                preparedStatement.setDate(index, (Date) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.TIME.getKeyword())) {
-                callableStatement.setTime(inputField, (Time) inputMap.get(inputField));
+                preparedStatement.setTime(index, (Time) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.DATETIME.getKeyword())) {
-                callableStatement.setTimestamp(inputField, (Timestamp) inputMap.get(inputField));
+                preparedStatement.setTimestamp(index, (Timestamp) inputMap.get(inputField));
             } else if (typesMap.get(inputField).contains(GZDBReserved.MEDIUMBLOB.getKeyword())) {
-                callableStatement.setBlob(inputField, (Blob) inputMap.get(inputField));
+                preparedStatement.setBlob(index, (Blob) inputMap.get(inputField));
             }
         }
-        return callableStatement;
+        return preparedStatement;
     }
 
-    private String makeSelectValueClause() throws SQLException {
+    private String makeSelectValueClause(LinkedHashMap<String, Object> insertMap, LinkedHashMap<String, String> typesMap) throws SQLException {
         StringBuilder valueClause = new StringBuilder();
-        int index = getTableFields().size();
+        int index = 0;
+        int total = typesMap.size();
         valueClause.append("(");
-        if (table.equals(GZDBTables.USER)
-                || table.equals(GZDBTables.PLANT)
-                || table.equals(GZDBTables.PRODUCT)
-                || table.equals(GZDBTables.MESSAGE)) {
-            valueClause.append("NULL, ");
-            index--;
+        for (Map.Entry<String, String> typeMap : typesMap.entrySet()) {
+            index++;
+            String type = typeMap.getKey();
+            if (!insertMap.containsKey(type)) {
+                if (index != total) {
+                    valueClause.append("DEFAULT, ");
+                } else {
+                    valueClause.append("DEFAULT)");
+                }
+            } else {
+                if (index != total) {
+                    valueClause.append("?, ");
+                } else {
+                    valueClause.append("?)");
+                }
+            }
         }
-        for (int i = 0; i < index - 1; i++) {
-            valueClause.append("?, ");
-        }
-        valueClause.append("?)");
         return valueClause.toString();
     }
 
-    private String getInsertStatement() throws SQLException {
+    private String getInsertStatement(LinkedHashMap<String, Object> insertMap, LinkedHashMap<String, String> typesMap) throws SQLException {
         statementBuilder = new StringBuilder();
         statementBuilder.append(action.getAction());
         statementBuilder.append(SPACE_CHAR);
@@ -186,24 +195,20 @@ public class GZDBExecutor {
         statementBuilder.append(SPACE_CHAR);
         statementBuilder.append(GZDBReserved.VALUES.getKeyword());
         statementBuilder.append(SPACE_CHAR);
-        statementBuilder.append(makeSelectValueClause());
+        statementBuilder.append(makeSelectValueClause(insertMap, typesMap));
         return statementBuilder.toString();
     }
 
-    public void executeInsert(HashMap<String, Object> insertMap) throws SQLException, GZDBResultException {
-        HashMap<String, String> typesMap = getTableTypes();
-        if (insertMap.size() < typesMap.size()) {
-            throw new GZDBResultException(GZDBExceptionMessages.INPUT_SMALLER, insertMap);
-        } else if (insertMap.size() > typesMap.size()) {
-            throw new GZDBResultException(GZDBExceptionMessages.INPUT_BIGGER, insertMap);
-        }
-        String statement = getInsertStatement();
-        callableStatement = connection.prepareCall(statement);
-        callableStatement = setCallableStatementArguments(callableStatement, insertMap, typesMap);
-        callableStatement.executeUpdate();
+    public void executeInsert(LinkedHashMap<String, Object> insertMap) throws SQLException, GZDBResultException {
+        LinkedHashMap<String, String> typesMap = getTableTypes();
+        String statement = getInsertStatement(insertMap, typesMap);
+        System.out.println(statement);
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement = setPreparedStatementArguments(preparedStatement, insertMap, typesMap);
+        preparedStatement.executeUpdate();
     }
 
-    private String makeWhereClause(HashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+    private String makeWhereClause(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
         int index = 0;
         StringBuilder whereClause = new StringBuilder();
         HashSet<String> fieldsSet = getTableFields();
@@ -226,7 +231,7 @@ public class GZDBExecutor {
         return whereClause.toString();
     }
 
-    private String getSelectStatement(HashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+    private String getSelectStatement(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
         statementBuilder = new StringBuilder();
         statementBuilder.append(action.getAction());
         statementBuilder.append(SPACE_CHAR);
@@ -242,17 +247,17 @@ public class GZDBExecutor {
         return statementBuilder.toString();
     }
 
-    public HashMap<String, Object> executeSelect(HashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
-        HashMap<String, String> typesMap = getTableTypes();
+    public LinkedHashMap<String, Object> executeSelect(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+        LinkedHashMap<String, String> typesMap = getTableTypes();
         String statement = getSelectStatement(selectMap);
-        callableStatement = connection.prepareCall(statement);
-        callableStatement = setCallableStatementArguments(callableStatement, selectMap, typesMap);
-        ResultSet resultSet = callableStatement.executeQuery();
-        HashMap<String, Object> resultMap = getResultMapWithWhereClause(resultSet, typesMap);
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement = setPreparedStatementArguments(preparedStatement, selectMap, typesMap);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        LinkedHashMap<String, Object> resultMap = getResultMapWithWhereClause(resultSet, typesMap);
         return resultMap;
     }
 
-    private String makeUpdateClause(HashMap<String, Object> updateMap) throws SQLException, GZDBResultException {
+    private String makeUpdateClause(LinkedHashMap<String, Object> updateMap) throws SQLException, GZDBResultException {
         int index = 0;
         StringBuilder updateClause = new StringBuilder();
         HashSet<String> fieldsSet = getTableFields();
@@ -274,7 +279,7 @@ public class GZDBExecutor {
         return updateClause.toString();
     }
 
-    private String getUpdateStatement(HashMap<String, Object> updateMap, HashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+    private String getUpdateStatement(LinkedHashMap<String, Object> updateMap, LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
         statementBuilder = new StringBuilder();
         statementBuilder.append(action.getAction());
         statementBuilder.append(SPACE_CHAR);
@@ -290,15 +295,15 @@ public class GZDBExecutor {
         return statementBuilder.toString();
     }
 
-    public void executeUpdate(HashMap<String, Object> updateMap, HashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
-        HashMap<String, String> typesMap = getTableTypes();
+    public void executeUpdate(LinkedHashMap<String, Object> updateMap, LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+        LinkedHashMap<String, String> typesMap = getTableTypes();
         String statement = getUpdateStatement(updateMap, selectMap);
-        callableStatement = connection.prepareCall(statement);
-        callableStatement = setCallableStatementArguments(callableStatement, updateMap, selectMap, typesMap);
-        callableStatement.executeUpdate();
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement = setPreparedStatementArguments(preparedStatement, updateMap, selectMap, typesMap);
+        preparedStatement.executeUpdate();
     }
 
-    private String getDeleteStatement(HashMap<String, Object> deleteMap) throws SQLException, GZDBResultException {
+    private String getDeleteStatement(LinkedHashMap<String, Object> deleteMap) throws SQLException, GZDBResultException {
         statementBuilder = new StringBuilder();
         statementBuilder.append(action.getAction());
         statementBuilder.append(SPACE_CHAR);
@@ -312,11 +317,11 @@ public class GZDBExecutor {
         return statementBuilder.toString();
     }
 
-    public void executeDelete(HashMap<String, Object> deleteMap) throws SQLException, GZDBResultException {
-        HashMap<String, String> typesMap = getTableTypes();
+    public void executeDelete(LinkedHashMap<String, Object> deleteMap) throws SQLException, GZDBResultException {
+        LinkedHashMap<String, String> typesMap = getTableTypes();
         String statement = getDeleteStatement(deleteMap);
-        callableStatement = connection.prepareCall(statement);
-        callableStatement = setCallableStatementArguments(callableStatement, deleteMap, typesMap);
-        callableStatement.executeUpdate();
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement = setPreparedStatementArguments(preparedStatement, deleteMap, typesMap);
+        preparedStatement.executeUpdate();
     }
 }
