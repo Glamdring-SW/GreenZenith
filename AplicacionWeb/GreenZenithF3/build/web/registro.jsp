@@ -18,7 +18,7 @@
                         <h4 class="mb-0 color-registro">Registro</h4>
                     </div>
                     <div class="card-body">
-                        <form class="centered-form" method="post" action="controllers/register_contoller.jsp">
+                        <form class="centered-form">
                             <div class="mb-3">
                                 <label for="firstName" class="form-label color-title">Nombre</label>
                                 <input type="text" class="form-control" id="firstName" placeholder="Introduce nombre">
