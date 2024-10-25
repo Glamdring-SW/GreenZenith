@@ -14,7 +14,7 @@
                         <a class="nav-link" href="marketplace.jsp">MarketPlace</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="plantas.html">Plantas</a>
+                        <a class="nav-link" href="plantsexplore.jsp">Plantas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Explorar</a>

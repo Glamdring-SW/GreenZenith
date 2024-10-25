@@ -81,45 +81,44 @@ body {
 }
 
 .btn.button-color:hover {
-    background-color: #c4d8a4; /* Lighter hover color */
+    background-color: #c4d8a4;
 }
 
 .color-title {
-    color: #231f20; /* Color for titles */
+    color: #231f20;
 }
 
 .color-registro {
-    color: #e5edd8; /* Color for registration text */
+    color: #e5edd8;
 }
 
 .form-label {
-    font-size: 1.2rem; /* Label size */
-    color: #231f20; /* Color for form labels */
+    font-size: 1.2rem;
+    color: #231f20;
 }
 
 .form-control {
-    border: 1px solid #5b554e; /* Border color for input fields */
+    border: 1px solid #5b554e;
 }
 
 .form-control:focus {
-    border-color: #31463c; /* Focus border color */
-    box-shadow: 0 0 0.2rem rgba(49, 70, 60, 0.25); /* Focus shadow */
+    border-color: #31463c;
+    box-shadow: 0 0 0.2rem rgba(49, 70, 60, 0.25);
 }
 
 .color {
-    color: #231f20; /* General text color */
+    color: #231f20;
 }
 
 .centered-form {
-    align-items: center; /* Center align items in the form */
+    align-items: center;
 }
 
-/* Additional styles for the registration link */
 .link {
-    color: #5b554e; /* Color for the registration link */
-    text-decoration: none; /* Remove underline */
+    color: #5b554e;
+    text-decoration: none;
 }
 
 .link:hover {
-    text-decoration: underline; /* Underline on hover */
+    text-decoration: underline;
 }
