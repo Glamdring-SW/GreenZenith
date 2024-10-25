@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="com.glamdring.greenZenith.*" %>
+<%@page import="" %>
 <%
     
-    String username = request.getParameter("firstName");
+    String username = request.getParameter("firstName") + " " + request.getParameter("lastName");
     String email = request.getParameter("email");
     String password = request.getParameter("password"); 
     int age = 0;
