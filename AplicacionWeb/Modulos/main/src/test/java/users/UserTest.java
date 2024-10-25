@@ -7,10 +7,10 @@ import com.glamdring.greenZenith.userInteractions.users.User;
 public class UserTest {
 
     public static void main(String[] args) {
-        String username = "Exz";
-        String email = "esotilin@gmail.com";
-        String password = "1234";
-        int age = 16;
+        String username = "TEST";
+        String email = "TESTEMAIL";
+        String password = "TESTPASSWORD";
+        int age = 17;
 
         try {
             User user = new User(username, email, password, age);

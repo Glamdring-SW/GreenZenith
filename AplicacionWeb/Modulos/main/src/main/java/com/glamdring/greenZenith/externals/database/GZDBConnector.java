@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.exceptions.database.constants.GZDBExceptionMessages;
@@ -83,7 +83,7 @@ public class GZDBConnector {
         return resultMap;
     }
 
-    public HashSet<String> getTableFields(GZDBTables table) throws GZDBResultException {
+    public LinkedHashSet<String> getTableFields(GZDBTables table) throws GZDBResultException {
         executor = new GZDBExecutor(preparedStatement, connection, GZDBActions.SELECT, table);
         try {
             return executor.getTableFields();

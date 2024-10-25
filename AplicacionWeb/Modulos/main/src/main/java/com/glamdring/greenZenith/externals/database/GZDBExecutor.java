@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,8 +50,8 @@ public class GZDBExecutor {
         return resultDescriptionSet;
     }
 
-    public HashSet<String> getTableFields() throws SQLException {
-        HashSet<String> fieldsSet = new HashSet<>();
+    public LinkedHashSet<String> getTableFields() throws SQLException {
+        LinkedHashSet<String> fieldsSet = new LinkedHashSet<>();
         ResultSet resultSet = describeTable();
         while (resultSet.next()) {
             fieldsSet.add(resultSet.getString(GZDBReserved.FIELD.getKeyword()));
@@ -202,7 +202,6 @@ public class GZDBExecutor {
     public void executeInsert(LinkedHashMap<String, Object> insertMap) throws SQLException, GZDBResultException {
         LinkedHashMap<String, String> typesMap = getTableTypes();
         String statement = getInsertStatement(insertMap, typesMap);
-        System.out.println(statement);
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement = setPreparedStatementArguments(preparedStatement, insertMap, typesMap);
         preparedStatement.executeUpdate();
@@ -211,7 +210,7 @@ public class GZDBExecutor {
     private String makeWhereClause(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
         int index = 0;
         StringBuilder whereClause = new StringBuilder();
-        HashSet<String> fieldsSet = getTableFields();
+        LinkedHashSet<String> fieldsSet = getTableFields();
         for (String inputField : selectMap.keySet()) {
             if (!fieldsSet.contains(inputField)) {
                 throw new GZDBResultException(GZDBExceptionMessages.SELECT_NOFIELD, selectMap);
@@ -260,7 +259,7 @@ public class GZDBExecutor {
     private String makeUpdateClause(LinkedHashMap<String, Object> updateMap) throws SQLException, GZDBResultException {
         int index = 0;
         StringBuilder updateClause = new StringBuilder();
-        HashSet<String> fieldsSet = getTableFields();
+        LinkedHashSet<String> fieldsSet = getTableFields();
         for (String inputField : updateMap.keySet()) {
             if (!fieldsSet.contains(inputField)) {
                 throw new GZDBResultException(GZDBExceptionMessages.UPDATE_NOFIELD, updateMap);

@@ -1,7 +1,7 @@
 package com.glamdring.greenZenith.handlers;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.externals.database.GZDBConnector;
@@ -15,7 +15,7 @@ public class GZDBSuperManager {
     public LinkedHashMap<String, Object> restrictionMap = new LinkedHashMap<>();
     public LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
 
-    public HashSet<String> tableFields = null;
+    public LinkedHashSet<String> tableFields = null;
     public LinkedHashMap<String, String> tableTypes = null;
     public LinkedHashMap<String, Object> tableTypesReference = null;
 
