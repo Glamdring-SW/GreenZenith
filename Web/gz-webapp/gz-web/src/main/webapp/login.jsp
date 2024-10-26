@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body>
-        <jsp:include page="navbar.jsp"/>
+        <jsp:include page="Elements/navbar.jsp"/>
         <div class="container my-5">
             <div class="row justify-content-center">
                 <div class="col-md-12">
@@ -21,18 +21,18 @@
                         <div class="card-body">
                             <form class="centered-form" method="post" action="Controlllers/login_controller.jsp">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label color-title">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Introduce email">
+                                    <label class="form-label color-title" for="email">Email</label>
+                                    <input class="form-control" type="email" id="email" name="email" placeholder="Introduce email">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label color-title">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Introduce contraseña">
+                                    <label class="form-label color-title" for="password">Contraseña</label>
+                                    <input class="form-control" type="password" id="password" name="password" placeholder="Introduce contraseña">
                                 </div>
                                 <div class="text-end">
-                                    <button type="submit" class="btn button-color">Ingresar</button>
+                                    <button class="btn button-color" type="submit">Ingresar</button>
                                 </div>
                             </form>
-                            <p class="color-title" style="margin-top: 8px;">No tienes cuenta? <a href="registro.jsp" class="link-primary">Regístrate</a></p>
+                            <p class="color-title" style="margin-top: 8px;">No tienes cuenta? <a href="register.jsp" class="link-primary">Regístrate</a></p>
                         </div>
                     </div>
                 </div>

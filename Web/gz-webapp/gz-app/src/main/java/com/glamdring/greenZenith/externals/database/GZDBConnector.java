@@ -14,7 +14,7 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 
 public class GZDBConnector {
 
-    // final private String driverName = "com.mysql.cj.jdbc.Driver";
+    final private String driverName = "com.mysql.cj.jdbc.Driver";
     final private String urlDB = "jdbc:mysql://localhost:3306/GreenZenith";
     final private String usernameDB = "root";
     final private String passwordDB = "1234";
@@ -26,16 +26,18 @@ public class GZDBConnector {
 
     public GZDBConnector() throws GZDBResultException {
         try {
+            Class.forName(driverName);
             connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
         }
     }
 
     public GZDBConnector(String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
         try {
+            Class.forName(driverName);
             connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
         }
     }

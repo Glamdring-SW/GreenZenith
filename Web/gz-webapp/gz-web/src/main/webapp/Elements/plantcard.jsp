@@ -1,9 +1,3 @@
-<%-- 
-    Document   : plantcard
-    Created on : Oct 24, 2024, 2:04:57 AM
-    Author     : senor
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <div class="col-md-12 mb-4">

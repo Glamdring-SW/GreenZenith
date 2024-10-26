@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,18 +14,18 @@
         <div class="container my-5">
             <h3 class="text-center mb-4">Plantas</h3>
             <div class="row g-4">
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
-                <jsp:include page="plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
+                <jsp:include page="Elements/plantinfo.jsp" />
             </div>
         </div>
     </body>
