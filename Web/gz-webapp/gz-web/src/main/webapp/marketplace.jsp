@@ -1,12 +1,6 @@
-<%--
-    Document   : MarketPlace
-    Created on : Oct 24, 2024, 1:49:01 AM
-    Author     : senor
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,30 +11,30 @@
     </head>
     <body>
         <div class="navbar">
-            <jsp:include page="navbar.jsp" />
+            <jsp:include page="Elements/navbar.jsp" />
         </div>
         <div class="container my-5">
             <div class="row">
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
-                <jsp:include page="plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
+                <jsp:include page="Elements/plantcard.jsp"/>
             </div>
         </div>
     </body>

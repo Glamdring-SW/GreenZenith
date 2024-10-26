@@ -10,7 +10,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body>
-        <jsp:include page="navbar.jsp"/>
+        <jsp:include page="Elements/navbar.jsp"/>
         <div class="container my-5">
             <div class="row justify-content-center"> <!-- Centering the row -->
                 <div class="col-md-12"> <!-- Increased column width -->
