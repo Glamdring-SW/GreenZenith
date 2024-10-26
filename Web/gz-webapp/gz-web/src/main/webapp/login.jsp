@@ -25,7 +25,8 @@
                                     <input class="form-control" type="email" id="email" name="email" placeholder="Introduce email">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label color-title" for="password">Contraseña</label>
+                                    <label class="form-label color-title" for="password">
+                                    Contraseña</label>
                                     <input class="form-control" type="password" id="password" name="password" placeholder="Introduce contraseña">
                                 </div>
                                 <div class="text-end">

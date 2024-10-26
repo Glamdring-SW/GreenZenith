@@ -20,9 +20,5 @@ public class UserTest {
             System.out.println("invalid data, try again");
         }
 
-        System.out.println(controller.getUserName());
-        System.out.println(controller.getUserAge());
-        System.out.println(controller.getUserEmail());
-
     }
 }

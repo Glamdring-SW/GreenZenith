@@ -9,7 +9,8 @@
     boolean created = controller.summonUser(email, password);
 
     if (created){
-        session.setAttribute("email", email);
+        int id = controller.getUserId();
+        session.setAttribute("id", id);
         response.sendRedirect("../test.jsp");
     } else {
         out.println("<script>alert('datos invalidos');</script>");

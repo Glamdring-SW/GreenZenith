@@ -37,4 +37,8 @@ public class UserController {
         return user;
     }
 
+    public int getUserId() {
+        return user.getId();
+    }
+
 }

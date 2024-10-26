@@ -8,7 +8,7 @@
     <body>
         <%
 
-            UserController controller = session.getAttribute("controller");
+            int id = (int) session.getAttribute("id");
 
         %>
         <h1>Datos</h1>
@@ -18,7 +18,7 @@
         <span>email:</span>
         <span>edad:</span>
 
-        <span><%= controller.getUserId() %></span>
+        <span></span>
 
         <a href="">
             <button>Menu</button>
