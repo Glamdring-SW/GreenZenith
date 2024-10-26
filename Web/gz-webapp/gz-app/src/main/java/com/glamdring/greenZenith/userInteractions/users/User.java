@@ -178,5 +178,4 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     @Override
     public void delete() {
     }
-
 }
