@@ -8,8 +8,6 @@ public class UserController {
 
     private User user;
 
-    public UserController(){}
-
     public boolean createUser(String username, String email, String password, int age){
         boolean flag = true;
         try {
