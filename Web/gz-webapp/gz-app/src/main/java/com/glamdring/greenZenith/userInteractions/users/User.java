@@ -18,7 +18,7 @@ import com.glamdring.greenZenith.userInteractions.products.ProductList;
 
 public class User extends GZDBSuperManager implements Attributable, Killable {
 
-    private int id;
+    private final int id;
     private String username;
     private String email;
     private int age;

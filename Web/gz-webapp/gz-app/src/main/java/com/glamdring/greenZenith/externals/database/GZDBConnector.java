@@ -14,10 +14,10 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 
 public class GZDBConnector {
 
-    final private String driverName = "com.mysql.cj.jdbc.Driver";
-    final private String urlDB = "jdbc:mysql://localhost:3306/GreenZenith";
-    final private String usernameDB = "root";
-    final private String passwordDB = "1234";
+    private final String driverName = "com.mysql.cj.jdbc.Driver";
+    private final String urlDB = "jdbc:mysql://localhost:3306/GreenZenith";
+    private final String usernameDB = "root";
+    private final String passwordDB = "1234";
 
     private Connection connection;
     private PreparedStatement preparedStatement;
