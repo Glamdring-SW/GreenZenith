@@ -1,8 +1,10 @@
 package com.glamdring.greenZenith.userInteractions.users;
 
 import java.awt.image.BufferedImage;
+import java.util.LinkedHashMap;
 
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
+import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.externals.database.constants.GZDBActions;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
@@ -30,6 +32,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
 
     public User(int id) throws InvalidUserException, GZDBResultException {
         super(GZDBTables.USER);
+        resetMaps();
         insertMap.put("ID", id);
         resultMap = gzdbc.makeAction(GZDBActions.SELECT, GZDBTables.USER, insertMap, restrictionMap);
         this.id = id;
@@ -48,6 +51,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
 
     public User(String email, String password) throws InvalidUserException, GZDBResultException {
         super(GZDBTables.USER);
+        resetMaps();
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
         resultMap = gzdbc.makeAction(GZDBActions.SELECT, GZDBTables.USER, insertMap, restrictionMap);
@@ -68,6 +72,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     public User(String username, String email, String password, int age
     /*Location location, BufferedImage profilePicture,*/) throws InvalidUserException, GZDBResultException {
         super(GZDBTables.USER);
+        resetMaps();
         insertMap.put("PUsername", username);
         insertMap.put("Email", email);
         insertMap.put("Age", age);
@@ -149,8 +154,21 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         this.location = location;
     }
 
-    public void setPassword(String oldPassword, String newPassword) {
-        this.password = newPassword;
+    public void setPassword(String oldPassword, String newPassword) throws GZDBResultException, InvalidUserException {
+        if (oldPassword.equals(this.password)) {
+            this.password = newPassword;
+            resetMaps();
+            insertMap.put("PasswordUser", newPassword);
+            restrictionMap.put("ID", id);
+            gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USER, insertMap, restrictionMap);
+        } else {
+            throw new InvalidUserException(UserExceptions.PASSWORD);
+        }
+    }
+
+    private void resetMaps() {
+        insertMap = new LinkedHashMap<>();
+        restrictionMap = new LinkedHashMap<>();
     }
 
     @Override
