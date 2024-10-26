@@ -33,32 +33,8 @@ public class UserController {
     }
 
 
-    public int getUserId() {
-        return user.getId();
-    }
-
-    public String getUserName() {
-        return user.getName();
-    }
-
-    public String getUserEmail() {
-        return user.getEmail();
-    }
-
-    public int getUserAge() {
-        return user.getAge();
-    }
-
-    public void setUserName(String name) {
-        this.user.setName(name);
-    }
-
-    public void setUserEmail(String email) {
-        this.user.setEmail(email);
-    }
-
-    public void setUserAge(int age) {
-        this.user.setAge(age);
+    public User getUser() {
+        return user;
     }
 
 }

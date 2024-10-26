@@ -16,5 +16,4 @@
         out.println("<script>alert('datos invalidos');</script>");
         response.sendRedirect("../login.jsp");
     }
-
 %>

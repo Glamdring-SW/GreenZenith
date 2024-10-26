@@ -11,9 +11,9 @@ public class GZDBSuperManager {
 
     public GZDBConnector gzdbc;
 
-    public LinkedHashMap<String, Object> insertMap = new LinkedHashMap<>();
-    public LinkedHashMap<String, Object> restrictionMap = new LinkedHashMap<>();
-    public LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+    public LinkedHashMap<String, Object> insertMap = null;
+    public LinkedHashMap<String, Object> restrictionMap = null;
+    public LinkedHashMap<String, Object> resultMap = null;
 
     public LinkedHashSet<String> tableFields = null;
     public LinkedHashMap<String, String> tableTypes = null;
