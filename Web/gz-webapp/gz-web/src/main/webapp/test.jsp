@@ -14,11 +14,10 @@
         %>
         <h1>Datos del usuario</h1>
 
-        <span>ID:</span>
-        <span>nombre:</span>
-
-        <span><%= out.print(id) %></span>
-        <span><%= out.print(name) %></span>
+        <span>ID: </span>
+        <span>nombre: </span>
+        <span><%= id %></span>
+        <span><%= name %></span>
 
         <br>
 

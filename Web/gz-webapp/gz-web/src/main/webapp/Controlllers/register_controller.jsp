@@ -6,7 +6,6 @@
     String password = (String) request.getParameter("password");
     int age = 18;
 
-    Class.forName("com.glamdring.greenZenith.controllers.UserController");
     UserController controller = new UserController();
 
     boolean created = controller.createUser(username, email, password, age);
