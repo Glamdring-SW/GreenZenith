@@ -39,4 +39,8 @@ public class UserController {
         return user.getId();
     }
 
+    public String getUserName(){
+        return user.getName();
+    }
+
 }

@@ -3,34 +3,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Resultados</title>
+        <title>Usuario validado</title>
     </head>
     <body>
         <%
 
             int id = (int) session.getAttribute("id");
+            String name = (String) session.getAttribute("name");
 
         %>
-        <h1>Datos</h1>
+        <h1>Datos del usuario</h1>
 
         <span>ID:</span>
         <span>nombre:</span>
-        <span>email:</span>
-        <span>edad:</span>
 
-        <span></span>
+        <span><%= out.print(id) %></span>
+        <span><%= out.print(name) %></span>
 
-        <a href="">
-            <button>Menu</button>
-        </a>
+        <br>
 
         <a href="">
-            <button>no</button>
+            <button>Regresar</button>
         </a>
 
-        <a href="">
-            <button>si</button>
-        </a>
 
     </body>
 </html>

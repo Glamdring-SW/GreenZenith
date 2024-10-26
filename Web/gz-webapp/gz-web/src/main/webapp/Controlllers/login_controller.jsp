@@ -9,8 +9,11 @@
     boolean created = controller.summonUser(email, password);
 
     if (created){
+        //im not able to repair the jsp to import user, im sorry, DX
         int id = controller.getUserId();
+        String name = contoller.getUserName();
         session.setAttribute("id", id);
+        session.setAttribute("name", name);
         response.sendRedirect("../test.jsp");
     } else {
         out.println("<script>alert('datos invalidos');</script>");
