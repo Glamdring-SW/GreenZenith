@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,20 +21,20 @@
                         <div class="card-body">
                             <form class="centered-form" method="post" action="Controlllers/register_contoller.jsp">
                                 <div class="mb-3">
-                                    <label for="firstName" class="form-label color-title">Nombre</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="Introduce nombre">
+                                    <label class="form-label color-title" for="firstName">Nombre</label>
+                                    <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Ingresa tu nombre">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="lastName" class="form-label color-title">Apellido</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Introduce apellido">
+                                    <label class="form-label color-title" for="lastName">Apellido</label>
+                                    <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Ingresa tus apellidos">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label color-title">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Introduce email">
+                                    <label class="form-label color-title" for="email">Email</label>
+                                    <input class="form-control" type="email" id="email" name="email" placeholder="Ingresa tu correo electronico">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label color-title">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Introduce contraseña">
+                                    <label class="form-label color-title" for="password">Contraseña</label>
+                                    <input class="form-control" type="password" id="password" name="password" placeholder="Ingresa una contraseña segura">
                                 </div>
                                 <div class="text-end">
                                     <button type="submit" class="btn button-color">Registrar</button>

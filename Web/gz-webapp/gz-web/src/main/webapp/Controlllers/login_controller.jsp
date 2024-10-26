@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="com.glamdring.greenZenith.*" %>
+<%@ page import="com.glamdring.greenZenith.controllers.UserController" %>
 <%
     String email = request.getParameter("email");
     String password = request.getParameter("password");

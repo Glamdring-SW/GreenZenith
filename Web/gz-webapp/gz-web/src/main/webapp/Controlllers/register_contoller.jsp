@@ -4,14 +4,14 @@
     String username = request.getParameter("firstName");
     String email = request.getParameter("email");
     String password = request.getParameter("password");
-    int age = 0;
+    int age = 18;
 
     Class.forName("com.glamdring.greenZenith.controllers.UserController");
     UserController controller = new UserController();
 
     boolean created = controller.createUser(username, email, password, age);
 
-    if (created==true){
+    if (created){
         out.println("<script>alert('Usuario creado con exito');</script>");
         session.setAttribute("email", email);
         response.sendRedirect("../test.jsp");
