@@ -10,7 +10,7 @@
 
     if (created){
         session.setAttribute("email", email);
-        response.sendRedirect("../homepage.jsp");
+        response.sendRedirect("../test.jsp");
     } else {
         out.println("<script>alert('datos invalidos');</script>");
         response.sendRedirect("../login.jsp");
