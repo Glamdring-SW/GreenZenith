@@ -102,4 +102,12 @@ public class GZDBConnector {
             throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
         }
     }
+
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+
+        }
+    }
 }

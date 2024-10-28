@@ -10,11 +10,13 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBActions;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.externals.locations.Location;
 import com.glamdring.greenZenith.handlers.GZDBSuperManager;
+import com.glamdring.greenZenith.handlers.GZFormatter;
 import com.glamdring.greenZenith.userInteractions.Attributable;
 import com.glamdring.greenZenith.userInteractions.Killable;
-import com.glamdring.greenZenith.userInteractions.plants.PlantList;
+import com.glamdring.greenZenith.handlers.PlantList;
 import com.glamdring.greenZenith.userInteractions.products.Cart;
-import com.glamdring.greenZenith.userInteractions.products.ProductList;
+import com.glamdring.greenZenith.handlers.ProductList;
+import com.glamdring.greenZenith.handlers.constants.GZFormats;
 
 public class User extends GZDBSuperManager implements Attributable, Killable {
 
@@ -51,6 +53,12 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
 
     public User(String email, String password) throws InvalidUserException, GZDBResultException {
         super(GZDBTables.USER);
+        if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
+        }
+        if (!GZFormatter.isValid(password, GZFormats.EMAIL)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
+        }
         resetMaps();
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
@@ -72,6 +80,15 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     public User(String username, String email, String password, int age
     /*Location location, BufferedImage profilePicture,*/) throws InvalidUserException, GZDBResultException {
         super(GZDBTables.USER);
+        if (!GZFormatter.isValid(username, GZFormats.USERNAME)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_USERNAME);
+        }
+        if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
+        }
+        if (!GZFormatter.isValid(password, GZFormats.PASSWORD)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
+        }
         resetMaps();
         insertMap.put("PUsername", username);
         insertMap.put("Email", email);
@@ -86,11 +103,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         this.password = password;
         this.administratorAccess = false;
 
-        //this.profilePicture = ;
-        //this.location = ;
-        //this.plants = ;
-        //this.products = ;
-        //this.cart = ;
+        //this.profilePicture = ; picture handler needed
+        //this.location = ; location class needed
+        //this.plants = ; plantlist class needed
+        //this.products = ; productlist class needed
+        //this.cart = ; cart class needed
     }
 
     @Override
@@ -132,29 +149,71 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         return cart;
     }
 
-    @Override
-    public void setName(String name) {
+    public boolean isAdministratorAccess() {
+        return administratorAccess;
+    }
+
+    public void setName(String name) throws InvalidUserException, GZDBResultException {
+        if (!GZFormatter.isValid(name, GZFormats.USERNAME)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_USERNAME);
+        }
         this.username = name;
+        resetMaps();
+        insertMap.put("PUsername", name);
+        restrictionMap.put("ID", id);
+        gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USER, insertMap, restrictionMap);
+
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws InvalidUserException, GZDBResultException {
+        if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
+        }
         this.email = email;
+        resetMaps();
+        insertMap.put("Email", email);
+        restrictionMap.put("ID", id);
+        gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USER, insertMap, restrictionMap);
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAge(int age) throws InvalidUserException, GZDBResultException {
+        if (age > 12 && age < 120) {
+            this.age = age;
+            resetMaps();
+            insertMap.put("Age", age);
+            restrictionMap.put("ID", id);
+            gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USER, insertMap, restrictionMap);
+        } else {
+            throw new InvalidUserException(UserExceptions.AGE);
+        }
     }
 
-    @Override
-    public void setPicture(BufferedImage picture) {
+    public void setPicture(BufferedImage picture) throws InvalidUserException, GZDBResultException {
         this.profilePicture = picture;
+        /*
+        picture handler needed
+            resetMaps();
+            insertMap.put("Picture", HANDLER_HERE);
+            restrictionMap.put("ID", id);
+            gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USERPICTURE, insertMap, restrictionMap);
+         */
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(Location location) throws InvalidUserException, GZDBResultException {
         this.location = location;
+        /*
+        location class needed
+            resetMaps();
+            insertMap.put("Picture", HANDLER_HERE);
+            restrictionMap.put("ID", id);
+            gzdbc.makeAction(GZDBActions.UPDATE, GZDBTables.USERPICTURE, insertMap, restrictionMap);
+         */
     }
 
     public void setPassword(String oldPassword, String newPassword) throws GZDBResultException, InvalidUserException {
+        if (!GZFormatter.isValid(newPassword, GZFormats.PASSWORD)) {
+            throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
+        }
         if (oldPassword.equals(this.password)) {
             this.password = newPassword;
             resetMaps();
@@ -166,9 +225,8 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         }
     }
 
-    private void resetMaps() {
-        insertMap = new LinkedHashMap<>();
-        restrictionMap = new LinkedHashMap<>();
+    public void setAdministratorAccess(boolean administratorAccess) {
+        this.administratorAccess = administratorAccess;
     }
 
     @Override
@@ -177,5 +235,10 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
 
     @Override
     public void delete() {
+    }
+
+    private void resetMaps() {
+        insertMap = new LinkedHashMap<>();
+        restrictionMap = new LinkedHashMap<>();
     }
 }

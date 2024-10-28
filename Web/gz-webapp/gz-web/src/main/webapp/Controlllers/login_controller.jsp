@@ -9,7 +9,6 @@
     boolean created = controller.summonUser(email, password);
 
     if (created){
-        //im not able to repair the jsp to import user, im sorry, DX
         int id = controller.getUser().getId();
         String name = controller.getUser().getName();
         session.setAttribute("id", id);

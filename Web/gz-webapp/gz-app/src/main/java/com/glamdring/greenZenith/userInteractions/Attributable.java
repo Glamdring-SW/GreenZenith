@@ -3,13 +3,10 @@ package com.glamdring.greenZenith.userInteractions;
 import java.awt.image.BufferedImage;
 
 public interface Attributable {
-    int getId();
 
-    String getName();
+    public abstract int getId();
 
-    BufferedImage getPicture();
+    public abstract String getName();
 
-    void setName(String name);
-
-    void setPicture(BufferedImage picture);
+    public abstract BufferedImage getPicture();
 }
