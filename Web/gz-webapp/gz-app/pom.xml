@@ -6,16 +6,15 @@
     <parent>
         <groupId>com.glamdring.greenzenith</groupId>
         <artifactId>gz-webapp</artifactId>
-        <version>0.1</version>
+        <version>0.2</version>
     </parent>
 
     <groupId>com.glamdring.greenzenith</groupId>
     <artifactId>gz-app</artifactId>
-    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>Green Zenith App</name>
-    <description>The main Green Zenith Java proyect modules application</description>
+    <description>The main Green Zenith Java modules application</description>
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
@@ -30,5 +29,8 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>GZApp</finalName>
+    </build>
 </project>
 
