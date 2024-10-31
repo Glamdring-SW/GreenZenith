@@ -13,11 +13,10 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBActions;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 
 /**
- * The GZDBConnector provides methods for connecting to a MySQL database,
- * performing various CRUD operations, and retrieving table information.
- * <p>
- * It utilizes a JDBC Driver and some default credentials.
- * <p>
+ * Provides methods for connecting to a MySQL database, performing various CRUD
+ * operations, and retrieving table information. It utilizes a JDBC Driver and
+ * some default credentials.
+ *
  * @author Glamdring (Σxz)
  * @version 2.0.0
  * @since 0.1
@@ -63,7 +62,7 @@ public class GZDBConnector {
     /**
      * The main constructor for this class, utilizes our default MySQL
      * connection credentials.
-     * <p>
+     *
      * @throws GZDBResultException If the JDBC driver cannot be found or the
      * default arguments for accessing the database cannot connect resolve a
      * connection, this exception will be thrown. For more information @see
@@ -81,7 +80,7 @@ public class GZDBConnector {
     /**
      * A secondary constructor for this class, requires other user-defined
      * credentials.
-     * <p>
+     *
      * @param urlDB The URL required to access the MySQL server and database.
      * @param usernameDB The name of the user that will access the database.
      * @param passwordDB The password needed to access the database with the
@@ -102,7 +101,7 @@ public class GZDBConnector {
     /**
      * Performs database actions like insert, select, update, or delete, based
      * on the provided parameters and returns a LinkedHashMap with the result.
-     * <p>
+     *
      * @param action The SQL Action to be performed on the database. @see
      * GZDBActions
      * @param table The table in which the SQL action will be performed. @see
@@ -161,7 +160,6 @@ public class GZDBConnector {
     /**
      * Executes an automatic SQL Query to look for the names of the different
      * fields contained on a table.
-     * <p>
      * @param table The table to retrieve the field names. @see GDZBTables
      * @return A set containing all the field names.
      * @throws GZDBResultException Indicates a failiure on the automatic SQL
@@ -179,7 +177,7 @@ public class GZDBConnector {
     /**
      * Executes an automatic SQL Query to look for the types and respective
      * names of the different fields contained on a table.
-     * <p>
+
      * @param table The table to retrieve the field types. @see GDZBTables
      * @return A map containing all the field types with names as keys.
      * @throws GZDBResultException Indicates a failiure on the automatic SQL

@@ -52,6 +52,7 @@
           <version>3.10.1</version>
           <configuration>
             <author>false</author>
+            <show>private</show>
           </configuration>
           <executions>
             <execution>
