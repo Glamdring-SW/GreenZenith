@@ -13,7 +13,7 @@ import com.glamdring.greenZenith.handlers.constants.GZFormats;
  * @see GZFormats
  * @author Glamdring (Σxz)
  * @version 1.0.0
- * @since 0.1
+ * @since 0.2
  */
 public class GZFormatter {
 
