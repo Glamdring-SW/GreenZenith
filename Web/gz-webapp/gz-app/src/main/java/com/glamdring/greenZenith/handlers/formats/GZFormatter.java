@@ -1,4 +1,4 @@
-package com.glamdring.greenZenith.handlers;
+package com.glamdring.greenZenith.handlers.formats;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

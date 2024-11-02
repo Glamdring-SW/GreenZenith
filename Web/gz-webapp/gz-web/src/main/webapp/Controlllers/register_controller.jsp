@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.glamdring.greenZenith.controllers.UserController" %>
 <%
-    String username = (String) request.getParameter("firstName") + " " + request.getParameter("lastName");
+    String username = (String) request.getParameter("userName");
     String email = (String) request.getParameter("email");
     String password = (String) request.getParameter("password");
     int age = 18;

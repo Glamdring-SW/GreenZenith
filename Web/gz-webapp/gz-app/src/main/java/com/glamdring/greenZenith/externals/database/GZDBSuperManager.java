@@ -1,10 +1,9 @@
-package com.glamdring.greenZenith.handlers;
+package com.glamdring.greenZenith.externals.database;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
-import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 
 /**

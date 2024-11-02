@@ -19,7 +19,7 @@
                             <h4 class="mb-0 color-registro">Iniciar Sesión</h4>
                         </div>
                         <div class="card-body">
-                            <form class="centered-form" method="post" action="Controlllers/login_controller.jsp">
+                            <form class="centered-form" method="post" action="controlllers/login_controller.jsp">
                                 <div class="mb-3">
                                     <label class="form-label color-title" for="email">Email</label>
                                     <input class="form-control" type="email" id="email" name="email" placeholder="Introduce email">

@@ -19,14 +19,10 @@
                             <h4 class="mb-0 color-registro">Registro</h4>
                         </div>
                         <div class="card-body">
-                            <form class="centered-form" method="post" action="Controlllers/register_controller.jsp">
+                            <form class="centered-form" method="post" action="controlllers/register_controller.jsp">
                                 <div class="mb-3">
-                                    <label class="form-label color-title" for="firstName">Nombre</label>
-                                    <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Ingresa tu nombre">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label color-title" for="lastName">Apellido</label>
-                                    <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Ingresa tus apellidos">
+                                    <label class="form-label color-title" for="userName">Nombre de Usuario</label>
+                                    <input class="form-control" type="text" id="userName" name="userName" placeholder="Ingresa tu nombre">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label color-title" for="email">Email</label>

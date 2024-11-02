@@ -1,4 +1,4 @@
-package com.glamdring.greenZenith.externals.locations;
+package com.glamdring.greenZenith.handlers.locations;
 
 /**
  * Handles the usage of location data.

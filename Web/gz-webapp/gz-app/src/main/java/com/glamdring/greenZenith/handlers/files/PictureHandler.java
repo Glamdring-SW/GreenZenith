@@ -1,4 +1,4 @@
-package com.glamdring.greenZenith.handlers;
+package com.glamdring.greenZenith.handlers.files;
 
 /**
  * Handles the internal control and transformations of different image files.
