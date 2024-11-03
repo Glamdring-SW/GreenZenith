@@ -84,7 +84,7 @@ public enum GZDBReserved {
     /**
      * Assigns a special value to a certain item in an instance of this class.
      *
-     * @param reservedKeyword
+     * @param reservedKeyword the SQL reserved keyword identifier.
      */
     GZDBReserved(String reservedKeyword) {
         this.reservedKeyword = reservedKeyword;

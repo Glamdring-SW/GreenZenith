@@ -101,9 +101,9 @@ public class GZDBExecutor {
      * @param action The defined action to be executed on a table.
      * @param table The defined table to execute actions in.
      */
-    public GZDBExecutor(PreparedStatement preparedStatement, Connection connection, GZDBActions action, GZDBTables table) {
-        this.preparedStatement = preparedStatement;
+    public GZDBExecutor(Connection connection, PreparedStatement preparedStatement, GZDBActions action, GZDBTables table) {
         this.connection = connection;
+        this.preparedStatement = preparedStatement;
         this.action = action;
         this.table = table;
     }

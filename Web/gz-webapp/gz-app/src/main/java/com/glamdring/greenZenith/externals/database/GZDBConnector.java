@@ -116,7 +116,7 @@ public class GZDBConnector {
      * GZDBResultException
      */
     public LinkedHashMap<String, Object> makeAction(GZDBActions action, GZDBTables table, LinkedHashMap<String, Object> insertMap, LinkedHashMap<String, Object> restrictionMap) throws GZDBResultException {
-        executor = new GZDBExecutor(preparedStatement, connection, action, table);
+        executor = new GZDBExecutor(connection, preparedStatement, action, table);
         resultMap = new LinkedHashMap<>();
         switch (action) {
             case INSERT -> {
@@ -166,7 +166,7 @@ public class GZDBConnector {
      * Query caused by the table of input.
      */
     public LinkedHashSet<String> getTableFields(GZDBTables table) throws GZDBResultException {
-        executor = new GZDBExecutor(preparedStatement, connection, GZDBActions.SELECT, table);
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.SELECT, table);
         try {
             return executor.getTableFields();
         } catch (SQLException e) {
@@ -184,7 +184,7 @@ public class GZDBConnector {
      * Query caused by the table of input.
      */
     public LinkedHashMap<String, String> getTableTypes(GZDBTables table) throws GZDBResultException {
-        executor = new GZDBExecutor(preparedStatement, connection, GZDBActions.SELECT, table);
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.SELECT, table);
         try {
             return executor.getTableTypes();
         } catch (SQLException e) {

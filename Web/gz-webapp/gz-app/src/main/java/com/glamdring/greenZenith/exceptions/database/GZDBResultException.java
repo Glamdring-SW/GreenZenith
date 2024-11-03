@@ -60,6 +60,9 @@ public class GZDBResultException extends Exception {
     }
 
     /**
+     * Establishes the exception message to use our {@code GZDBResultException}
+     * in, includes the map which contains incorrect data and the extended
+     * exception.
      *
      * @param exceptionType The item of our enum class that will grant the
      * message on the constructor.

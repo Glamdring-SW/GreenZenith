@@ -46,19 +46,19 @@ public enum UserExceptions {
     /**
      * The format of the User's username does not follow the established format,
      *
-     * @see com.glamdring.greenZenith.handlers.GZFormatter
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
      */
     FORMAT_USERNAME("InvalidUsernameFormat"),
     /**
      * The format of the User's email does not follow the established format,
      *
-     * @see com.glamdring.greenZenith.handlers.GZFormatter
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
      */
     FORMAT_EMAIL("InvalidEmailFormat"),
     /**
      * The format of the User's password does not follow the established format,
      *
-     * @see com.glamdring.greenZenith.handlers.GZFormatter
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
      */
     FORMAT_PASSWORD("InvalidPasswordFormat"),;
 

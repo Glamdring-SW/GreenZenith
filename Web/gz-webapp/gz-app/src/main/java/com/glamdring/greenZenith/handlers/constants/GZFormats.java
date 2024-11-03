@@ -6,7 +6,7 @@ package com.glamdring.greenZenith.handlers.constants;
  * compatibility with the Database, for the recommended usage @see GZFormatter
  *
  * @author Glamdring (Σxz)
- * @version 1.0.0
+ * @version 1.0.1
  * @since 0.2
  */
 public enum GZFormats {
@@ -19,11 +19,12 @@ public enum GZFormats {
      * 100 characters at maximum, an {@code @} character, and a correct domain
      * name.
      */
-    EMAIL("^(?=.{1,99}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"),
+    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"),
     /**
-     * More than 12 characters, one uppercase character, one special character.
+     * More than 12 characters, one uppercase character, one special character
+     * and one number.
      */
-    PASSWORD("^(?=.*[A-Z])(?=(.*\\d){3,})(?=.*[!@#$%^&*(),.?\":{}|<>]).{12,}$"); //Formato para contraseñas de mas de 12 letras con una mayuscula y caracter especial
+    PASSWORD("^(?=.+[A-Z])(?=.*[a-z])(?=.+\\d)(?=.+[!-\\/\\[-`{-~])[!-~]{12,}$");
 
     /**
      * Holds the value of each item's regular expression.
@@ -33,7 +34,7 @@ public enum GZFormats {
     /**
      * Assigns a special value to a certain item in an instance of this class.
      *
-     * @param format
+     * @param format The regular expression to compare with.
      */
     GZFormats(String format) {
         this.format = format;

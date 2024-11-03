@@ -35,7 +35,7 @@ public enum GZDBActions {
     /**
      * Assigns a special value to a certain item in an instance of this class.
      *
-     * @param action
+     * @param action The SQL Action keyword.
      */
     GZDBActions(String action) {
         this.action = action;

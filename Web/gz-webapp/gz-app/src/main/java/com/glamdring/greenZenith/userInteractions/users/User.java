@@ -238,7 +238,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     /**
      * WORK IN PROGRESS
      *
-     * @return
+     * @return WIP
      */
     public Location getLocation() {
         return location;

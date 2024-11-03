@@ -19,34 +19,34 @@ public class GZDBSuperManager {
     /**
      * The connector utilized to access the database.
      */
-    public GZDBConnector gzdbc;
+    protected GZDBConnector gzdbc;
 
     /**
      * A map used for insertions into the database table, usually handled by the
      * children class.
      */
-    public LinkedHashMap<String, Object> insertMap = null;
+    protected LinkedHashMap<String, Object> insertMap = null;
     /**
      * A map used for establishing conditions when doing SQL Queries and
      * Actions, usually handled by the children class.
      */
-    public LinkedHashMap<String, Object> restrictionMap = null;
+    protected LinkedHashMap<String, Object> restrictionMap = null;
     /**
      * A map used for obtaining resulting data when doing SQL Queries, usually
      * handled by the children class.
      */
-    public LinkedHashMap<String, Object> resultMap = null;
+    protected LinkedHashMap<String, Object> resultMap = null;
 
     /**
      * A map defined by the database that contains all the names of each field
      * within the defined table.
      */
-    public LinkedHashSet<String> tableFields = null;
+    protected LinkedHashSet<String> tableFields = null;
     /**
      * A map defined by the database that contains all the names of each data
      * type with their respective field name as key.
      */
-    public LinkedHashMap<String, String> tableTypes = null;
+    protected LinkedHashMap<String, String> tableTypes = null;
 
     /**
      * Establishes a connection to the MySQL Server and database utilizing the
@@ -56,7 +56,7 @@ public class GZDBSuperManager {
      * @throws GZDBResultException If the table cannot be found or the
      * connection cannot be resolved.
      */
-    public GZDBSuperManager(GZDBTables table) throws GZDBResultException {
+    protected GZDBSuperManager(GZDBTables table) throws GZDBResultException {
         gzdbc = new GZDBConnector();
         tableFields = gzdbc.getTableFields(table);
         tableTypes = gzdbc.getTableTypes(table);
@@ -74,7 +74,7 @@ public class GZDBSuperManager {
      * @throws GZDBResultException If the table cannot be found or the
      * connection cannot be resolved.
      */
-    public GZDBSuperManager(GZDBTables table, String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
+    protected GZDBSuperManager(GZDBTables table, String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
         gzdbc = new GZDBConnector(urlDB, usernameDB, passwordDB);
         tableFields = gzdbc.getTableFields(table);
         tableTypes = gzdbc.getTableTypes(table);

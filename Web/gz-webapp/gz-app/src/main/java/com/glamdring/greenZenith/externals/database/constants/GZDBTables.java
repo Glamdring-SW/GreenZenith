@@ -64,7 +64,7 @@ public enum GZDBTables {
     /**
      * Assigns a special value to a certain item in an instance of this class.
      *
-     * @param table
+     * @param table The database table name.
      */
     GZDBTables(String table) {
         this.table = table;
