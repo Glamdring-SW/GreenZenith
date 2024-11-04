@@ -1,17 +1,16 @@
 package com.glamdring.greenZenith.externals.database;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
-import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 
 /**
  * Establishes a connection with the database and obtains the different field
  * names and data types of a specific table.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.0
+ * @version 1.2.1
  * @since 0.1
  */
 public class GZDBSuperManager {
@@ -19,54 +18,39 @@ public class GZDBSuperManager {
     /**
      * The connector utilized to access the database.
      */
-    protected GZDBConnector gzdbc;
+    public GZDBConnector gzdbc;
 
     /**
      * A map used for insertions into the database table, usually handled by the
      * children class.
      */
-    protected LinkedHashMap<String, Object> insertMap = null;
+    public LinkedHashMap<String, Object> insertMap = new LinkedHashMap<>();
     /**
      * A map used for establishing conditions when doing SQL Queries and
      * Actions, usually handled by the children class.
      */
-    protected LinkedHashMap<String, Object> restrictionMap = null;
+    public LinkedHashMap<String, Object> restrictionMap = new LinkedHashMap<>();
     /**
      * A map used for obtaining resulting data when doing SQL Queries, usually
      * handled by the children class.
      */
-    protected LinkedHashMap<String, Object> resultMap = null;
-
-    /**
-     * A map defined by the database that contains all the names of each field
-     * within the defined table.
-     */
-    protected LinkedHashSet<String> tableFields = null;
-    /**
-     * A map defined by the database that contains all the names of each data
-     * type with their respective field name as key.
-     */
-    protected LinkedHashMap<String, String> tableTypes = null;
+    public ArrayList<LinkedHashMap<String, Object>> resultList = new ArrayList<>();
 
     /**
      * Establishes a connection to the MySQL Server and database utilizing the
      * predefined credentials.
      *
-     * @param table The table to define the field names and data types from.
      * @throws GZDBResultException If the table cannot be found or the
      * connection cannot be resolved.
      */
-    protected GZDBSuperManager(GZDBTables table) throws GZDBResultException {
+    public GZDBSuperManager() throws GZDBResultException {
         gzdbc = new GZDBConnector();
-        tableFields = gzdbc.getTableFields(table);
-        tableTypes = gzdbc.getTableTypes(table);
     }
 
     /**
      * Establishes a connection to the MySQL Server and database utilizing user
      * defined credentials as parameters.
      *
-     * @param table The table to define the field names and data types from.
      * @param urlDB The URL where the MySQL Server and database is located on.
      * @param usernameDB The username to use for accessing the MySQL Server.
      * @param passwordDB The respective password to grant access to the MySQL
@@ -74,10 +58,17 @@ public class GZDBSuperManager {
      * @throws GZDBResultException If the table cannot be found or the
      * connection cannot be resolved.
      */
-    protected GZDBSuperManager(GZDBTables table, String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
+    public GZDBSuperManager(String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
         gzdbc = new GZDBConnector(urlDB, usernameDB, passwordDB);
-        tableFields = gzdbc.getTableFields(table);
-        tableTypes = gzdbc.getTableTypes(table);
+    }
+
+    /**
+     * Resets the insertion and restriction maps to be used as new, so any
+     * garbage data is not utilized on new usages.
+     */
+    public void resetMaps() {
+        insertMap.clear();
+        restrictionMap.clear();
     }
 
 }

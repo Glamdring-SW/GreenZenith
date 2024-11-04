@@ -6,25 +6,23 @@ package com.glamdring.greenZenith.handlers.constants;
  * compatibility with the Database, for the recommended usage @see GZFormatter
  *
  * @author Glamdring (Σxz)
- * @version 1.0.1
+ * @version 1.0.2
  * @since 0.2
  */
 public enum GZFormats {
 
     /**
-     * More than 3 characters and less than 50.
+     * Standard mailing format with a limit of 100 characters.
      */
-    USERNAME("^.{4,49}$"),
-    /**
-     * 100 characters at maximum, an {@code @} character, and a correct domain
-     * name.
-     */
-    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"),
+    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,100}$"),
     /**
      * More than 12 characters, one uppercase character, one special character
      * and one number.
      */
-    PASSWORD("^(?=.+[A-Z])(?=.*[a-z])(?=.+\\d)(?=.+[!-\\/\\[-`{-~])[!-~]{12,}$");
+    PASSWORD("^(?=.*[A-Z])(?=.*[a-z])(?=.+\\d)(?=.+[!-\\/\\[-`{-~])[!-~]{12,100}$");
+    /**
+     *
+     */
 
     /**
      * Holds the value of each item's regular expression.

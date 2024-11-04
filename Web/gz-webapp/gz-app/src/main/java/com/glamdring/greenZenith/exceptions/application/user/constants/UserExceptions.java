@@ -44,11 +44,10 @@ public enum UserExceptions {
      */
     LOCATION("InvalidLocation"),
     /**
-     * The format of the User's username does not follow the established format,
-     *
-     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
+     * The length of the User's username does not follow the established
+     * restrictions.
      */
-    FORMAT_USERNAME("InvalidUsernameFormat"),
+    LENGTH_USERNAME("InvalidUsernameLength"),
     /**
      * The format of the User's email does not follow the established format,
      *
@@ -60,7 +59,7 @@ public enum UserExceptions {
      *
      * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
      */
-    FORMAT_PASSWORD("InvalidPasswordFormat"),;
+    FORMAT_PASSWORD("InvalidPasswordFormat");
 
     /**
      * Holds the value of each item's predefined exception message.

@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.glamdring.greenzenith</groupId>
-    <artifactId>gz-webapp</artifactId>
-    <version>0.2</version>
-  </parent>
+    <parent>
+        <groupId>com.glamdring.greenzenith</groupId>
+        <artifactId>gz-webapp</artifactId>
+        <version>0.2</version>
+    </parent>
 
-  <groupId>com.glamdring.greenzenith.web</groupId>
-  <artifactId>gz-web</artifactId>
-  <packaging>war</packaging>
+    <groupId>com.glamdring.greenzenith.web</groupId>
+    <artifactId>gz-web</artifactId>
+    <packaging>war</packaging>
 
-  <name>Green Zenith Web</name>
-  <description>The main Green Zenith Web modules proyect</description>
+    <name>Green Zenith Web</name>
+    <description>The main Green Zenith Web modules proyect</description>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>17</maven.compiler.release>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.glamdring.greenzenith</groupId>
-      <artifactId>gz-app</artifactId>
-      <version>0.2</version>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.glamdring.greenzenith</groupId>
+            <artifactId>gz-app</artifactId>
+            <version>0.2</version>
+        </dependency>
+    </dependencies>
 
-  <build>
-    <finalName>GZWeb</finalName>
-  </build>
+    <build>
+        <finalName>GZWeb</finalName>
+    </build>
 </project>

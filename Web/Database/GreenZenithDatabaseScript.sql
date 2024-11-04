@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `GreenZenith`.`PUser` (
   `Location` VARCHAR(50) NULL COMMENT 'Localizacion del usuario almacenada como una cadena',
   `PasswordUser` VARCHAR(30) NOT NULL COMMENT 'Contraseña del usuario para acceder a la aplicacion y comprobar la validez de credenciales adecuada',
   `AdministratorAccess` TINYINT NOT NULL DEFAULT 0,
+  `Picture` MEDIUMBLOB NULL,
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `PUsername_UNIQUE` (`PUsername` ASC) VISIBLE,
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
@@ -44,46 +45,13 @@ CREATE TABLE IF NOT EXISTS `GreenZenith`.`Plant` (
   `PlantingDate` DATE NOT NULL,
   `Description` TEXT(500) NULL,
   `Quantity` INT NOT NULL,
+  `Picture` MEDIUMBLOB NULL,
   `PUser_ID` INT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_Plant_PUser1_idx` (`PUser_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Plant_PUser1`
     FOREIGN KEY (`PUser_ID`)
     REFERENCES `GreenZenith`.`PUser` (`ID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `GreenZenith`.`UserPicture`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `GreenZenith`.`UserPicture` ;
-
-CREATE TABLE IF NOT EXISTS `GreenZenith`.`UserPicture` (
-  `Picture` MEDIUMBLOB NOT NULL,
-  `PUser_ID` INT NOT NULL,
-  INDEX `fk_UserPicture_PUser_idx` (`PUser_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_UserPicture_PUser`
-    FOREIGN KEY (`PUser_ID`)
-    REFERENCES `GreenZenith`.`PUser` (`ID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `GreenZenith`.`PlantPicture`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `GreenZenith`.`PlantPicture` ;
-
-CREATE TABLE IF NOT EXISTS `GreenZenith`.`PlantPicture` (
-  `Picture` MEDIUMBLOB NOT NULL,
-  `Plant_ID` INT NOT NULL,
-  INDEX `fk_PlantPicture_Plant1_idx` (`Plant_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_PlantPicture_Plant1`
-    FOREIGN KEY (`Plant_ID`)
-    REFERENCES `GreenZenith`.`Plant` (`ID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -117,29 +85,13 @@ CREATE TABLE IF NOT EXISTS `GreenZenith`.`Product` (
   `Description` TEXT(250) NULL,
   `Price` DECIMAL(19,4) NOT NULL,
   `Quantity` VARCHAR(45) NOT NULL,
+  `Picture` MEDIUMBLOB NULL,
   `Plant_ID` INT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_Product_Plant1_idx` (`Plant_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Product_Plant1`
     FOREIGN KEY (`Plant_ID`)
     REFERENCES `GreenZenith`.`Plant` (`ID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `GreenZenith`.`ProductPicture`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `GreenZenith`.`ProductPicture` ;
-
-CREATE TABLE IF NOT EXISTS `GreenZenith`.`ProductPicture` (
-  `Picture` MEDIUMBLOB NOT NULL,
-  `Product_ID` INT NOT NULL,
-  INDEX `fk_ProductPicture_Product1_idx` (`Product_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_ProductPicture_Product1`
-    FOREIGN KEY (`Product_ID`)
-    REFERENCES `GreenZenith`.`Product` (`ID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;

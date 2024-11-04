@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
@@ -18,7 +19,7 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
  * some default credentials.
  *
  * @author Glamdring (Σxz)
- * @version 2.0.0
+ * @version 2.1.0
  * @since 0.1
  */
 public class GZDBConnector {
@@ -54,10 +55,6 @@ public class GZDBConnector {
      * establishes inputs and outputs for the CRUD operations.
      */
     private GZDBExecutor executor;
-    /**
-     * Contains the different results of executed SQL Queries.
-     */
-    private LinkedHashMap<String, Object> resultMap;
 
     /**
      * The main constructor for this class, utilizes our default MySQL
@@ -99,67 +96,93 @@ public class GZDBConnector {
     }
 
     /**
-     * Performs database actions like insert, select, update, or delete, based
-     * on the provided parameters and returns a LinkedHashMap with the result.
+     * Performs an insertion into the database with a given map.
      *
-     * @param action The SQL Action to be performed on the database. @see
-     * GZDBActions
      * @param table The table in which the SQL action will be performed. @see
      * GZDBTables
      * @param insertMap A map that defines the input to use for SQL Actions.
-     * @param restrictionMap A map that defines the restrictions for SQL
-     * Queries.
-     * @return A map containing either a confirmation of a successful SQL Action
-     * or the result of a SQL Query.
      * @throws GZDBResultException A message indicating which SQL Action or
      * Query failed and the map that made the failure happen. @see
      * GZDBResultException
      */
-    public LinkedHashMap<String, Object> makeAction(GZDBActions action, GZDBTables table, LinkedHashMap<String, Object> insertMap, LinkedHashMap<String, Object> restrictionMap) throws GZDBResultException {
-        executor = new GZDBExecutor(connection, preparedStatement, action, table);
-        resultMap = new LinkedHashMap<>();
-        switch (action) {
-            case INSERT -> {
-                try {
-                    executor.executeInsert(insertMap);
-                    resultMap.put("RESULT_STATE", (Boolean) true);
-                } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap, e);
-                }
-            }
-            case SELECT -> {
-                try {
-                    resultMap = executor.executeSelect(insertMap);
-                } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.SELECT, insertMap, e);
-                }
-            }
-            case UPDATE -> {
-                try {
-                    executor.executeUpdate(insertMap, restrictionMap);
-                    resultMap.put("RESULT_STATE", (Boolean) true);
-                } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.UPDATE, insertMap, e);
-                }
-            }
-            case DELETE -> {
-                try {
-                    executor.executeDelete(insertMap);
-                    resultMap.put("RESULT_STATE", (Boolean) true);
-                } catch (SQLException e) {
-                    throw new GZDBResultException(GZDBExceptionMessages.DELETE, insertMap, e);
-                }
-            }
-            default -> {
-                throw new GZDBResultException(GZDBExceptionMessages.UNREACHABLE_CASE);
-            }
+    public void insert(GZDBTables table, LinkedHashMap<String, Object> insertMap) throws GZDBResultException {
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.INSERT, table);
+        try {
+            executor.executeInsert(insertMap);
+        } catch (SQLException e) {
+            throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap, e);
         }
-        return resultMap;
+    }
+
+    /**
+     * Performs a selection from the database and returns the matching elements
+     * containe3d in a list.
+     *
+     * @param table The table in which the SQL action will be performed. @see
+     * GZDBTables
+     * @param selectmap A map that defines the restrictions to use for the SQL
+     * Query.
+     * @return A list providing maps that contain the different entries given by
+     * the SQL Query.
+     * @throws GZDBResultException A message indicating which SQL Action or
+     * Query failed and the map that made the failure happen. @see
+     * GZDBResultException
+     */
+    public ArrayList<LinkedHashMap<String, Object>> select(GZDBTables table, LinkedHashMap<String, Object> selectmap) throws GZDBResultException {
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.SELECT, table);
+        try {
+            return executor.executeSelect(selectmap);
+        } catch (SQLException e) {
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT, selectmap, e);
+        }
+    }
+
+    /**
+     * Performs an update of the datab of a certain table with the provided
+     * restrictions.
+     *
+     * @param table The table in which the SQL action will be performed. @see
+     * GZDBTables
+     * @param updateMap A map that defines the updated data.
+     * @param restrictionMap A map that defines the restrictions for updating an
+     * entry.
+     * @throws GZDBResultException A message indicating which SQL Action or
+     * Query failed and the map that made the failure happen. @see
+     * GZDBResultException
+     */
+    public void update(GZDBTables table, LinkedHashMap<String, Object> updateMap, LinkedHashMap<String, Object> restrictionMap) throws GZDBResultException {
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.UPDATE, table);
+        try {
+            executor.executeUpdate(updateMap, restrictionMap);
+        } catch (SQLException e) {
+            throw new GZDBResultException(GZDBExceptionMessages.UPDATE, updateMap, e);
+        }
+    }
+
+    /**
+     * Performs the deletion of a specific entry with the given restrictions.
+     *
+     * @param table The table in which the SQL action will be performed. @see
+     * GZDBTables
+     * @param deletMap A map that defines the restrictions for the deletion of n
+     * entry.
+     * @throws GZDBResultException A message indicating which SQL Action or
+     * Query failed and the map that made the failure happen. @see
+     * GZDBResultException
+     */
+    public void delete(GZDBTables table, LinkedHashMap<String, Object> deleteMap) throws GZDBResultException {
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.DELETE, table);
+        try {
+            executor.executeDelete(deleteMap);
+        } catch (SQLException e) {
+            throw new GZDBResultException(GZDBExceptionMessages.DELETE, deleteMap, e);
+        }
     }
 
     /**
      * Executes an automatic SQL Query to look for the names of the different
      * fields contained on a table.
+     *
      * @param table The table to retrieve the field names. @see GDZBTables
      * @return A set containing all the field names.
      * @throws GZDBResultException Indicates a failiure on the automatic SQL
@@ -177,7 +200,7 @@ public class GZDBConnector {
     /**
      * Executes an automatic SQL Query to look for the types and respective
      * names of the different fields contained on a table.
-
+     *
      * @param table The table to retrieve the field types. @see GDZBTables
      * @return A map containing all the field types with names as keys.
      * @throws GZDBResultException Indicates a failiure on the automatic SQL

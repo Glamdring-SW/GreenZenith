@@ -1,13 +1,12 @@
 package com.glamdring.greenZenith.userInteractions.users;
 
 import java.awt.image.BufferedImage;
-import java.util.LinkedHashMap;
+import java.io.Serializable;
 
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
 import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.externals.database.GZDBSuperManager;
-import com.glamdring.greenZenith.externals.database.constants.GZDBActions;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.handlers.constants.GZFormats;
 import com.glamdring.greenZenith.handlers.formats.GZFormatter;
@@ -26,10 +25,10 @@ import com.glamdring.greenZenith.userInteractions.products.ProductList;
  *
  * @see GZDBSuperManager
  * @author Glamdring (Σxz)
- * @version 1.4.0
+ * @version 1.5.2
  * @since 0.1
  */
-public class User extends GZDBSuperManager implements Attributable, Killable {
+public class User extends GZDBSuperManager implements Attributable, Killable, Serializable {
 
     /**
      * The unique identificator for each database registry.
@@ -81,23 +80,23 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
      * Retrieves the information from the database utilizing only the ID, and
      * assigns the results to each correspondant field.
      *
-     * @param id The id that corresponds to a certain User registry on the
-     * database.
+     * @param id The unique identifier that corresponds to a certain User
+     * registry on the database.
      * @throws InvalidUserException If the ID is not valid.
      * @throws GZDBResultException If the database connection cannot be
      * resolved.
      */
     public User(int id) throws InvalidUserException, GZDBResultException {
-        super(GZDBTables.USER);
+        super();
         resetMaps();
         insertMap.put("ID", id);
-        resultMap = doGZDBCAction(GZDBActions.SELECT);
+        resultList = gzdbc.select(GZDBTables.USER, insertMap);
         this.id = id;
-        this.username = (String) resultMap.get("PUsername");
-        this.email = (String) resultMap.get("Email");
-        this.age = (int) resultMap.get("Age");
-        this.password = (String) resultMap.get("PasswordUser");
-        this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
+        this.username = (String) resultList.get(0).get("PUsername");
+        this.email = (String) resultList.get(0).get("Email");
+        this.age = (int) resultList.get(0).get("Age");
+        this.password = (String) resultList.get(0).get("PasswordUser");
+        this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
 
         //this.profilePicture = ; picture handler needed
         //this.location = ; location class needed
@@ -118,7 +117,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
      * resolved.
      */
     public User(String email, String password) throws InvalidUserException, GZDBResultException {
-        super(GZDBTables.USER);
+        super();
         if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
             throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
         }
@@ -128,13 +127,13 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         resetMaps();
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
-        resultMap = doGZDBCAction(GZDBActions.SELECT);
+        resultList = gzdbc.select(GZDBTables.USER, insertMap);
         this.email = email;
         this.password = password;
-        this.id = (int) resultMap.get("ID");
-        this.username = (String) resultMap.get("PUsername");
-        this.age = (int) resultMap.get("Age");
-        this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
+        this.id = (int) resultList.get(0).get("ID");
+        this.username = (String) resultList.get(0).get("PUsername");
+        this.age = (int) resultList.get(0).get("Age");
+        this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
 
         //this.profilePicture = ; picture handler needed
         //this.location = ; location class needed
@@ -158,9 +157,9 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
      */
     public User(String username, String email, String password, int age
     /*Location location, BufferedImage profilePicture,*/) throws InvalidUserException, GZDBResultException {
-        super(GZDBTables.USER);
-        if (!GZFormatter.isValid(username, GZFormats.USERNAME)) {
-            throw new InvalidUserException(UserExceptions.FORMAT_USERNAME);
+        super();
+        if (!GZFormatter.isValidLength(username, 3, 50)) {
+            throw new InvalidUserException(UserExceptions.LENGTH_USERNAME);
         }
         if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
             throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
@@ -176,9 +175,9 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         insertMap.put("Email", email);
         insertMap.put("Age", age);
         insertMap.put("PasswordUser", password);
-        doGZDBCAction(GZDBActions.INSERT);
-        resultMap = doGZDBCAction(GZDBActions.SELECT);
-        this.id = (int) resultMap.get("ID");
+        gzdbc.insert(GZDBTables.USER, insertMap);
+        resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        this.id = (int) resultList.get(0).get("ID");
         this.username = username;
         this.email = email;
         this.age = age;
@@ -193,7 +192,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     }
 
     /**
-     * {@inheritDoc}. The ID of a User.
+     * {@inheritDoc}. The ID of this User.
      */
     @Override
     public int getId() {
@@ -201,7 +200,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     }
 
     /**
-     * {@inheritDoc}. The custom name of a User.
+     * {@inheritDoc}. The custom name of this User.
      */
     @Override
     public String getName() {
@@ -228,7 +227,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     }
 
     /**
-     * {@inheritDoc}. The respective image of a User.
+     * {@inheritDoc}. The respective image of this User.
      */
     @Override
     public BufferedImage getPicture() {
@@ -236,36 +235,37 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     }
 
     /**
-     * WORK IN PROGRESS
+     * The location that this user lives in.
      *
-     * @return WIP
+     * @return A location containing multiple valuable information about the
+     * user's location.
      */
     public Location getLocation() {
         return location;
     }
 
     /**
-     * WORK IN PROGRESS
+     * All the plants that this user posseses.
      *
-     * @return WIP
+     * @return A list containing all the plants owned.
      */
     public PlantList getPlants() {
         return plants;
     }
 
     /**
-     * WORK IN PROGRESS
+     * All the products that this user has for sale.
      *
-     * @return WIP
+     * @return A list containing all the products for sale.
      */
     public ProductList getProducts() {
         return products;
     }
 
     /**
-     * WORK IN PROGRESS
+     * All the products that this user wants to buy.
      *
-     * @return WIP
+     * @return A list containing the different products.
      */
     public Cart getCart() {
         return cart;
@@ -288,15 +288,18 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
      * requirements.
      */
     public void setName(String name) throws InvalidUserException {
-        if (!GZFormatter.isValid(name, GZFormats.USERNAME)) {
-            throw new InvalidUserException(UserExceptions.FORMAT_USERNAME);
+        if (!GZFormatter.isValidLength(name, 3, 50)) {
+            throw new InvalidUserException(UserExceptions.LENGTH_USERNAME);
         }
         this.username = name;
         resetMaps();
         insertMap.put("PUsername", name);
         restrictionMap.put("ID", id);
-        doGZDBCAction(GZDBActions.UPDATE);
-
+        try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
     }
 
     /**
@@ -314,7 +317,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         resetMaps();
         insertMap.put("Email", email);
         restrictionMap.put("ID", id);
-        doGZDBCAction(GZDBActions.UPDATE);
+        try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
     }
 
     /**
@@ -333,7 +340,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         resetMaps();
         insertMap.put("Age", age);
         restrictionMap.put("ID", id);
-        doGZDBCAction(GZDBActions.UPDATE);
+        try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
     }
 
     public void setPicture(BufferedImage picture) throws InvalidUserException {
@@ -343,7 +354,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
             resetMaps();
             insertMap.put("Picture", HANDLER_HERE);
             restrictionMap.put("ID", id);
-           doGZDBCAction(GZDBActions.UPDATE);
+           try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
          */
     }
 
@@ -354,7 +369,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
             resetMaps();
             insertMap.put("Picture", HANDLER_HERE);
             restrictionMap.put("ID", id);
-            doGZDBCAction(GZDBActions.UPDATE);
+              try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
          */
     }
 
@@ -378,7 +397,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
         resetMaps();
         insertMap.put("PasswordUser", newPassword);
         restrictionMap.put("ID", id);
-        doGZDBCAction(GZDBActions.UPDATE);
+        try {
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+        }
     }
 
     /**
@@ -392,61 +415,14 @@ public class User extends GZDBSuperManager implements Attributable, Killable {
     }
 
     /**
-     * Resets the insertion and restriction maps to be used as new, so any
-     * garbage data is not utilized on new usages.
-     */
-    private void resetMaps() {
-        insertMap = new LinkedHashMap<>();
-        restrictionMap = new LinkedHashMap<>();
-    }
-
-    /**
-     * Performs the
-     * {@link com.glamdring.greenZenith.externals.database.GZDBConnector#makeAction(GZDBActions, GZDBTables, LinkedHashMap<String, Object>,
-     * LinkedHashMap<String, Object>)} method on the User table, which is our
-     * default.
-     *
-     * @param action The action to be performed on the User table.
-     * @return A set containing the information retrieved by a SQL Query.
-     * @throws InvalidUserException If the connnection with our connector
-     * couldn't get resolved.
-     */
-    private LinkedHashMap<String, Object> doGZDBCAction(GZDBActions action) throws InvalidUserException {
-        try {
-            return gzdbc.makeAction(action, GZDBTables.USER, insertMap, restrictionMap);
-        } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
-        }
-    }
-
-    /**
-     * Performs the
-     * {@link com.glamdring.greenZenith.externals.database.GZDBConnector#makeAction(GZDBActions, GZDBTables, LinkedHashMap<String, Object>,
-     * LinkedHashMap<String, Object>)} method on the a defined table.
-     *
-     * @param action The action to be performed on the User table.
-     * @param table The table to perform the action on.
-     * @return A set containing the information retrieved by a SQL Query.
-     * @throws InvalidUserException If the connnection with our connector
-     * couldn't get resolved.
-     */
-    private LinkedHashMap<String, Object> doGZDBCAction(GZDBActions action, GZDBTables table) throws InvalidUserException {
-        try {
-            return gzdbc.makeAction(action, table, insertMap, restrictionMap);
-        } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
-        }
-    }
-
-    /**
-     * {@inheritDoc}. The deletion of a User registry completely.
+     * {@inheritDoc}. The deletion of this User registry completely.
      */
     @Override
     public void delete() {
         resetMaps();
         insertMap.put("ID", id);
         try {
-            gzdbc.makeAction(GZDBActions.DELETE, GZDBTables.USER, insertMap, restrictionMap);
+            gzdbc.delete(GZDBTables.USER, insertMap);
         } catch (GZDBResultException e) {
 
         }

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -31,7 +32,7 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
  *
  * @see GZDBConnector
  * @author Glamdring (Σxz)
- * @version 1.2.0
+ * @version 1.3.0
  * @since 0.1
  */
 public class GZDBExecutor {
@@ -160,19 +161,21 @@ public class GZDBExecutor {
 
     /**
      * Adds each result of a SQL Select statement execution with the data type
-     * as key. See {@link #executeSelect(LinkedHashMap<String, Object>)}
+     * as key into an array list for easier management of multiple results. See
+     * {@link #executeSelect(LinkedHashMap<String, Object>)}
      *
      * @param resultSet Data returned by a SQL Select statement execution.
      * @param typesMap A map containing the data types with the field names as
      * keys. See {@link #getTableTypes()}
-     * @return A map with each returning value from the result set and the field
-     * name as key.
+     * @return A list containing maps with each returning value from the result
+     * set and the field name as key.
      * @throws SQLException If the ResultSet object cannot be resolved
      * correctly.
      */
-    private LinkedHashMap<String, Object> getResultMapWithWhereClause(ResultSet resultSet, LinkedHashMap<String, String> typesMap) throws SQLException {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+    private ArrayList<LinkedHashMap<String, Object>> getResultMapWithWhereClause(ResultSet resultSet, LinkedHashMap<String, String> typesMap) throws SQLException {
+        ArrayList<LinkedHashMap<String, Object>> resultList = new ArrayList<>();
         while (resultSet.next()) {
+            LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
             for (String outputField : typesMap.keySet()) {
                 if (typesMap.get(outputField).equals(GZDBReserved.BOOLEAN.getKeyword())) {
                     resultMap.put(outputField, resultSet.getBoolean(outputField));
@@ -194,8 +197,9 @@ public class GZDBExecutor {
                     resultMap.put(outputField, resultSet.getBlob(outputField));
                 }
             }
+            resultList.add(resultMap);
         }
-        return resultMap;
+        return resultList;
     }
 
     /**
@@ -450,21 +454,21 @@ public class GZDBExecutor {
      *
      * @param selectMap A map containing all the values of each condition and
      * their respective fields to be applied on.
-     * @return A map containing all the values returned by the SQL Select
+     * @return A list that provides different maps containing all the values returned by the SQL Select
      * Statement.
      * @throws SQLException If the statement is not able to be executed.
      * @throws GZDBResultException If the method
      * {@link #getSelectStatement(LinkedHashMap<String, Object>)} does not run
      * correctly.
      */
-    public LinkedHashMap<String, Object> executeSelect(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
+    public ArrayList<LinkedHashMap<String, Object>> executeSelect(LinkedHashMap<String, Object> selectMap) throws SQLException, GZDBResultException {
         LinkedHashMap<String, String> typesMap = getTableTypes();
         String statement = getSelectStatement(selectMap);
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement = setPreparedStatementArguments(preparedStatement, selectMap, typesMap);
         ResultSet resultSet = preparedStatement.executeQuery();
-        LinkedHashMap<String, Object> resultMap = getResultMapWithWhereClause(resultSet, typesMap);
-        return resultMap;
+        ArrayList<LinkedHashMap<String, Object>> resultList = getResultMapWithWhereClause(resultSet, typesMap);
+        return resultList;
     }
 
     /**
