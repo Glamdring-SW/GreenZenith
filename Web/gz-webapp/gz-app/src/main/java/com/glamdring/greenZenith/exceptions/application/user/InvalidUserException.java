@@ -23,4 +23,15 @@ public class InvalidUserException extends Exception {
         super(exceptionType.getExceptionMessage());
     }
 
+    /**
+     * The exception item indicating the type of exception with a short message
+     * attached to it and the parent exception that caused it.
+     *
+     * @param exceptionType An enum item that contains a specific message.
+     * @param superException The parent exception.
+     */
+    public InvalidUserException(UserExceptions exceptionType, Exception superException) {
+        super(exceptionType.getExceptionMessage() + "\n" + superException.getMessage());
+    }
+
 }

@@ -27,6 +27,13 @@ public class GZFormatter {
     private static Matcher matcher;
 
     /**
+     * Creates a new Formatter, capable of checking if a string is within a
+     * certain boundary or if it follows a certain predefined or given pattern.
+     */
+    public GZFormatter() {
+    }
+
+    /**
      * Realizes a comparison, with respect to a selected format, converted into
      * a pattern, to determine if the input given is valid in regards to the
      * predefined regular expression pattern.
@@ -93,4 +100,5 @@ public class GZFormatter {
     public static boolean isValidLength(String input, int minLength, int maxLength) {
         return input.length() >= minLength && input.length() <= maxLength;
     }
+
 }

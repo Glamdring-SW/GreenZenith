@@ -6,6 +6,7 @@ import java.io.Serializable;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
 import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
+import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.GZDBSuperManager;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.handlers.constants.GZFormats;
@@ -90,7 +91,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         super();
         resetMaps();
         insertMap.put("ID", id);
-        resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        try {
+            resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+        }
         this.id = id;
         this.username = (String) resultList.get(0).get("PUsername");
         this.email = (String) resultList.get(0).get("Email");
@@ -127,7 +132,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         resetMaps();
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
-        resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        try {
+            resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+        }
         this.email = email;
         this.password = password;
         this.id = (int) resultList.get(0).get("ID");
@@ -175,8 +184,12 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         insertMap.put("Email", email);
         insertMap.put("Age", age);
         insertMap.put("PasswordUser", password);
-        gzdbc.insert(GZDBTables.USER, insertMap);
-        resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        try {
+            gzdbc.insert(GZDBTables.USER, insertMap);
+            resultList = gzdbc.select(GZDBTables.USER, insertMap);
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+        }
         this.id = (int) resultList.get(0).get("ID");
         this.username = username;
         this.email = email;
@@ -281,6 +294,15 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
     }
 
     /**
+     * Provides the connector used to access the database.
+     *
+     * @return The connection to the database.
+     */
+    public GZDBConnector getConnector() {
+        return gzdbc;
+    }
+
+    /**
      * Sets a new unique name for an already existing user.
      *
      * @param name The new name to be used.
@@ -347,6 +369,12 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         }
     }
 
+    /**
+     * Sets the new profile picture of this user.
+     *
+     * @param picture The new picture to use for the profile.
+     * @throws InvalidUserException If the picture can't be utilized.
+     */
     public void setPicture(BufferedImage picture) throws InvalidUserException {
         this.profilePicture = picture;
         /*
@@ -362,6 +390,12 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
          */
     }
 
+    /**
+     * Sets the new location in real life of this user.
+     *
+     * @param location The new location of the user in real life.
+     * @throws InvalidUserException If the location can't be utilized.
+     */
     public void setLocation(Location location) throws InvalidUserException {
         this.location = location;
         /*

@@ -1,17 +1,17 @@
-package com.glamdring.greenZenith.exceptions.application.plant;
+package com.glamdring.greenZenith.exceptions.application.user.messages;
 
-import com.glamdring.greenZenith.exceptions.application.plant.constants.PlantExceptions;
+import com.glamdring.greenZenith.exceptions.application.user.constants.MessageExceptions;
 
 /**
  * Custom exception class to indicate a failure that happened with an
- * interaction made by a User and it's plants.
+ * interaction made by different users using messages.
  *
- * @see PlantExceptions
+ * @see UserExceptions
  * @author Glamdring (Σxz)
  * @version 1.0.0
  * @since 0.2
  */
-public class InvalidPlantException extends Exception {
+public class InvalidMessageException extends Exception {
 
     /**
      * The exception item indicating the type of exception with a short message
@@ -19,7 +19,7 @@ public class InvalidPlantException extends Exception {
      *
      * @param exceptionType An enum item that contains a specific message.
      */
-    public InvalidPlantException(PlantExceptions exceptionType) {
+    public InvalidMessageException(MessageExceptions exceptionType) {
         super(exceptionType.getExceptionMessage());
     }
 
@@ -30,8 +30,7 @@ public class InvalidPlantException extends Exception {
      * @param exceptionType An enum item that contains a specific message.
      * @param superException The parent exception.
      */
-    public InvalidPlantException(PlantExceptions exceptionType, Exception superException) {
+    public InvalidMessageException(MessageExceptions exceptionType, Exception superException) {
         super(exceptionType.getExceptionMessage() + "\n" + superException.getMessage());
     }
-
 }

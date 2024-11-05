@@ -35,7 +35,11 @@ public enum PlantExceptions {
     /**
      * The time list of the User's plant can not be utilized.
      */
-    SCHEDULE("InvalidPlantPicture"),;
+    SCHEDULE("InvalidPlantPicture"),
+    /**
+     * the owner of this plant cannot be resolved.
+     */
+    OWNER("InvalidPlantOwnership");
 
     /**
      * Holds the value of each item's predefined exception message.

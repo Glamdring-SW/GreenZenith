@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
 import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
 import com.glamdring.greenZenith.exceptions.application.plant.constants.PlantExceptions;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
-import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
+import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.handlers.formats.GZFormatter;
 import com.glamdring.greenZenith.userInteractions.Attributable;
@@ -24,13 +24,13 @@ import com.glamdring.greenZenith.userInteractions.users.User;
  * attributes, allowing the creation, modification and deletion of it.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.0
+ * @version 1.0.3
  * @since 0.1
  */
 public class Plant implements Killable, Interactable, Attributable, Serializable {
 
     /**
-     * The unique identificator for each database registry.
+     * The unique identifier for this plant.
      */
     private final int id;
     /**
@@ -60,37 +60,78 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
     /**
      * The owner of this plant.
      */
-    private User owner;
+    private final User owner;
+
+    /**
+     * Retrieves information form the database utilizing only the ID and a
+     * connection to the database, and assigns the results to each correspondant
+     * field.
+     *
+     * @param id The unique identifier that corresponds to a certain plant
+     * registry on the database.
+     * @param gzdbc A connection to the database.
+     * @throws InvalidPlantException If the owner does not provide a connection
+     * or the ID cannot be resolved.
+     */
+    public Plant(int id, GZDBConnector gzdbc) throws InvalidPlantException {
+        this.id = id;
+        LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
+        plantMap.put("ID", id);
+
+        try {
+            LinkedHashMap<String, Object> resultMap = gzdbc.select(GZDBTables.PLANT, plantMap).get(0);
+            this.name = (String) resultMap.get("Name");
+            this.plantingDate = (Date) resultMap.get("PlantingDate");
+            this.description = (String) resultMap.get("Description");
+            this.quantity = (int) resultMap.get("Quantity");
+            this.owner = new User((int) resultMap.get("PUser_ID"));
+
+            plantMap.clear();
+            plantMap.put("Plant_ID", id);
+            ArrayList<LinkedHashMap<String, Object>> resultList = gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
+            for (LinkedHashMap<String, Object> timeEntry : resultList) {
+                schedule.add((Time) timeEntry.get("WaterTime"));
+            }
+        } catch (InvalidUserException | GZDBResultException e) {
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
+        }
+
+        /* Picture Handler required
+         */
+    }
 
     /**
      * Retrieves information form the database utilizing only the ID and owner,
      * and assigns the results to each correspondant field.
      *
-     * @param id The unique identifier that corresponds to a certain User
+     * @param id The unique identifier that corresponds to a certain plant
      * registry on the database.
      * @param owner The user that owns this specific plant.
-     * @throws GZDBResultException If the user does not provide a valid
-     * connection.
+     * @throws InvalidPlantException If the user does not provide a valid
+     * connection or the ID cannot be resolved.
      */
-    public Plant(int id, User owner) throws GZDBResultException {
+    public Plant(int id, User owner) throws InvalidPlantException {
         this.id = id;
         this.owner = owner;
-
         LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
         plantMap.put("ID", id);
-        LinkedHashMap<String, Object> resultMap = owner.gzdbc.select(GZDBTables.PLANT, plantMap).get(0);
+        try {
+            LinkedHashMap<String, Object> resultMap = owner.gzdbc.select(GZDBTables.PLANT, plantMap).get(0);
+            this.name = (String) resultMap.get("Name");
+            this.plantingDate = (Date) resultMap.get("PlantingDate");
+            this.description = (String) resultMap.get("Description");
+            this.quantity = (int) resultMap.get("Quantity");
 
-        this.name = (String) resultMap.get("Name");
-        this.plantingDate = (Date) resultMap.get("PlantingDate");
-        this.description = (String) resultMap.get("Description");
-        this.quantity = (int) resultMap.get("Quantity");
-
-        plantMap.clear();
-        plantMap.put("Plant_ID", id);
-        ArrayList<LinkedHashMap<String, Object>> resultList = owner.gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
-        for (LinkedHashMap<String, Object> timeEntry : resultList) {
-            schedule.add((Time) timeEntry.get("WaterTime"));
+            plantMap.clear();
+            plantMap.put("Plant_ID", id);
+            ArrayList<LinkedHashMap<String, Object>> resultList = owner.gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
+            for (LinkedHashMap<String, Object> timeEntry : resultList) {
+                schedule.add((Time) timeEntry.get("WaterTime"));
+            }
+        } catch (GZDBResultException e) {
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
+
         /* Picture Handler required
          */
     }
@@ -106,11 +147,22 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * @param quantity The amount of singular plants of this type of plant.
      * @param schedule The times at which it needs to be watered.
      * @param owner The user who owns this plant.
-     * @throws GZDBResultException If the user does not provide a valid
-     * connection.
+     * @throws InvalidPlantException If the user does not provide a valid
+     * connection, the name or description exceed the allowed length, if the
+     * quantity is not a valid number.
      */
     public Plant(String name, Date plantingDate, String description, int quantity, ArrayList<Time> schedule,
-            /*BufferedImage plantPicture*/ User owner) throws GZDBResultException {
+            /*BufferedImage plantPicture*/ User owner) throws InvalidPlantException {
+        if (!GZFormatter.isValidMaxLength(name, 25)) {
+            throw new InvalidPlantException(PlantExceptions.LENGTH_NAME);
+        }
+        if (!GZFormatter.isValidMaxLength(description, 500)) {
+            throw new InvalidPlantException(PlantExceptions.LENGTH_DESCRIPTION);
+        }
+        if (quantity < 1) {
+            throw new InvalidPlantException(PlantExceptions.QUANTITY);
+        }
+
         this.name = name;
         this.plantingDate = plantingDate;
         this.description = description;
@@ -124,15 +176,21 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         plantMap.put("Description", description);
         plantMap.put("Quantity", quantity);
         plantMap.put("PUser_ID", owner.getId());
-        owner.gzdbc.insert(GZDBTables.PLANT, plantMap);
-        this.id = (int) owner.gzdbc.select(GZDBTables.PLANT, plantMap).get(0).get("ID");
 
-        plantMap.clear();
-        plantMap.put("Plant_ID", id);
-        for (Time waterTime : schedule) {
-            plantMap.put("WaterTime", waterTime);
-            owner.gzdbc.insert(GZDBTables.PLANTSCHEDULE, plantMap);
+        try {
+            owner.gzdbc.insert(GZDBTables.PLANT, plantMap);
+            this.id = (int) owner.gzdbc.select(GZDBTables.PLANT, plantMap).get(0).get("ID");
+
+            plantMap.clear();
+            plantMap.put("Plant_ID", id);
+            for (Time waterTime : schedule) {
+                plantMap.put("WaterTime", waterTime);
+                owner.gzdbc.insert(GZDBTables.PLANTSCHEDULE, plantMap);
+            }
+        } catch (GZDBResultException e) {
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
+
     }
 
     /**
@@ -207,11 +265,9 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      *
      * @param name The new name of this plant.
      * @throws InvalidPlantException The plant's name exceeded the accepted
-     * length.
-     * @throws InvalidUserException The user does not provide a database
-     * connection.
+     * length or the user does not provide a database connection.
      */
-    public void setName(String name) throws InvalidPlantException, InvalidUserException {
+    public void setName(String name) throws InvalidPlantException {
         if (!GZFormatter.isValidLength(name, 3, 25)) {
             throw new InvalidPlantException(PlantExceptions.LENGTH_NAME);
         }
@@ -222,7 +278,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
     }
 
@@ -231,11 +287,9 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      *
      * @param description The new description of this plant.
      * @throws InvalidPlantException The plant's description exceeded the
-     * accepted length.
-     * @throws InvalidUserException The user does not provide a database
-     * connection.
+     * accepted length or the user does not provide a database connection.
      */
-    public void setDescription(String description) throws InvalidPlantException, InvalidUserException {
+    public void setDescription(String description) throws InvalidPlantException {
         if (!GZFormatter.isValidMaxLength(description, 500)) {
             throw new InvalidPlantException(PlantExceptions.LENGTH_DESCRIPTION);
         }
@@ -246,7 +300,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
     }
 
@@ -254,11 +308,10 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * Sets he quantity there exists of this type of plant.
      *
      * @param quantity The new quantity of this type.
-     * @throws InvalidPlantException The plant's quantity is not a valid number.
-     * @throws InvalidUserException The user does not provide a database
-     * connection.
+     * @throws InvalidPlantException The plant's quantity is not a valid number
+     * or the user does not provide a database connection.
      */
-    public void setQuantity(int quantity) throws InvalidPlantException, InvalidUserException {
+    public void setQuantity(int quantity) throws InvalidPlantException {
         if (quantity < 1) {
             throw new InvalidPlantException(PlantExceptions.QUANTITY);
         }
@@ -269,7 +322,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
     }
 
@@ -277,10 +330,10 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * Sets he date this plant was planted on.
      *
      * @param plantingDate The new date of this plant.
-     * @throws InvalidUserException The user does not provide a database
+     * @throws InvalidPlantException The user does not provide a database
      * connection.
      */
-    public void setPlantingDate(Date plantingDate) throws InvalidUserException {
+    public void setPlantingDate(Date plantingDate) throws InvalidPlantException {
         this.plantingDate = plantingDate;
         owner.resetMaps();
         owner.insertMap.put("PlantingDate", plantingDate);
@@ -288,7 +341,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
     }
 
@@ -296,10 +349,10 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * Sets the schedule that this plant specifies to be watered on.
      *
      * @param schedule A new list of times to be watered on.
-     * @throws InvalidUserException The user does not provide a database
+     * @throws InvalidPlantException The user does not provide a database
      * connection.
      */
-    public void setSchedule(ArrayList<Time> schedule) throws InvalidUserException {
+    public void setSchedule(ArrayList<Time> schedule) throws InvalidPlantException {
         this.schedule = schedule;
         owner.resetMaps();
         owner.restrictionMap.put("Plant_ID", id);
@@ -308,7 +361,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             try {
                 owner.gzdbc.update(GZDBTables.PLANTSCHEDULE, owner.insertMap, owner.restrictionMap);
             } catch (GZDBResultException e) {
-                throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+                throw new InvalidPlantException(PlantExceptions.OWNER, e);
             }
         }
 
@@ -329,11 +382,10 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
     /**
      * Decreases the total quantity of this type of plant by one unit.
      *
-     * @throws InvalidPlantException The plant's quantity went below one.
-     * @throws InvalidUserException The user does not provide a database
-     * connection.
+     * @throws InvalidPlantException The plant's quantity went below one or the
+     * owner does not provide a valid connection.
      */
-    public void decreaseQuantityBy1() throws InvalidPlantException, InvalidUserException {
+    public void decreaseQuantityBy1() throws InvalidPlantException {
         if (quantity == 1) {
             throw new InvalidPlantException(PlantExceptions.QUANTITY);
         }
@@ -344,7 +396,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
     }
 
@@ -358,7 +410,6 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         try {
             owner.gzdbc.delete(GZDBTables.PLANT, owner.insertMap);
         } catch (GZDBResultException e) {
-
         }
     }
 

@@ -164,7 +164,7 @@ public class GZDBConnector {
      *
      * @param table The table in which the SQL action will be performed. @see
      * GZDBTables
-     * @param deletMap A map that defines the restrictions for the deletion of n
+     * @param deleteMap A map that defines the restrictions for the deletion of an
      * entry.
      * @throws GZDBResultException A message indicating which SQL Action or
      * Query failed and the map that made the failure happen. @see
