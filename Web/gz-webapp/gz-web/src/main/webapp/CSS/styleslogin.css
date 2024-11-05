@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('Fonts/AgrandirFonts') format('otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-color: #fefef0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    font-family: 'CustomFont', sans-serif;
+    font-size: 1vw;
+}
+
+.navbar .sizing-brand {
+    font-size: 2vw;
+    color: #e5edd8;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    font-size: 1.4rem;
+    z-index: 1;
+    background-color: #675c5f;
+}
+
+.custom-navbar {
+    background-color:  #675c5f;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #c4d8a4;
+}
+
+.navbar .nav-link {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    color: #e5edd8;
+}
+
+.container { /* Allow container to take available space */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-top: 80px; /* Adjust this to the height of your navbar */
+}
+
+.card {
+    width: 50vw; /* Full width of the column */
+    max-width: 500px; /* Prevents the card from getting too wide */
+    background-color: #e5edd8; /* Background color of the card */
+}
+
+.card-header {
+    background-color: #675c5f; /* Header background color */
+    color: #e5edd8; /* Header text color */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center contents of the card body */
+}
+
+.btn.button-color {
+    background-color: #675c5f; /* Button background */
+    border: 1px solid #5b554e; /* Border color */
+    color: #e5edd8; /* Button text color */
+    padding: 0.5rem 1rem; /* Add padding for button */
+}
+
+.btn.button-color:hover {
+    background-color: #c4d8a4; /* Lighter hover color */
+}
+
+.color-title {
+    color: #231f20; /* Color for titles */
+}
+
+.color-registro {
+    color: #e5edd8; /* Color for registration text */
+}
+
+.form-label {
+    font-size: 1.2rem; /* Label size */
+    color: #231f20; /* Color for form labels */
+}
+
+.form-control {
+    border: 1px solid #5b554e; /* Border color for input fields */
+}
+
+.form-control:focus {
+    border-color: #31463c; /* Focus border color */
+    box-shadow: 0 0 0.2rem rgba(49, 70, 60, 0.25); /* Focus shadow */
+}
+
+.color {
+    color: #231f20; /* General text color */
+}
+
+.centered-form {
+    align-items: center; /* Center align items in the form */
+}
+
+/* Additional styles for the registration link */
+.link {
+    color: #5b554e; /* Color for the registration link */
+    text-decoration: none; /* Remove underline */
+}
+
+.link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
