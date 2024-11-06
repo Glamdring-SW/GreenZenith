@@ -530,11 +530,12 @@ public class GZDBExecutor {
         statementBuilder.append(SPACE_CHAR);
         statementBuilder.append(GZDBReserved.SET.getKeyword());
         statementBuilder.append(SPACE_CHAR);
-        statementBuilder.append(makeUpdateClause(selectMap));
+        statementBuilder.append(makeUpdateClause(updateMap));
         statementBuilder.append(SPACE_CHAR);
         statementBuilder.append(GZDBReserved.WHERE.getKeyword());
         statementBuilder.append(SPACE_CHAR);
-        statementBuilder.append(makeWhereClause(updateMap));
+        statementBuilder.append(makeWhereClause(selectMap));
+        System.out.println(statementBuilder.toString());
         return statementBuilder.toString();
     }
 

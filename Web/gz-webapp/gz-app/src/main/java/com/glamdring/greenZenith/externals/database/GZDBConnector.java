@@ -164,8 +164,8 @@ public class GZDBConnector {
      *
      * @param table The table in which the SQL action will be performed. @see
      * GZDBTables
-     * @param deleteMap A map that defines the restrictions for the deletion of an
-     * entry.
+     * @param deleteMap A map that defines the restrictions for the deletion of
+     * an entry.
      * @throws GZDBResultException A message indicating which SQL Action or
      * Query failed and the map that made the failure happen. @see
      * GZDBResultException
@@ -213,6 +213,15 @@ public class GZDBConnector {
         } catch (SQLException e) {
             throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
         }
+    }
+
+    /**
+     * Retrieves the connection to the database, used mainly for BLOB creations.
+     *
+     * @return The connection to the database.
+     */
+    public Connection getConnection() {
+        return connection;
     }
 
     /**

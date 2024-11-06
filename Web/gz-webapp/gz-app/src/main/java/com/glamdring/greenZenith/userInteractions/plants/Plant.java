@@ -2,6 +2,7 @@ package com.glamdring.greenZenith.userInteractions.plants;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,7 +86,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             this.description = (String) resultMap.get("Description");
             this.quantity = (int) resultMap.get("Quantity");
             this.owner = new User((int) resultMap.get("PUser_ID"));
-
+            this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
             plantMap.clear();
             plantMap.put("Plant_ID", id);
             ArrayList<LinkedHashMap<String, Object>> resultList = gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
@@ -96,8 +97,6 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
 
-        /* Picture Handler required
-         */
     }
 
     /**
@@ -121,7 +120,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             this.plantingDate = (Date) resultMap.get("PlantingDate");
             this.description = (String) resultMap.get("Description");
             this.quantity = (int) resultMap.get("Quantity");
-
+            this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
             plantMap.clear();
             plantMap.put("Plant_ID", id);
             ArrayList<LinkedHashMap<String, Object>> resultList = owner.gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
@@ -146,13 +145,14 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * understanding of this plant.
      * @param quantity The amount of singular plants of this type of plant.
      * @param schedule The times at which it needs to be watered.
+     * @param plantPicture The real life picture representation of this plant.
      * @param owner The user who owns this plant.
      * @throws InvalidPlantException If the user does not provide a valid
      * connection, the name or description exceed the allowed length, if the
      * quantity is not a valid number.
      */
     public Plant(String name, Date plantingDate, String description, int quantity, ArrayList<Time> schedule,
-            /*BufferedImage plantPicture*/ User owner) throws InvalidPlantException {
+            BufferedImage plantPicture, User owner) throws InvalidPlantException {
         if (!GZFormatter.isValidMaxLength(name, 25)) {
             throw new InvalidPlantException(PlantExceptions.LENGTH_NAME);
         }
@@ -169,21 +169,20 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         this.quantity = quantity;
         this.schedule = schedule;
         this.owner = owner;
-
+        this.plantPicture = plantPicture;
         LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
         plantMap.put("Name", name);
         plantMap.put("PlantingDate", plantingDate);
         plantMap.put("Description", description);
         plantMap.put("Quantity", quantity);
+        plantMap.put("Picture", owner.getPictureHandler().convertBufferedImageToBlob(plantPicture, owner.getConnection()));
         plantMap.put("PUser_ID", owner.getId());
-
         try {
             owner.gzdbc.insert(GZDBTables.PLANT, plantMap);
             this.id = (int) owner.gzdbc.select(GZDBTables.PLANT, plantMap).get(0).get("ID");
-
-            plantMap.clear();
-            plantMap.put("Plant_ID", id);
             for (Time waterTime : schedule) {
+                plantMap.clear();
+                plantMap.put("Plant_ID", id);
                 plantMap.put("WaterTime", waterTime);
                 owner.gzdbc.insert(GZDBTables.PLANTSCHEDULE, plantMap);
             }

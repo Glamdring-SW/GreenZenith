@@ -59,7 +59,24 @@ public enum UserExceptions {
      *
      * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
      */
-    FORMAT_PASSWORD("InvalidPasswordFormat");
+    FORMAT_PASSWORD("InvalidPasswordFormat"),
+    /**
+     * The format of the User's email does not follow the established format,
+     *
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
+     */
+    PLANTS("InvalidPlantsData"),
+    /**
+     * The format of the User's password does not follow the established format,
+     *
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
+     */
+    PRODUCTS("InvalidProductsData"), /**
+     * The format of the User's password does not follow the established format,
+     *
+     * @see com.glamdring.greenZenith.handlers.formats.GZFormatter
+     */
+    CART("InvalidCartData");
 
     /**
      * Holds the value of each item's predefined exception message.

@@ -2,7 +2,9 @@ package com.glamdring.greenZenith.userInteractions.users;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.sql.Blob;
 
+import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
 import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
@@ -10,6 +12,7 @@ import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.GZDBSuperManager;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.handlers.constants.GZFormats;
+import com.glamdring.greenZenith.handlers.files.PictureHandler;
 import com.glamdring.greenZenith.handlers.formats.GZFormatter;
 import com.glamdring.greenZenith.handlers.locations.Location;
 import com.glamdring.greenZenith.userInteractions.Attributable;
@@ -26,7 +29,7 @@ import com.glamdring.greenZenith.userInteractions.products.ProductList;
  *
  * @see GZDBSuperManager
  * @author Glamdring (Σxz)
- * @version 1.5.2
+ * @version 1.5.3
  * @since 0.1
  */
 public class User extends GZDBSuperManager implements Attributable, Killable, Serializable {
@@ -65,17 +68,9 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      */
     private boolean administratorAccess;
     /**
-     * A list containing all the plants owned by a user.
+     * Disposable handler for picture files.
      */
-    private PlantList plants;
-    /**
-     * A list containing all the product on sale by a user.
-     */
-    private ProductList products;
-    /**
-     * A list containing all the products that a User wants to buy.
-     */
-    private Cart cart;
+    private PictureHandler pictureHandler = new PictureHandler();
 
     /**
      * Retrieves the information from the database utilizing only the ID, and
@@ -102,8 +97,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         this.age = (int) resultList.get(0).get("Age");
         this.password = (String) resultList.get(0).get("PasswordUser");
         this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
-
-        //this.profilePicture = ; picture handler needed
+        this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultList.get(0).get("Picture"));
         //this.location = ; location class needed
         //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
@@ -126,7 +120,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
             throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
         }
-        if (!GZFormatter.isValid(password, GZFormats.EMAIL)) {
+        if (!GZFormatter.isValid(password, GZFormats.PASSWORD)) {
             throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
         }
         resetMaps();
@@ -143,8 +137,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         this.username = (String) resultList.get(0).get("PUsername");
         this.age = (int) resultList.get(0).get("Age");
         this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
-
-        //this.profilePicture = ; picture handler needed
+        this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultList.get(0).get("Picture"));
         //this.location = ; location class needed
         //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
@@ -159,13 +152,14 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @param email The selected unique email associated with the account.
      * @param password The password requiered to access the account.
      * @param age The age in real life of the owner of the account.
+     * @param profilePicture A picture of the person in real life.
      * @throws InvalidUserException If the data provided does not meet the
      * format requirements.
      * @throws GZDBResultException If the database connection cannot be
      * resolved.
      */
-    public User(String username, String email, String password, int age
-    /*Location location, BufferedImage profilePicture,*/) throws InvalidUserException, GZDBResultException {
+    public User(String username, String email, String password, int age, BufferedImage profilePicture
+    /*Location location,*/) throws InvalidUserException, GZDBResultException {
         super();
         if (!GZFormatter.isValidLength(username, 3, 50)) {
             throw new InvalidUserException(UserExceptions.LENGTH_USERNAME);
@@ -184,6 +178,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         insertMap.put("Email", email);
         insertMap.put("Age", age);
         insertMap.put("PasswordUser", password);
+        insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(profilePicture, gzdbc.getConnection()));
         try {
             gzdbc.insert(GZDBTables.USER, insertMap);
             resultList = gzdbc.select(GZDBTables.USER, insertMap);
@@ -196,8 +191,8 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         this.age = age;
         this.password = password;
         this.administratorAccess = false;
+        this.profilePicture = profilePicture;
 
-        //this.profilePicture = ; picture handler needed
         //this.location = ; location class needed
         //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
@@ -248,6 +243,38 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
     }
 
     /**
+     * Transforms the profile picture into a Base64 encodification for web
+     * application display purposes.
+     *
+     * @return A base 64 encodification of the profile picture.
+     */
+    public String getBase64Picture() {
+        return pictureHandler.convertBufferedImageToBase64(profilePicture);
+    }
+
+    /**
+     * Transforms the profile picture into a Base64 encodification for web
+     * application display purposes.
+     *
+     * @param externalPicture The picture from an external source outside the
+     * User.
+     * @return A base 64 encodification of the external picture.
+     */
+    public String getBase64PictureFromExternalSource(BufferedImage externalPicture) {
+        return pictureHandler.convertBufferedImageToBase64(externalPicture);
+    }
+
+    /**
+     * Provides the picture handler for the subsequent plant and product
+     * classes.
+     *
+     * @return The picture handler of this user.
+     */
+    public PictureHandler getPictureHandler() {
+        return pictureHandler;
+    }
+
+    /**
      * The location that this user lives in.
      *
      * @return A location containing multiple valuable information about the
@@ -261,27 +288,32 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * All the plants that this user posseses.
      *
      * @return A list containing all the plants owned.
+     * @throws InvalidUserException If the user's plant's cannot be resolved.
      */
-    public PlantList getPlants() {
-        return plants;
+    public PlantList getPlants() throws InvalidUserException {
+        try {
+            return new PlantList(this);
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANTS, e);
+        }
     }
 
     /**
-     * All the products that this user has for sale.
+     * All the products that this user has for sale. WORK IN PROGRESS.
      *
      * @return A list containing all the products for sale.
      */
     public ProductList getProducts() {
-        return products;
+        return null;
     }
 
     /**
-     * All the products that this user wants to buy.
+     * All the products that this user wants to buy. WORK IN PROGRESS.
      *
      * @return A list containing the different products.
      */
     public Cart getCart() {
-        return cart;
+        return null;
     }
 
     /**

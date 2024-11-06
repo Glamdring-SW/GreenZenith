@@ -5,11 +5,14 @@ package com.glamdring.greenZenith.exceptions.application.user.constants;
  * exception when caused by an interaction of Users.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.0
+ * @version 1.0.1
  * @since 0.2
  */
 public enum MessageExceptions {
 
+    /**
+     * The message's length exceeded the allowed value.
+     */
     LENGTH("InvalidMessageLength");
 
     /**

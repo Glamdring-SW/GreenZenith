@@ -6,7 +6,7 @@ import com.glamdring.greenZenith.exceptions.application.user.constants.MessageEx
  * Custom exception class to indicate a failure that happened with an
  * interaction made by different users using messages.
  *
- * @see UserExceptions
+ * @see MessageExceptions
  * @author Glamdring (Σxz)
  * @version 1.0.0
  * @since 0.2

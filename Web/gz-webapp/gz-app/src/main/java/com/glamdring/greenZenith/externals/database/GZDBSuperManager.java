@@ -1,5 +1,6 @@
 package com.glamdring.greenZenith.externals.database;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -10,7 +11,7 @@ import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
  * names and data types of a specific table.
  *
  * @author Glamdring (Σxz)
- * @version 1.2.1
+ * @version 1.2.2
  * @since 0.1
  */
 public class GZDBSuperManager {
@@ -69,6 +70,15 @@ public class GZDBSuperManager {
     public void resetMaps() {
         insertMap.clear();
         restrictionMap.clear();
+    }
+
+    /**
+     * The connection used for the database.
+     *
+     * @return A connection
+     */
+    public Connection getConnection() {
+        return gzdbc.getConnection();
     }
 
 }
