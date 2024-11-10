@@ -5,7 +5,7 @@ package com.glamdring.greenZenith.exceptions.application.plant.constants;
  * exception when caused by an interaction of the User with it's plants.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.1
+ * @version 1.1.0
  * @since 0.2
  */
 public enum PlantExceptions {
@@ -14,42 +14,51 @@ public enum PlantExceptions {
      * The length of the User's plant name does not follow the established
      * restrictions.
      */
-    LENGTH_NAME("InvalidPlantNameLength"),
+    LENGTH_NAME("No se pueden guardar nombres de plantas mayores a 25 caracteres."),
     /**
      * The length of the User's plant description does not follow the
      * established restrictions.
      */
-    LENGTH_DESCRIPTION("InvalidPlantDescriptionLength"),
+    LENGTH_DESCRIPTION("No se aceptan descripciones mayores de 500 caracteres."),
     /**
      * The quantity of the User's plant is not a valid number.
      */
-    QUANTITY("InvalidPlantQuantity"),
-     /**
-     * The quantity of the User's plant is not a valid number.
+    QUANTITY("No se aceptan cantidades menores a 1."),
+    /**
+     * The quantity that will be decreased by 1 yields a non valid number.
      */
-    QUANTITY_DECREASEBY1("InvalidPlantQuantity"),
+    QUANTITY_DECREASEBY1("Ya no se puede reducir mas la cantidad de esta planta."),
     /**
      * The image of the User's plant can not be utilized.
      */
-    IMAGE("InvalidPlantPicture"),
+    IMAGE("La imagen proporcionada no puede ser utilizada."),
     /**
      * The date of the User's plant can not be utilized.
      */
-    DATE("InvalidPlantPicture"),
+    DATE_NULL("La fecha de plantado es mucho mayor de lo comun, asegurese de que la planta no sea mayor de 100 años, si puede verificar que su planta es mayor de 100 años, contactenos!"),
     /**
-     * The time list of the User's plant can not be utilized.
+     * The date of the User's plant exceeds the allowed years.
      */
-    SCHEDULE("InvalidPlantPicture"),
+    DATE_BIGGER("La fecha de plantado es mucho mayor de lo comun, asegurese de que la planta no sea mayor de 100 años, si puede verificar que su planta es mayor de 100 años, contactenos!"),
+    /**
+     * The water time list of the User's holds non valid times.
+     */
+    SCHEDULE("El horario de riego no es valido."),
+     /**
+     * The water time list of the User's plant can not be utilized.
+     */
+    SCHEDULE_EMPTY("El horario de riego no es valido."),
     /**
      * The owner of this plant cannot be resolved.
      */
-    OWNER("InvalidPlantOwnership"),
+    OWNER("El usuario dueño de esta planta no posee accesso a su informacion."),
     /**
      * The connection to the database cannot be resolved.
      */
-    DATABASE("InvalidPlantDatabaseConnection"),
+    DATABASE("El accesso a los datos de esta planta no fue exitoso."),
     /**
-     * The owner of this plant cannot be resolved.
+     * The specified plant data does not resolve to any real data within the
+     * database.
      */
     INEXISTANT("La planta especificada no existe."),;
 

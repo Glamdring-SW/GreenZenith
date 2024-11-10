@@ -42,9 +42,9 @@ DROP TABLE IF EXISTS `GreenZenith`.`Plant` ;
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`Plant` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(25) NOT NULL,
-  `PlantingDate` DATE NOT NULL,
   `Description` TEXT(500) NULL,
   `Quantity` INT NOT NULL,
+  `PlantingDate` DATE NOT NULL,
   `Picture` MEDIUMBLOB NULL,
   `PUser_ID` INT NOT NULL,
   PRIMARY KEY (`ID`),

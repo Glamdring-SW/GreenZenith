@@ -46,7 +46,11 @@ public enum GZDBExceptionMessages {
      * The field established to update information of was not found in the
      * database
      */
-    UPDATE_NOFIELD("No existe un campo que pueda actualizar.");
+    UPDATE_NOFIELD("No existe un campo que pueda actualizar."),
+    /**
+     * The field established to insert or update contains duplicate informaiton on unique fields.
+     */
+    DUPLICATE_ENTRY("Entrada Duplicada."),;
 
     /**
      * Holds the value of each item's predefined exception message.

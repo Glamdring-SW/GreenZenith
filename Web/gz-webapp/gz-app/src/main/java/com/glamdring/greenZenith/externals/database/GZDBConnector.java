@@ -72,7 +72,7 @@ public class GZDBConnector {
             connection.createStatement().execute("SET CHARACTER SET 'utf8'");
             connection.createStatement().execute("SET NAMES 'utf8'");
         } catch (SQLException | ClassNotFoundException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
+            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR);
         }
     }
 
@@ -91,7 +91,11 @@ public class GZDBConnector {
         try {
             executor.executeInsert(insertMap);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap, e);
+            if (e.getMessage().contains("Duplicate entry")) {
+                throw new GZDBResultException(GZDBExceptionMessages.DUPLICATE_ENTRY, insertMap);
+            } else {
+                throw new GZDBResultException(GZDBExceptionMessages.INSERT, insertMap);
+            }
         }
     }
 
@@ -114,7 +118,7 @@ public class GZDBConnector {
         try {
             return executor.executeSelect(selectmap);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT, selectmap, e);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT, selectmap);
         }
     }
 
@@ -135,7 +139,7 @@ public class GZDBConnector {
         try {
             return executor.executeSelectAll();
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT);
         }
     }
 
@@ -157,7 +161,7 @@ public class GZDBConnector {
         try {
             executor.executeUpdate(updateMap, restrictionMap);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.UPDATE, updateMap, e);
+            throw new GZDBResultException(GZDBExceptionMessages.UPDATE, updateMap);
         }
     }
 
@@ -177,7 +181,7 @@ public class GZDBConnector {
         try {
             executor.executeDelete(deleteMap);
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.DELETE, deleteMap, e);
+            throw new GZDBResultException(GZDBExceptionMessages.DELETE, deleteMap);
         }
     }
 
@@ -195,7 +199,7 @@ public class GZDBConnector {
         try {
             return executor.getTableFields();
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT);
         }
     }
 
@@ -213,7 +217,7 @@ public class GZDBConnector {
         try {
             return executor.getTableTypes();
         } catch (SQLException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT);
         }
     }
 

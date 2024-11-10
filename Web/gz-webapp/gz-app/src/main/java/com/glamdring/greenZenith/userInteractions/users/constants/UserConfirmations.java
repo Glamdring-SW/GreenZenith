@@ -13,48 +13,48 @@ public enum UserConfirmations {
     /**
      * If the register of a user was successful.
      */
-    REGISTER(""),
+    REGISTER("Se registro el usuario exitosamente"),
     /**
      * If the log in of a user was successful.
      */
-    LOGIN(""),
+    LOGIN("Se inicio sesion exitosamente."),
     /**
      * If the update of a user's name was successful.
      */
-    USERNAME_UPDATE(""),
+    USERNAME_UPDATE("El nombre de usuario fue actualizado correctamente."),
     /**
      * If the update of a user's email was successful.
      */
-    EMAIL_UPDATE(""),
+    EMAIL_UPDATE("El correo electronico fue actualizado correctamente."),
     /**
      * If the update of a user's age was successful.
      */
-    AGE_UPDATE(""),
+    AGE_UPDATE("La edad fue actualizada correctamente."),
     /**
      * If the update of a user's picture was successful.
      */
-    PICTURE_UPDATE(""),
+    PICTURE_UPDATE("La imagen del perfil fue actualizada correctamente."),
     /**
      * If the update of a user's picture was not successful but we resorted to
      * use the default profile picture..
      */
-    PICTURE_DEFAULT(""),
+    PICTURE_DEFAULT("Se utilizo la imagen de perfil por defecto, asegurese de ingresar un"),
     /**
      * If the update of a user's name password was successful.
      */
-    PASSWORD_UPDATE(""),
+    PASSWORD_UPDATE("La contraseña fue actualizada correctamente."),
     /**
      * If the update of a user's location was successful.
      */
-    LOCATION_UPDATE(""),
+    LOCATION_UPDATE("La ubicacion fue actualizada correctamente."),
     /**
      * If the update of a user's administrator access was successful.
      */
-    ADMINISTRATORACCESS_UPDATE(""),
+    ADMINISTRATORACCESS_UPDATE("Se actualizo el accesso a las opciones de administracion de manera correcta."),
     /**
      * If the update of a user's administrator access was successful.
      */
-    NOCHANGES(""),;
+    NOCHANGES("No se realizo ningun cambio o actualizacion."),;
 
     /**
      * Holds the value of each item's predefined exception message.

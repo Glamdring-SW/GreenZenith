@@ -4,17 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Blob;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 
 import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
 import com.glamdring.greenZenith.exceptions.application.user.constants.UserExceptions;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
+import com.glamdring.greenZenith.exceptions.database.constants.GZDBExceptionMessages;
 import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.GZDBSuperManager;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
@@ -38,7 +37,7 @@ import com.glamdring.greenZenith.userInteractions.users.constants.UserConfirmati
  *
  * @see GZDBSuperManager
  * @author Glamdring (Σxz)
- * @version 1.6.0
+ * @version 1.6.2
  * @since 0.1
  */
 public class User extends GZDBSuperManager implements Attributable, Killable, Serializable {
@@ -120,7 +119,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
                 this.age = (int) resultMap.get("Age");
                 this.password = (String) resultMap.get("PasswordUser");
                 this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
-                this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                if (resultMap.get("Picture") != null) {
+                    this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                } else {
+                    this.profilePicture = pictureHandler.getDEFAULT_USER();
+                }
                 this.plants = new PlantList(this);
             } catch (InvalidPlantException e) {
                 throw new InvalidUserException(UserExceptions.PLANTS, e);
@@ -173,7 +176,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
                 this.username = (String) resultMap.get("PUsername");
                 this.age = (int) resultMap.get("Age");
                 this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
-                this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                if (resultMap.get("Picture") != null) {
+                    this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                } else {
+                    this.profilePicture = pictureHandler.getDEFAULT_USER();
+                }
                 this.plants = new PlantList(this);
             } catch (InvalidPlantException e) {
                 throw new InvalidUserException(UserExceptions.PLANTS, e);
@@ -238,7 +245,11 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
             gzdbc.insert(GZDBTables.USER, insertMap);
             resultList = gzdbc.select(GZDBTables.USER, insertMap);
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+            if (e.getMessage().equals(GZDBExceptionMessages.DUPLICATE_ENTRY.getExceptionMessage())) {
+                throw new InvalidUserException(UserExceptions.DUPLICATE);
+            } else {
+                throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+            }
         }
         try {
             this.id = (int) resultList.get(0).get("ID");
@@ -435,7 +446,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @param id The ID of the plant to look for.
      * @param oldName The original name of the plant to check for it's validity.
      * @param newName The new name for this plant.
-     * @param newPantingDate The new date this plant was planted on.
+     * @param newPlantingDate The new date this plant was planted on.
      * @param newDescription The new description of this plant.
      * @param newQuantity The new quantity of this plant.
      * @param newSchedule The new schedule of this plant.
@@ -443,17 +454,13 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @throws InvalidUserException If the plant's ID and name are not
      * correspondant or cannot be resolved correctly.
      */
-    public void updatePlant(int id, String oldName, String newName, Date newPantingDate, String newDescription, int newQuantity, ArrayList<Time> newSchedule,
-            BufferedImage newPlantPicture) throws InvalidUserException {
+    public String updatePlantBatch(int id, String oldName, String newName, LocalDate newPlantingDate, String newDescription, int newQuantity, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) throws InvalidUserException {
         if (oldName == null || oldName.isBlank()) {
             throw new InvalidUserException(UserExceptions.PLANT_ID);
         }
         try {
             if (plants.getFromMap(id).getName().equals(oldName)) {
-                if (plants.getFromList(id).getName().equals(newName)) {
-                    throw new InvalidUserException(UserExceptions.PLANT_DUPLICATE);
-                }
-
+                return plants.update(id, newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
             } else {
                 throw new InvalidUserException(UserExceptions.PLANT_ID);
             }
@@ -504,40 +511,52 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         int updateCount = 0;
         StringBuilder messageBuilder = new StringBuilder();
         try {
-            appendUpdateMessage(messageBuilder, setPassword(oldPassword, newPassword));
-            updateCount++;
+            if (newPassword != null && !newPassword.isBlank() && !newName.equals(this.username)) {
+                appendUpdateMessage(messageBuilder, setPassword(oldPassword, newPassword));
+                updateCount++;
+            }
         } catch (InvalidUserException e) {
             if (e.getMessage().equals(UserExceptions.PASSWORD_MATCHES.getExceptionMessage())) {
                 return e.getMessage();
             }
-            appendUpdateMessage(messageBuilder, e.getMessage());
+            if (newPassword != null && !newPassword.isBlank()) {
+                appendUpdateMessage(messageBuilder, e.getMessage());
+            }
         }
-        try {
-            appendUpdateMessage(messageBuilder, setName(newName));
-            updateCount++;
-        } catch (InvalidUserException e) {
-            appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newName != null && !newName.isBlank() && !newName.equals(this.username)) {
+            try {
+                appendUpdateMessage(messageBuilder, setName(newName));
+                updateCount++;
+            } catch (InvalidUserException e) {
+                appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            appendUpdateMessage(messageBuilder, setEmail(newEmail));
-            updateCount++;
-        } catch (InvalidUserException e) {
-            appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newEmail != null && !newEmail.isBlank()  && !newEmail.equals(this.email)) {
+            try {
+                appendUpdateMessage(messageBuilder, setEmail(newEmail));
+                updateCount++;
+            } catch (InvalidUserException e) {
+                appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            appendUpdateMessage(messageBuilder, setAge(newAge));
-            updateCount++;
-        } catch (InvalidUserException e) {
-            appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newAge != 0 && newAge != this.age) {
+            try {
+                appendUpdateMessage(messageBuilder, setAge(newAge));
+                updateCount++;
+            } catch (InvalidUserException e) {
+                appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            appendUpdateMessage(messageBuilder, setPicture(newPicture));
-            updateCount++;
-        } catch (InvalidUserException e) {
-            appendUpdateMessage(messageBuilder, e.getMessage());
+        if (newPicture != null && newPicture != this.profilePicture) {
+            try {
+                appendUpdateMessage(messageBuilder, setPicture(newPicture));
+                updateCount++;
+            } catch (InvalidUserException e) {
+                appendUpdateMessage(messageBuilder, e.getMessage());
+            }
         }
         if (updateCount == 0) {
             return UserConfirmations.NOCHANGES.getConfirmationMessage();

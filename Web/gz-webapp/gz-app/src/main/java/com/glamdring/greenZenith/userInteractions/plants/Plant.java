@@ -28,7 +28,7 @@ import com.glamdring.greenZenith.userInteractions.users.User;
  * attributes, allowing the creation, modification and deletion of it.
  *
  * @author Glamdring (Σxz)
- * @version 1.1.0
+ * @version 1.1.1
  * @since 0.1
  */
 public class Plant implements Killable, Interactable, Attributable, Serializable {
@@ -95,7 +95,11 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             this.quantity = (int) resultMap.get("Quantity");
             this.plantingDate = (Date) resultMap.get("PlantingDate");
             this.owner = new User((int) resultMap.get("PUser_ID"));
-            this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+            if (resultMap.get("Picture") != null) {
+                this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+            } else {
+                this.plantPicture = owner.getPictureHandler().getDEFAULT_PLANT();
+            }
             plantMap.clear();
             plantMap.put("Plant_ID", id);
             resultList = gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
@@ -121,11 +125,12 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         if (id < 1) {
             throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
-        this.id = id;
-        this.owner = owner;
-        LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
-        plantMap.put("ID", id);
         try {
+            this.id = id;
+            this.owner = owner;
+            LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
+            plantMap.put("ID", id);
+            plantMap.put("PUser_ID", owner.getId());
             ArrayList<LinkedHashMap<String, Object>> resultList = owner.gzdbc.select(GZDBTables.PLANT, plantMap);
             if (resultList.size() != 1) {
                 throw new InvalidPlantException(PlantExceptions.INEXISTANT);
@@ -135,7 +140,11 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             this.plantingDate = (Date) resultMap.get("PlantingDate");
             this.description = (String) resultMap.get("Description");
             this.quantity = (int) resultMap.get("Quantity");
-            this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+            if (resultMap.get("Picture") != null) {
+                this.plantPicture = owner.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+            } else {
+                this.plantPicture = owner.getPictureHandler().getDEFAULT_PLANT();
+            }
             plantMap.clear();
             plantMap.put("Plant_ID", id);
             resultList = owner.gzdbc.select(GZDBTables.PLANTSCHEDULE, plantMap);
@@ -177,11 +186,14 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         if (quantity < 1) {
             throw new InvalidPlantException(PlantExceptions.QUANTITY);
         }
-        if (plantingDate == null || plantingDate.isBefore(LocalDate.of(1900, 1, 1))) {
-            throw new InvalidPlantException(PlantExceptions.DATE);
+        if (plantingDate == null) {
+            throw new InvalidPlantException(PlantExceptions.DATE_NULL);
+        }
+        if (plantingDate.isBefore(LocalDate.of(1900, 1, 1))) {
+            throw new InvalidPlantException(PlantExceptions.DATE_BIGGER);
         }
         if (schedule == null || schedule.isEmpty()) {
-            throw new InvalidPlantException(PlantExceptions.SCHEDULE);
+            throw new InvalidPlantException(PlantExceptions.SCHEDULE_EMPTY);
         }
         if (owner == null) {
             throw new InvalidPlantException(PlantExceptions.OWNER);
@@ -317,48 +329,59 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * ones failed and why, which one suscceded or if there was no updates at
      * all.
      */
-    public String updatePlantBatch(String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule,
-            BufferedImage newPlantPicture) {
+    public String updatePlantBatch(String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) {
         int updateCount = 0;
         StringBuilder messageBuilder = new StringBuilder();
-        try {
-            owner.appendUpdateMessage(messageBuilder, setName(newName));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newName != null && !newName.isBlank() && !newName.equals(this.name)) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setName(newName));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            owner.appendUpdateMessage(messageBuilder, setDescription(newDescription));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newDescription != null && !newDescription.equals(this.description)) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setDescription(newDescription));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            owner.appendUpdateMessage(messageBuilder, setQuantity(newQuantity));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newQuantity != 0 && newQuantity != this.quantity) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setQuantity(newQuantity));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-        try {
-            owner.appendUpdateMessage(messageBuilder, setPlantingDate(newPlantingDate));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
+        if (newPlantingDate != null && newPlantingDate != this.plantingDate.toLocalDate()) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setPlantingDate(newPlantingDate));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+            }
         }
-        try {
-            owner.appendUpdateMessage(messageBuilder, setPlantPicture(newPlantPicture));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
+        if (newSchedule != null && !schedule.isEmpty()) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setSchedule(newSchedule));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+            }
         }
-        try {
-            owner.appendUpdateMessage(messageBuilder, setSchedule(newSchedule));
-            updateCount++;
-        } catch (InvalidPlantException e) {
-            owner.appendUpdateMessage(messageBuilder, e.getMessage());
+        if (newPlantPicture != null && newPlantPicture != this.plantPicture) {
+            try {
+                owner.appendUpdateMessage(messageBuilder, setPlantPicture(newPlantPicture));
+                updateCount++;
+            } catch (InvalidPlantException e) {
+                owner.appendUpdateMessage(messageBuilder, e.getMessage());
+            }
         }
         if (updateCount == 0) {
             return PlantConfirmations.NOCHANGES.getConfirmationMessage();
@@ -447,6 +470,12 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * connection.
      */
     private String setPlantingDate(LocalDate newPlantingDate) throws InvalidPlantException {
+        if (newPlantingDate == null) {
+            throw new InvalidPlantException(PlantExceptions.DATE_NULL);
+        }
+        if (newPlantingDate.isBefore(LocalDate.of(1900, 1, 1))) {
+            throw new InvalidPlantException(PlantExceptions.DATE_BIGGER);
+        }
         try {
             owner.resetMaps();
             owner.insertMap.put("PlantingDate", Date.valueOf(newPlantingDate));
@@ -468,6 +497,9 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * connection.
      */
     private String setSchedule(ArrayList<LocalTime> newSchedule) throws InvalidPlantException {
+        if (schedule == null || schedule.isEmpty()) {
+            throw new InvalidPlantException(PlantExceptions.SCHEDULE_EMPTY);
+        }
         try {
             owner.resetMaps();
             owner.restrictionMap.put("Plant_ID", id);

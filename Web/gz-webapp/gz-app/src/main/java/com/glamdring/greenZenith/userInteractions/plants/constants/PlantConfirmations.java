@@ -13,36 +13,36 @@ public enum PlantConfirmations {
  /**
      * If the update of a user's name was successful.
      */
-    NAME_UPDATE(""),
+    NAME_UPDATE("El nombre de la planta fue actualizado correctamente."),
     /**
      * If the update of a user's email was successful.
      */
-    DESCRIPTION_UPDATE(""),
+    DESCRIPTION_UPDATE("La descripcion de la planta fue actualizada correctamente."),
     /**
      * If the update of a user's age was successful.
      */
-    QUANTITY_UPDATE(""),
+    QUANTITY_UPDATE("La cantidad total de plantas de este tipo fue actualizada correctamente."),
     /**
      * If the update of a user's picture was successful.
      */
-    PLANTINGDATE_UPDATE(""),
+    PLANTINGDATE_UPDATE("La fecha de plantado fue actualizada correctamente."),
     /**
      * If the update of a user's picture was not successful but we resorted to
      * use the default profile picture..
      */
-    PICTURE_DEFAULT(""),
+    PICTURE_DEFAULT("La imagen de esta planta no pudo ser utilizada, se asigno una imagen por defecto."),
     /**
      * If the update of a user's name password was successful.
      */
-    PICTURE_UPDATE(""),
+    PICTURE_UPDATE("La imagen de esta planta fue actualizada correctamente."),
      /**
      * If the update of a user's name password was successful.
      */
-    SCHEDULE_UPDATE(""),
+    SCHEDULE_UPDATE("El horario de riego de esta planta fue actualizado correctamente."),
     /**
      * If the update of a user's administrator access was successful.
      */
-    NOCHANGES(""),;
+    NOCHANGES("No se realizo ningun cambio o actualizacion."),;
 
     /**
      * Holds the value of each item's predefined exception message.

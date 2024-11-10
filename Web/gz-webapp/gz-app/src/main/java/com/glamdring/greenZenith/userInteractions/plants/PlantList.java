@@ -107,11 +107,10 @@ public class PlantList {
      * registry.
      */
     public Plant getFromMap(int id) throws InvalidPlantException {
-        if (plantMap.get(id) != null) {
-            return plantMap.get(id);
-        } else {
+        if (plantMap.get(id) == null) {
             throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
+        return plantMap.get(id);
     }
 
     /**
@@ -158,9 +157,8 @@ public class PlantList {
      * @throws InvalidPlantException If the ID does not resolve to any plant
      * registry.
      */
-    public String update(int id, String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule,
-            BufferedImage newPlantPicture) throws InvalidPlantException {
-        if (plantMap.get(id) != null) {
+    public String update(int id, String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) throws InvalidPlantException {
+        if (plantMap.get(id) == null) {
             throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
         return plantMap.get(id).updatePlantBatch(newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
@@ -182,6 +180,8 @@ public class PlantList {
                 break;
             }
         }
-        throw new InvalidPlantException(PlantExceptions.INEXISTANT);
+        if (plantMap.get(id) == null) {
+            throw new InvalidPlantException(PlantExceptions.INEXISTANT);
+        }
     }
 }

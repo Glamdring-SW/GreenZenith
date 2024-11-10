@@ -17,6 +17,12 @@ public enum UserExceptions {
      */
     GZDBCONNECTION("La conexion a la base de datos no se realizo con exito"),
     /**
+     * The connection to the database utilizng the
+     * {@link com.glamdring.greenZenith.externals.database.GZDBConnector} failed
+     * to construct.
+     */
+    DUPLICATE("El nombre de usuario o correo electronico ingresado ya esta asociado a otra cuenta."),
+    /**
      * The ID utilized for establishing a User couldn't be found within the
      * database.
      */

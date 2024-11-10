@@ -195,7 +195,11 @@ public class GZDBExecutor {
                 } else if (typesMap.get(outputField).equals(GZDBReserved.DATETIME.getKeyword())) {
                     resultMap.put(outputField, resultSet.getTimestamp(outputField));
                 } else if (typesMap.get(outputField).equals(GZDBReserved.MEDIUMBLOB.getKeyword())) {
-                    resultMap.put(outputField, resultSet.getBlob(outputField));
+                    if (!resultSet.wasNull()) {
+                        resultMap.put(outputField, resultSet.getBlob(outputField));
+                    } else {
+                        resultMap.put(outputField, null);
+                    }
                 }
             }
             resultList.add(resultMap);
@@ -576,7 +580,6 @@ public class GZDBExecutor {
         statementBuilder.append(GZDBReserved.WHERE.getKeyword());
         statementBuilder.append(SPACE_CHAR);
         statementBuilder.append(makeWhereClause(selectMap));
-        System.out.println(statementBuilder.toString());
         return statementBuilder.toString();
     }
 
