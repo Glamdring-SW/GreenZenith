@@ -3,20 +3,27 @@
     src: url('fonts/Agrandir') format('otf');
     font-weight: normal;
     font-style: normal;
-  }
-  body {
-    background-image: url('../img/cover-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+}
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     font-family: 'CustomFont', sans-serif;
-  }
-  .semicircle-button {
+}
+
+.bg-img{
+    background-image: url('../img/cover-bg.jpg');
+    -moz-filter:blur(10px);
+    -o-filter:blur(10px);
+    -webkit-filter:blur(10px);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.semicircle-button {
     position: fixed;
     bottom: 0px;
     left: 50%;
@@ -24,7 +31,7 @@
     width: 16vw;
     height: 8vw;
     background-color: #e5edd8;
-    border-radius: 8vw 8vw 0 0; 
+    border-radius: 8vw 8vw 0 0;
     border: none;
     color: rgb(61, 59, 59);
     font-size: 2vw;
@@ -32,16 +39,16 @@
     line-height: 10vw;
     text-decoration: none;
     font-family: 'CustomFont', sans-serif;
-  }
-  .semicircle-button:hover {
+}
+.semicircle-button:hover {
     background-color: #b8c0ac;
-  }
-  .cover-text{
+}
+.cover-text{
     font-size:8vw ;
     color: #fff6e9;
-  }
-  .mini-text{
+}
+.mini-text{
     font-size: 3vw;
     color:#fff6e9;
-  }
+}
 

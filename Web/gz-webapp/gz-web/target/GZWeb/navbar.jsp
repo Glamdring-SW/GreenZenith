@@ -11,15 +11,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <%
-                    if (user == null) {
-                %>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="login.jsp">LogIn</a>
                 </li>
-                <%
-                    }
-                %>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="registro.jsp.jsp">Registro</a>
+                </li>
                 <%
                     if (user != null) {
                 %>
@@ -29,9 +26,11 @@
                 <%
                     }
                 %>
+                <!--
                 <li class="nav-item">
                     <a class="nav-link" href="marketplace.jsp">MarketPlace</a>
                 </li>
+                -->
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">

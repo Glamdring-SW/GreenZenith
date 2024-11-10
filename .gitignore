@@ -1,4 +1,3 @@
 /.VSCodeCounter
 /.vscode
-/Web/gz-webapp/gz-app/target
-/Web/gz-webapp/gz-web/target
+*/target/**
