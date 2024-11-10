@@ -1,8 +1,15 @@
 package com.glamdring.greenZenith.userInteractions.users;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 
 import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
@@ -17,9 +24,11 @@ import com.glamdring.greenZenith.handlers.formats.GZFormatter;
 import com.glamdring.greenZenith.handlers.locations.Location;
 import com.glamdring.greenZenith.userInteractions.Attributable;
 import com.glamdring.greenZenith.userInteractions.Killable;
+import com.glamdring.greenZenith.userInteractions.plants.Plant;
 import com.glamdring.greenZenith.userInteractions.plants.PlantList;
 import com.glamdring.greenZenith.userInteractions.products.Cart;
 import com.glamdring.greenZenith.userInteractions.products.ProductList;
+import com.glamdring.greenZenith.userInteractions.users.constants.UserConfirmations;
 
 /**
  * Represents a User of the application, with it's respective attributes,
@@ -29,7 +38,7 @@ import com.glamdring.greenZenith.userInteractions.products.ProductList;
  *
  * @see GZDBSuperManager
  * @author Glamdring (Σxz)
- * @version 1.5.3
+ * @version 1.6.0
  * @since 0.1
  */
 public class User extends GZDBSuperManager implements Attributable, Killable, Serializable {
@@ -68,9 +77,13 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      */
     private boolean administratorAccess;
     /**
+     * A list containing all the plants of this User.
+     */
+    private PlantList plants;
+    /**
      * Disposable handler for picture files.
      */
-    private PictureHandler pictureHandler = new PictureHandler();
+    private PictureHandler pictureHandler;
 
     /**
      * Retrieves the information from the database utilizing only the ID, and
@@ -79,27 +92,43 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @param id The unique identifier that corresponds to a certain User
      * registry on the database.
      * @throws InvalidUserException If the ID is not valid.
-     * @throws GZDBResultException If the database connection cannot be
-     * resolved.
+     * @throws GZDBResultException If the database connection cannot be resolved
+     * or the default images cannot be loaded.
      */
     public User(int id) throws InvalidUserException, GZDBResultException {
         super();
+        if (id < 1) {
+            throw new InvalidUserException(UserExceptions.INEXISTANT);
+        }
         resetMaps();
+        try {
+            pictureHandler = new PictureHandler();
+        } catch (IOException e) {
+            throw new InvalidUserException(UserExceptions.PICTURE);
+        }
         insertMap.put("ID", id);
         try {
             resultList = gzdbc.select(GZDBTables.USER, insertMap);
+            if (resultList.size() != 1) {
+                throw new InvalidUserException(UserExceptions.ACCOUNT_ACCESS);
+            }
+            LinkedHashMap<String, Object> resultMap = resultList.get(0);
+            try {
+                this.id = id;
+                this.username = (String) resultMap.get("PUsername");
+                this.email = (String) resultMap.get("Email");
+                this.age = (int) resultMap.get("Age");
+                this.password = (String) resultMap.get("PasswordUser");
+                this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
+                this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                this.plants = new PlantList(this);
+            } catch (InvalidPlantException e) {
+                throw new InvalidUserException(UserExceptions.PLANTS, e);
+            }
         } catch (GZDBResultException e) {
             throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
-        this.id = id;
-        this.username = (String) resultList.get(0).get("PUsername");
-        this.email = (String) resultList.get(0).get("Email");
-        this.age = (int) resultList.get(0).get("Age");
-        this.password = (String) resultList.get(0).get("PasswordUser");
-        this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
-        this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultList.get(0).get("Picture"));
         //this.location = ; location class needed
-        //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
         //this.cart = ; cart class needed
     }
@@ -112,8 +141,8 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @param email The unique email that corresponds to the account.
      * @param password The password taht is used to access the account.
      * @throws InvalidUserException If the email or passwords are not valid.
-     * @throws GZDBResultException If the database connection cannot be
-     * resolved.
+     * @throws GZDBResultException If the database connection cannot be resolved
+     * or the default images cannot be loaded.
      */
     public User(String email, String password) throws InvalidUserException, GZDBResultException {
         super();
@@ -124,22 +153,36 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
             throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
         }
         resetMaps();
+        try {
+            pictureHandler = new PictureHandler();
+        } catch (IOException e) {
+            throw new InvalidUserException(UserExceptions.PICTURE);
+        }
         insertMap.put("Email", email);
         insertMap.put("PasswordUser", password);
         try {
             resultList = gzdbc.select(GZDBTables.USER, insertMap);
+            if (resultList.size() != 1) {
+                throw new InvalidUserException(UserExceptions.ACCOUNT_ACCESS);
+            }
+            LinkedHashMap<String, Object> resultMap = resultList.get(0);
+            try {
+                this.email = email;
+                this.password = password;
+                this.id = (int) resultMap.get("ID");
+                this.username = (String) resultMap.get("PUsername");
+                this.age = (int) resultMap.get("Age");
+                this.administratorAccess = (boolean) resultMap.get("AdministratorAccess");
+                this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
+                this.plants = new PlantList(this);
+            } catch (InvalidPlantException e) {
+                throw new InvalidUserException(UserExceptions.PLANTS, e);
+            }
         } catch (GZDBResultException e) {
             throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
-        this.email = email;
-        this.password = password;
-        this.id = (int) resultList.get(0).get("ID");
-        this.username = (String) resultList.get(0).get("PUsername");
-        this.age = (int) resultList.get(0).get("Age");
-        this.administratorAccess = (boolean) resultList.get(0).get("AdministratorAccess");
-        this.profilePicture = pictureHandler.convertBlobToBufferedImage((Blob) resultList.get(0).get("Picture"));
+
         //this.location = ; location class needed
-        //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
         //this.cart = ; cart class needed
     }
@@ -154,7 +197,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @param age The age in real life of the owner of the account.
      * @param profilePicture A picture of the person in real life.
      * @throws InvalidUserException If the data provided does not meet the
-     * format requirements.
+     * format requirements or the default images cannot be loaded.
      * @throws GZDBResultException If the database connection cannot be
      * resolved.
      */
@@ -170,31 +213,50 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         if (!GZFormatter.isValid(password, GZFormats.PASSWORD)) {
             throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
         }
-        if (age < 12 || age > 120) {
-            throw new InvalidUserException(UserExceptions.AGE);
+        if (age < 12) {
+            throw new InvalidUserException(UserExceptions.AGE_SMALLER);
+        }
+        if (age > 120) {
+            throw new InvalidUserException(UserExceptions.AGE_BIGGER);
+        }
+        try {
+            pictureHandler = new PictureHandler();
+        } catch (IOException e) {
+            throw new InvalidUserException(UserExceptions.PICTURE);
         }
         resetMaps();
-        insertMap.put("PUsername", username);
-        insertMap.put("Email", email);
-        insertMap.put("Age", age);
-        insertMap.put("PasswordUser", password);
-        insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(profilePicture, gzdbc.getConnection()));
         try {
+            insertMap.put("PUsername", username);
+            insertMap.put("Email", email);
+            insertMap.put("Age", age);
+            insertMap.put("PasswordUser", password);
+            if (profilePicture != null) {
+                insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(profilePicture, gzdbc.getConnection()));
+            } else {
+                insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(pictureHandler.getDEFAULT_USER(), gzdbc.getConnection()));
+            }
             gzdbc.insert(GZDBTables.USER, insertMap);
             resultList = gzdbc.select(GZDBTables.USER, insertMap);
         } catch (GZDBResultException e) {
             throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
-        this.id = (int) resultList.get(0).get("ID");
-        this.username = username;
-        this.email = email;
-        this.age = age;
-        this.password = password;
-        this.administratorAccess = false;
-        this.profilePicture = profilePicture;
-
+        try {
+            this.id = (int) resultList.get(0).get("ID");
+            this.username = username;
+            this.email = email;
+            this.age = age;
+            this.password = password;
+            this.administratorAccess = false;
+            if (profilePicture != null) {
+                this.profilePicture = profilePicture;
+            } else {
+                this.profilePicture = pictureHandler.getDEFAULT_USER();
+            }
+            this.plants = new PlantList(this);
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANTS, e);
+        }
         //this.location = ; location class needed
-        //this.plants = ; plantlist class needed
         //this.products = ; productlist class needed
         //this.cart = ; cart class needed
     }
@@ -253,18 +315,6 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
     }
 
     /**
-     * Transforms the profile picture into a Base64 encodification for web
-     * application display purposes.
-     *
-     * @param externalPicture The picture from an external source outside the
-     * User.
-     * @return A base 64 encodification of the external picture.
-     */
-    public String getBase64PictureFromExternalSource(BufferedImage externalPicture) {
-        return pictureHandler.convertBufferedImageToBase64(externalPicture);
-    }
-
-    /**
      * Provides the picture handler for the subsequent plant and product
      * classes.
      *
@@ -282,20 +332,6 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      */
     public Location getLocation() {
         return location;
-    }
-
-    /**
-     * All the plants that this user posseses.
-     *
-     * @return A list containing all the plants owned.
-     * @throws InvalidUserException If the user's plant's cannot be resolved.
-     */
-    public PlantList getPlants() throws InvalidUserException {
-        try {
-            return new PlantList(this);
-        } catch (InvalidPlantException e) {
-            throw new InvalidUserException(UserExceptions.PLANTS, e);
-        }
     }
 
     /**
@@ -335,46 +371,225 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
     }
 
     /**
+     * Gets all the plants of this user in a list.
+     *
+     * @return A list containing all the plant that this user posseses.
+     */
+    public PlantList getPlants() {
+        return plants;
+    }
+
+    /**
+     * Gets a singular plant depending on the ID and confirms if it matches with
+     * the name.
+     *
+     * @param id The ID of the plant to look for.
+     * @param name The name of the plant to check it's validity.
+     * @return The plant with all of it's data.
+     * @throws InvalidUserException If the plant's ID and name are not
+     * correspondant or cannot be resolved correctly.
+     */
+    public Plant getPlant(int id, String name) throws InvalidUserException {
+        if (name == null || name.isBlank()) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID);
+        }
+        try {
+            if (plants.getFromMap(id).getName().equals(name)) {
+                return plants.getFromMap(id);
+            } else {
+                throw new InvalidUserException(UserExceptions.PLANT_ID);
+            }
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID, e);
+        }
+    }
+
+    /**
+     * Adds a plant to this User's plant list and maps.
+     *
+     * @param name The name of the new plant to be added.
+     * @param plantingDate The date the new plant was planted.
+     * @param description The description of the new plant to be added.
+     * @param quantity The quantity of the new plant to be added.
+     * @param schedule The schedule to water the new plant to be added.
+     * @param plantPicture The representative in real life picture of the new
+     * plant to be added.
+     * @throws InvalidUserException If the plant's ID and name are not
+     * correspondant or cannot be resolved correctly.
+     */
+    public void addPlant(String name, String description, int quantity, LocalDate plantingDate, ArrayList<LocalTime> schedule,
+            BufferedImage plantPicture) throws InvalidUserException {
+        try {
+            if (plants.getFromList(id).getName().equals(name)) {
+                throw new InvalidUserException(UserExceptions.PLANT_ID);
+            }
+            plants.add(new Plant(name, description, quantity, plantingDate, schedule, plantPicture, this));
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID, e);
+        }
+    }
+
+    /**
+     * Updates an already existing plant with the new provided data.
+     *
+     * @param id The ID of the plant to look for.
+     * @param oldName The original name of the plant to check for it's validity.
+     * @param newName The new name for this plant.
+     * @param newPantingDate The new date this plant was planted on.
+     * @param newDescription The new description of this plant.
+     * @param newQuantity The new quantity of this plant.
+     * @param newSchedule The new schedule of this plant.
+     * @param newPlantPicture The new picture of this plant in real life.
+     * @throws InvalidUserException If the plant's ID and name are not
+     * correspondant or cannot be resolved correctly.
+     */
+    public void updatePlant(int id, String oldName, String newName, Date newPantingDate, String newDescription, int newQuantity, ArrayList<Time> newSchedule,
+            BufferedImage newPlantPicture) throws InvalidUserException {
+        if (oldName == null || oldName.isBlank()) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID);
+        }
+        try {
+            if (plants.getFromMap(id).getName().equals(oldName)) {
+                if (plants.getFromList(id).getName().equals(newName)) {
+                    throw new InvalidUserException(UserExceptions.PLANT_DUPLICATE);
+                }
+
+            } else {
+                throw new InvalidUserException(UserExceptions.PLANT_ID);
+            }
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID, e);
+        }
+    }
+
+    /**
+     * Deletes a certain plant that this user posseses.
+     *
+     * @param id The ID of the plant to look for.
+     * @param name The name of the plant to check it's validity.
+     * @throws InvalidUserException If the plant's ID and name are not
+     * correspondant.
+     */
+    public void deletePlant(int id, String name) throws InvalidUserException {
+        if (name == null || name.isBlank()) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID);
+        }
+        try {
+            if (plants.getFromMap(id).getName().equals(name)) {
+                plants.delete(id);
+            } else {
+                throw new InvalidUserException(UserExceptions.PLANT_ID);
+            }
+        } catch (InvalidPlantException e) {
+            throw new InvalidUserException(UserExceptions.PLANT_ID, e);
+        }
+    }
+
+    /**
+     * Updates all the user's data in a batch, if any given parameter is null it
+     * get's omitted.
+     *
+     * @param newName The new name of this user.
+     * @param newEmail The new email associated with this user's account.
+     * @param newAge The new age of this user.
+     * @param newPicture The new profile picture of this user.
+     * @param oldPassword The old password of this account to check for it's
+     * validity.
+     * @param newPassword The new password to be associated with this account.
+     * @return A long message indicating the state of the batch updates, which
+     * ones failed and why, which one suscceded or if there was no updates at
+     * all.
+     */
+    public String updateUserBatch(String newName, String newEmail, int newAge, BufferedImage newPicture, String oldPassword, String newPassword) {
+        int updateCount = 0;
+        StringBuilder messageBuilder = new StringBuilder();
+        try {
+            appendUpdateMessage(messageBuilder, setPassword(oldPassword, newPassword));
+            updateCount++;
+        } catch (InvalidUserException e) {
+            if (e.getMessage().equals(UserExceptions.PASSWORD_MATCHES.getExceptionMessage())) {
+                return e.getMessage();
+            }
+            appendUpdateMessage(messageBuilder, e.getMessage());
+        }
+        try {
+            appendUpdateMessage(messageBuilder, setName(newName));
+            updateCount++;
+        } catch (InvalidUserException e) {
+            appendUpdateMessage(messageBuilder, e.getMessage());
+            messageBuilder.append(e.getMessage());
+        }
+        try {
+            appendUpdateMessage(messageBuilder, setEmail(newEmail));
+            updateCount++;
+        } catch (InvalidUserException e) {
+            appendUpdateMessage(messageBuilder, e.getMessage());
+            messageBuilder.append(e.getMessage());
+        }
+        try {
+            appendUpdateMessage(messageBuilder, setAge(newAge));
+            updateCount++;
+        } catch (InvalidUserException e) {
+            appendUpdateMessage(messageBuilder, e.getMessage());
+            messageBuilder.append(e.getMessage());
+        }
+        try {
+            appendUpdateMessage(messageBuilder, setPicture(newPicture));
+            updateCount++;
+        } catch (InvalidUserException e) {
+            appendUpdateMessage(messageBuilder, e.getMessage());
+        }
+        if (updateCount == 0) {
+            return UserConfirmations.NOCHANGES.getConfirmationMessage();
+        }
+        return messageBuilder.toString();
+    }
+
+    /**
      * Sets a new unique name for an already existing user.
      *
-     * @param name The new name to be used.
+     * @param newName The new name to be used.
+     * @return A message providing information on the success of the update.
      * @throws InvalidUserException If the new name does not meet the format
-     * requirements.
+     * requirements or the database connection cannot be resolved.
      */
-    public void setName(String name) throws InvalidUserException {
-        if (!GZFormatter.isValidLength(name, 3, 50)) {
-            throw new InvalidUserException(UserExceptions.LENGTH_USERNAME);
-        }
-        this.username = name;
-        resetMaps();
-        insertMap.put("PUsername", name);
-        restrictionMap.put("ID", id);
+    private String setName(String newName) throws InvalidUserException {
         try {
+            if (!GZFormatter.isValidLength(newName, 3, 50)) {
+                throw new InvalidUserException(UserExceptions.LENGTH_USERNAME);
+            }
+            resetMaps();
+            insertMap.put("PUsername", newName);
+            restrictionMap.put("ID", id);
             gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            this.username = newName;
+            return UserConfirmations.USERNAME_UPDATE.getConfirmationMessage();
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
     }
 
     /**
      * Sets a new unique email for an already existing user.
      *
-     * @param email The new email to be associated with the user.
+     * @param newEmail The new email to be associated with the user.
+     * @return A message providing information on the success of the update.
      * @throws InvalidUserException If the new email does not meet the format
-     * requirements.
+     * requirements or the database connection cannot be resolved.
      */
-    public void setEmail(String email) throws InvalidUserException {
-        if (!GZFormatter.isValid(email, GZFormats.EMAIL)) {
-            throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
-        }
-        this.email = email;
-        resetMaps();
-        insertMap.put("Email", email);
-        restrictionMap.put("ID", id);
+    private String setEmail(String newEmail) throws InvalidUserException {
         try {
+            if (!GZFormatter.isValid(newEmail, GZFormats.EMAIL)) {
+                throw new InvalidUserException(UserExceptions.FORMAT_EMAIL);
+            }
+            resetMaps();
+            insertMap.put("Email", newEmail);
+            restrictionMap.put("ID", id);
             gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            this.email = newEmail;
+            return UserConfirmations.EMAIL_UPDATE.getConfirmationMessage();
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
     }
 
@@ -382,54 +597,73 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * Sets the new age that a user has in real life, this is a sensitive field
      * and might have a restriction to how many times it can be changed.
      *
-     * @param age The new age the user posseses in real life.
+     * @param newAge The new age the user posseses in real life.
+     * @return A message providing information on the success of the update.
      * @throws InvalidUserException If the new age does not meet the allowed
-     * range.
+     * range or the database connection cannot be resolved.
      */
-    public void setAge(int age) throws InvalidUserException {
-        if (age < 12 || age > 120) {
-            throw new InvalidUserException(UserExceptions.AGE);
-        }
-        this.age = age;
-        resetMaps();
-        insertMap.put("Age", age);
-        restrictionMap.put("ID", id);
+    private String setAge(int newAge) throws InvalidUserException {
         try {
+            if (newAge < 12) {
+                throw new InvalidUserException(UserExceptions.AGE_SMALLER);
+            }
+            if (newAge > 120) {
+                throw new InvalidUserException(UserExceptions.AGE_BIGGER);
+            }
+            resetMaps();
+            insertMap.put("Age", newAge);
+            restrictionMap.put("ID", id);
             gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            this.age = newAge;
+            return UserConfirmations.AGE_UPDATE.getConfirmationMessage();
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
     }
 
     /**
      * Sets the new profile picture of this user.
      *
-     * @param picture The new picture to use for the profile.
-     * @throws InvalidUserException If the picture can't be utilized.
+     * @param newPicture The new picture to use for the profile.
+     * @return A message providing information on the success of the update.
+     * @throws InvalidUserException If the picture can't be utilized or the
+     * database connection cannot be resolved.
      */
-    public void setPicture(BufferedImage picture) throws InvalidUserException {
-        this.profilePicture = picture;
-        /*
-        picture handler needed
+    private String setPicture(BufferedImage newPicture) throws InvalidUserException {
+        try {
+            boolean defaultFlag = false;
             resetMaps();
-            insertMap.put("Picture", HANDLER_HERE);
+            if (newPicture != null) {
+                insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(newPicture, gzdbc.getConnection()));
+            } else {
+                insertMap.put("Picture", pictureHandler.convertBufferedImageToBlob(pictureHandler.getDEFAULT_USER(), gzdbc.getConnection()));
+                defaultFlag = true;
+            }
             restrictionMap.put("ID", id);
-           try {
             gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            if (!defaultFlag) {
+                this.profilePicture = newPicture;
+                return UserConfirmations.PICTURE_UPDATE.getConfirmationMessage();
+            } else {
+                this.profilePicture = pictureHandler.getDEFAULT_USER();
+                return UserConfirmations.PICTURE_DEFAULT.getConfirmationMessage();
+            }
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
-         */
     }
 
     /**
      * Sets the new location in real life of this user.
      *
-     * @param location The new location of the user in real life.
-     * @throws InvalidUserException If the location can't be utilized.
+     * @param newLocation The new location of the user in real life.
+     * @return A successful confirmation message.
+     * @throws InvalidUserException If the location can't be utilized or the
+     * database connection cannot be resolved.
      */
-    public void setLocation(Location location) throws InvalidUserException {
-        this.location = location;
+    @SuppressWarnings("unused")
+    private String setLocation(Location newLocation) throws InvalidUserException {
+        this.location = newLocation;
         /*
         location class needed
             resetMaps();
@@ -441,6 +675,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
             throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
         }
          */
+        return UserConfirmations.LOCATION_UPDATE.getConfirmationMessage();
     }
 
     /**
@@ -449,35 +684,49 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      *
      * @param oldPassword The password used to access the account.
      * @param newPassword The new password to be used for future access.
+     * @return A message providing information on the success of the update.
      * @throws InvalidUserException If the new age does not meet the format
-     * requirements.
+     * requirements or the database connection cannot be resolved.
      */
-    public void setPassword(String oldPassword, String newPassword) throws InvalidUserException {
-        if (!GZFormatter.isValid(newPassword, GZFormats.PASSWORD)) {
-            throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
-        }
-        if (!oldPassword.equals(this.password)) {
-            throw new InvalidUserException(UserExceptions.PASSWORD);
-        }
-        this.password = newPassword;
-        resetMaps();
-        insertMap.put("PasswordUser", newPassword);
-        restrictionMap.put("ID", id);
+    private String setPassword(String oldPassword, String newPassword) throws InvalidUserException {
         try {
+            if (!oldPassword.equals(this.password)) {
+                throw new InvalidUserException(UserExceptions.PASSWORD_MATCHES);
+            }
+            if (!GZFormatter.isValid(newPassword, GZFormats.PASSWORD)) {
+                throw new InvalidUserException(UserExceptions.FORMAT_PASSWORD);
+            }
+            resetMaps();
+            insertMap.put("PasswordUser", newPassword);
+            restrictionMap.put("ID", id);
             gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            this.password = newPassword;
+            return UserConfirmations.PASSWORD_UPDATE.getConfirmationMessage();
         } catch (GZDBResultException e) {
-            throw new InvalidUserException(UserExceptions.GZDBCONNECTION);
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
         }
     }
 
     /**
      * Determines whether the User has access to administrator features or not.
      *
-     * @param administratorAccess A true or false value describing the state of
-     * it's administrator access.
+     * @param newAdministratorAccess A true or false value describing the state
+     * of it's administrator access.
+     * @return A message providing information on the success of the update.
+     * @throws InvalidUserException If the new age does not meet the format
+     * requirements or the database connection cannot be resolved.
      */
-    public void setAdministratorAccess(boolean administratorAccess) {
-        this.administratorAccess = administratorAccess;
+    public String setAdministratorAccess(boolean newAdministratorAccess) throws InvalidUserException {
+        try {
+            resetMaps();
+            insertMap.put("AdministratorAccess", newAdministratorAccess);
+            restrictionMap.put("ID", id);
+            gzdbc.update(GZDBTables.USER, insertMap, restrictionMap);
+            this.administratorAccess = newAdministratorAccess;
+            return UserConfirmations.ADMINISTRATORACCESS_UPDATE.getConfirmationMessage();
+        } catch (GZDBResultException e) {
+            throw new InvalidUserException(UserExceptions.GZDBCONNECTION, e);
+        }
     }
 
     /**

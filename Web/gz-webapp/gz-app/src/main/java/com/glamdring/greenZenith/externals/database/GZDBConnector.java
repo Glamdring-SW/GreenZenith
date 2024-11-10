@@ -19,7 +19,7 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
  * some default credentials.
  *
  * @author Glamdring (Σxz)
- * @version 2.1.0
+ * @version 2.1.1
  * @since 0.1
  */
 public class GZDBConnector {
@@ -69,27 +69,8 @@ public class GZDBConnector {
         try {
             Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
-        }
-    }
-
-    /**
-     * A secondary constructor for this class, requires other user-defined
-     * credentials.
-     *
-     * @param urlDB The URL required to access the MySQL server and database.
-     * @param usernameDB The name of the user that will access the database.
-     * @param passwordDB The password needed to access the database with the
-     * respective username.
-     * @throws GZDBResultException If the JDBC driver cannot be found or the
-     * arguments provided for accessing the database cannot resolve a
-     * connection, this exception will be thrown.
-     */
-    public GZDBConnector(String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
-        try {
-            Class.forName(JDBC_DRIVER);
-            connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
+            connection.createStatement().execute("SET CHARACTER SET 'utf8'");
+            connection.createStatement().execute("SET NAMES 'utf8'");
         } catch (SQLException | ClassNotFoundException e) {
             throw new GZDBResultException(GZDBExceptionMessages.CONSTRUCTION_CONNECTOR, e);
         }
@@ -116,7 +97,7 @@ public class GZDBConnector {
 
     /**
      * Performs a selection from the database and returns the matching elements
-     * containe3d in a list.
+     * contained in a list.
      *
      * @param table The table in which the SQL action will be performed. @see
      * GZDBTables
@@ -134,6 +115,27 @@ public class GZDBConnector {
             return executor.executeSelect(selectmap);
         } catch (SQLException e) {
             throw new GZDBResultException(GZDBExceptionMessages.SELECT, selectmap, e);
+        }
+    }
+
+    /**
+     * Performs a selection from the database and returns all the elements of
+     * the given table.
+     *
+     * @param table The table in which the SQL action will be performed. @see
+     * GZDBTables
+     * @return A list providing maps that contain the different entries given by
+     * the SQL Query.
+     * @throws GZDBResultException A message indicating which SQL Action or
+     * Query failed and the map that made the failure happen. @see
+     * GZDBResultException
+     */
+    public ArrayList<LinkedHashMap<String, Object>> selectAll(GZDBTables table) throws GZDBResultException {
+        executor = new GZDBExecutor(connection, preparedStatement, GZDBActions.SELECT, table);
+        try {
+            return executor.executeSelectAll();
+        } catch (SQLException e) {
+            throw new GZDBResultException(GZDBExceptionMessages.SELECT, e);
         }
     }
 
@@ -229,6 +231,7 @@ public class GZDBConnector {
      */
     public void close() {
         try {
+            preparedStatement.close();
             connection.close();
         } catch (SQLException ex) {
 

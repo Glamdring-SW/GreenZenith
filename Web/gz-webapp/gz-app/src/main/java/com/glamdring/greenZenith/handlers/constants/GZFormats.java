@@ -6,7 +6,7 @@ package com.glamdring.greenZenith.handlers.constants;
  * compatibility with the Database, for the recommended usage @see GZFormatter
  *
  * @author Glamdring (Σxz)
- * @version 1.0.2
+ * @version 1.0.3
  * @since 0.2
  */
 public enum GZFormats {
@@ -14,15 +14,12 @@ public enum GZFormats {
     /**
      * Standard mailing format with a limit of 100 characters.
      */
-    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,100}$"),
+    EMAIL("^[a-zA-Z0-9!#$%&’*+\\-\\/=?^_`{|}~\\.]+@{1}(?:gmail|yahoo|hotmail|outlook|msn|aol|live|mail|ymail|comcast|icloud|protonmail|wanadoo|zoho)(?:\\.[a-z]{2,3})?(?:\\.[a-z]{2}|)$"),
     /**
      * More than 12 characters, one uppercase character, one special character
-     * and one number.
+     * and one number, specially compatible.
      */
-    PASSWORD("^(?=.*[A-Z])(?=.*[a-z])(?=.+\\d)(?=.+[!-\\/\\[-`{-~])[!-~]{12,100}$");
-    /**
-     *
-     */
+    PASSWORD("^(?=.*[A-Z])(?=.*[a-z])(?=.+\\d)(?=.+[\\\\u0021-\\\\u002F\\\\u003A-\\\\u0040\\\\u005B-\\\\u0060\\\\u007B-\\\\u007E\\\\u00A1-\\\\u00BF\\\\u2000-\\\\u206F\\\\u2190-\\\\u21FF\\\\u2600-\\\\u26FF\\\\u2700-\\\\u27BF])[^\\r\\n]{12,100}$");
 
     /**
      * Holds the value of each item's regular expression.

@@ -19,39 +19,34 @@ public enum GZDBExceptionMessages {
     /**
      * Insertions on the MySQL Database failed.
      */
-    INSERT("SQLExceptionOnInsert"),
+    INSERT("Hubo un fallo al guardar la nueva informacion."),
     /**
      * Selections on the MySQL Database failed.
      */
-    SELECT("SQLExceptionOnSelect"),
+    SELECT("Hubo un fallo al obtener la informacion."),
     /**
      * Changing of data on the MySQL Database failed.
      */
-    UPDATE("SQLExceptionOnUpdate"),
+    UPDATE("Hubo un fallo al actualizar la informacion."),
     /**
      * Deletion of a table on the MySQL Database failed.
      */
-    DELETE("SQLExceptionOnDelete"),
-    /**
-     * An instruccion of code that is never supposed to be executed was
-     * performed.
-     */
-    UNREACHABLE_CASE("UnreachableCaseAccessed"),
+    DELETE("Hubo un fallo al borrar la informacion."),
     /**
      * The {@link com.glamdring.greenZenith.externals.database.GZDBConnector}
      * failed to initialize itself succesfully in memory.
      */
-    CONSTRUCTION_CONNECTOR("ConnectorConstructionError"),
+    CONSTRUCTION_CONNECTOR("Hubo un fallo al obtener nuestro conector a la base de datos."),
     /**
      * The field established to seek information in was not found in the
      * database
      */
-    SELECT_NOFIELD("NoCorrespondantFieldForSelect"),
+    SELECT_NOFIELD("No existe algun campo que contenga esa informacion."),
     /**
      * The field established to update information of was not found in the
      * database
      */
-    UPDATE_NOFIELD("NoCorrespondantFieldForUpdate");
+    UPDATE_NOFIELD("No existe un campo que pueda actualizar.");
 
     /**
      * Holds the value of each item's predefined exception message.

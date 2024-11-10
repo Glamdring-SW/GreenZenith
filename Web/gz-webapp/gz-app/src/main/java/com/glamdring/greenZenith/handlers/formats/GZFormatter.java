@@ -36,7 +36,8 @@ public class GZFormatter {
     /**
      * Realizes a comparison, with respect to a selected format, converted into
      * a pattern, to determine if the input given is valid in regards to the
-     * predefined regular expression pattern.
+     * predefined regular expression pattern. Has a check for if the given
+     * parameter is null or blank.
      *
      * @param input The value to make comparisons with.
      * @param format The predefined format to look for and check in a
@@ -45,6 +46,9 @@ public class GZFormatter {
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValid(String input, GZFormats format) {
+        if (input == null || input.isBlank()) {
+            return false;
+        }
         pattern = Pattern.compile(format.getFormat());
         matcher = pattern.matcher(input);
         return matcher.matches();
@@ -53,44 +57,55 @@ public class GZFormatter {
     /**
      * Realizes a comparison, with respect to a given format, converted into a
      * pattern, to determine if the input given is valid in regards to the given
-     * regular expression pattern.
+     * regular expression pattern. Has a check for if the given parameter is
+     * null or blank.
      *
      * @param input The value to make comparisons with.
      * @param format The format to look for and check in a comparison.
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValid(String input, String format) {
+        if (input == null || input.isBlank() || format == null || format.isBlank()) {
+            return false;
+        }
         pattern = Pattern.compile(format);
         matcher = pattern.matcher(input);
         return matcher.matches();
     }
 
     /**
-     * Checks if the length of a given string is within an upper boundary.
+     * Checks if the length of a given string is within an upper boundary. Has a
+     * check for if the given parameter is null or blank.
      *
      * @param input The string whose length needs to be validated.
      * @param maxLength The maximum length it can be.
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidMaxLength(String input, int maxLength) {
+        if (input == null) {
+            return false;
+        }
         return input.length() <= maxLength;
     }
 
     /**
-     * Checks if the length of a given string is within a lower boundary.
+     * Checks if the length of a given string is within a lower boundary. Has a
+     * check for if the given parameter is null or blank.
      *
      * @param input The string whose length needs to be validated.
      * @param minLength The minimum length it can be.
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidMinLength(String input, int minLength) {
+        if (input == null) {
+            return false;
+        }
         return input.length() >= minLength;
     }
 
     /**
-     *
      * Checks if the length of a given string is within an upper and lower
-     * boundary.
+     * boundary. Has a check for if the given parameter is null or blank.
      *
      * @param input The string whose length needs to be validated.
      * @param minLength The maximum length it can be.
@@ -98,6 +113,9 @@ public class GZFormatter {
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidLength(String input, int minLength, int maxLength) {
+        if (input == null) {
+            return false;
+        }
         return input.length() >= minLength && input.length() <= maxLength;
     }
 

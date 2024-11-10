@@ -24,6 +24,10 @@ public enum PlantExceptions {
      * The quantity of the User's plant is not a valid number.
      */
     QUANTITY("InvalidPlantQuantity"),
+     /**
+     * The quantity of the User's plant is not a valid number.
+     */
+    QUANTITY_DECREASEBY1("InvalidPlantQuantity"),
     /**
      * The image of the User's plant can not be utilized.
      */
@@ -37,9 +41,17 @@ public enum PlantExceptions {
      */
     SCHEDULE("InvalidPlantPicture"),
     /**
-     * the owner of this plant cannot be resolved.
+     * The owner of this plant cannot be resolved.
      */
-    OWNER("InvalidPlantOwnership");
+    OWNER("InvalidPlantOwnership"),
+    /**
+     * The connection to the database cannot be resolved.
+     */
+    DATABASE("InvalidPlantDatabaseConnection"),
+    /**
+     * The owner of this plant cannot be resolved.
+     */
+    INEXISTANT("La planta especificada no existe."),;
 
     /**
      * Holds the value of each item's predefined exception message.
@@ -64,5 +76,4 @@ public enum PlantExceptions {
     public String getExceptionMessage() {
         return exceptionMessage;
     }
-
 }

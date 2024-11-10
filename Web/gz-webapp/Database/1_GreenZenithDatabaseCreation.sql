@@ -17,13 +17,15 @@ USE `GreenZenith` ;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`PUser`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`PUser` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`PUser` (
-  `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'Clave primaria del Usuario',
-  `PUsername` VARCHAR(50) NOT NULL COMMENT 'Nombre del usuario asignado',
-  `Email` VARCHAR(100) NOT NULL COMMENT 'Correo electronico unico asociado a el usuario',
-  `Age` INT NOT NULL COMMENT 'Edad del usuario sin considerar meses o dias',
-  `Location` VARCHAR(50) NULL COMMENT 'Localizacion del usuario almacenada como una cadena',
-  `PasswordUser` VARCHAR(100) NOT NULL COMMENT 'Contraseña del usuario para acceder a la aplicacion y comprobar la validez de credenciales adecuada',
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `PUsername` VARCHAR(50) NOT NULL,
+  `Email` VARCHAR(100) NOT NULL,
+  `Age` INT NOT NULL,
+  `Location` VARCHAR(50) NULL,
+  `PasswordUser` VARCHAR(100) NOT NULL,
   `AdministratorAccess` TINYINT NOT NULL DEFAULT 0,
   `Picture` MEDIUMBLOB NULL,
   PRIMARY KEY (`ID`),
@@ -35,6 +37,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`Plant`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`Plant` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`Plant` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(25) NOT NULL,
@@ -56,6 +60,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`PlantSchedule`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`PlantSchedule` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`PlantSchedule` (
   `WaterTime` TIME NOT NULL,
   `Plant_ID` INT NOT NULL,
@@ -71,6 +77,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`Product`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`Product` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`Product` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Title` VARCHAR(30) NOT NULL,
@@ -92,6 +100,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`Cart`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`Cart` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`Cart` (
   `PUser_ID` INT NOT NULL,
   `Product_ID` INT NOT NULL,
@@ -115,6 +125,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `GreenZenith`.`Message`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `GreenZenith`.`Message` ;
+
 CREATE TABLE IF NOT EXISTS `GreenZenith`.`Message` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Content` TEXT(200) NOT NULL,
@@ -140,3 +152,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

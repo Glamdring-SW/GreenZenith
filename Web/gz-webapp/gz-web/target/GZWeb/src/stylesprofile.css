@@ -1,0 +1,83 @@
+body {
+    margin-top: 50px;
+    background-color: #d5e8c8;
+    align-content: flex-start;
+}
+.navbar .sizing-brand {
+    font-size: 2rem;
+    color: #e5edd8;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    font-size: 1.4rem;
+    z-index: 1;
+    background-color: #675c5f;
+}
+
+.custom-navbar {
+    background-color:  #675c5f;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #c4d8a4;
+}
+
+.navbar .nav-link {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    color: #e5edd8;
+}
+.profile-container {
+    background-color: #262424;
+    padding: 2rem;
+    border-radius: 8px;
+}
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.profile-name {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.profile-title {
+    color: #bfbfbf;
+    font-size: 0.9rem;
+}
+.btn-outline-light-custom {
+    color: #ffffff;
+    border-color: #ffffff;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.btn-outline-light-custom:hover {
+    background-color: #ffffff;
+    color: #262424;
+}
+.social-icons img {
+    width: 25px;
+    margin: 0 5px;
+}
+.profile-photo-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: block;
+}
+.error-message {
+    margin-top: 20%;
+    text-align: center;
+    font-size: 1.5rem;
+}
+.error-code {
+    font-size: 3rem;
+    font-weight: bold;
+}

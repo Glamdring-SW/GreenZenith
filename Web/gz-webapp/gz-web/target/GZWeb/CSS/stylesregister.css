@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('Fonts/AgrandirFonts') format('otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin:0;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-color: #fefef0;
+    display: flex;
+    overflow: scroll;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    font-family: 'CustomFont', sans-serif;
+    font-size: 30px;
+}
+
+.navbar .sizing-brand {
+    font-size: 2vw;
+    color: #e5edd8;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    font-size: 1.4rem;
+    z-index: 1;
+    background-color: #675c5f;
+}
+
+.custom-navbar {
+    background-color:  #675c5f;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #c4d8a4;
+}
+
+.navbar .nav-link {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    color: #e5edd8;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+}
+
+.card {
+    width: 50vw;
+    max-width: 500px;
+    background-color: #e5edd8;
+}
+
+.card-header {
+    background-color: #675c5f;
+    color: #e5edd8;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn.button-color {
+    background-color: #675c5f;
+    border: 1px solid #5b554e;
+    color: #e5edd8; /* Button text color */
+    padding: 0.5rem 1rem; /* Add padding for button */
+}
+
+.btn.button-color:hover {
+    background-color: #c4d8a4;
+}
+
+.color-title {
+    color: #231f20;
+}
+
+.color-registro {
+    color: #e5edd8;
+}
+
+.form-label {
+    font-size: 1.2rem;
+    color: #231f20;
+}
+
+.form-control {
+    border: 1px solid #5b554e;
+}
+
+.form-control:focus {
+    border-color: #31463c;
+    box-shadow: 0 0 0.2rem rgba(49, 70, 60, 0.25);
+}
+
+.color {
+    color: #231f20;
+}
+
+.centered-form {
+    align-items: center;
+}
+
+.link {
+    color: #5b554e;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

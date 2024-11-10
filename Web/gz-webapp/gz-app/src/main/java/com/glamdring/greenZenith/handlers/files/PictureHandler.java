@@ -2,7 +2,6 @@ package com.glamdring.greenZenith.handlers.files;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -22,32 +21,31 @@ public class PictureHandler {
     /**
      * The default profile picture of a User.
      */
-    public BufferedImage DEFAULT_USER = null;
+    private BufferedImage DEFAULT_USER = null;
     /**
      * The default picture of a plant.
      */
-    public BufferedImage DEFAULT_PLANT = null;
+    private BufferedImage DEFAULT_PLANT = null;
     /**
      * The default picture of a product.
      */
-    public BufferedImage DEFAULT_PRODUCT = null;
+    private BufferedImage DEFAULT_PRODUCT = null;
     /**
      * A true default for all pictures.
      */
-    public BufferedImage DEFAULT_TRUE = null;
+    private BufferedImage DEFAULT_TRUE = null;
 
     /**
      * Constructs the Picture handler object and asigns the default images a
      * value depending on the image chosen within the proyect files.
+     *
+     * @throws IOException If it cannot find the default images in the proyect.
      */
-    public PictureHandler() {
-        try {
-            DEFAULT_USER = ImageIO.read(new File("../../../../../../resources/default_profilePicture.png"));
-            DEFAULT_PLANT = ImageIO.read(new File("../../../../../../resources/default_plantPicture.png"));
-            DEFAULT_PRODUCT = ImageIO.read(new File("../../../../../../resources/default_productPicture.png"));
-            DEFAULT_TRUE = ImageIO.read(new File("../../../../../../resources/default_All.png"));
-        } catch (IOException e) {
-        }
+    public PictureHandler() throws IOException {
+        DEFAULT_USER = ImageIO.read(getClass().getResource("/default_Images/default_profilePicture.png"));
+        DEFAULT_PLANT = ImageIO.read(getClass().getResource("/default_Images/default_plantPicture.png"));
+        DEFAULT_PRODUCT = ImageIO.read(getClass().getResource("/default_Images/default_productPicture.png"));
+        DEFAULT_TRUE = ImageIO.read(getClass().getResource("/default_Images/default_All.png"));
     }
 
     /**
@@ -87,6 +85,13 @@ public class PictureHandler {
         }
     }
 
+    /**
+     * Converts a usable image into a Base64 string for easier access and
+     * loading with web applications.
+     *
+     * @param bufferedImage The image to convert.
+     * @return A Base64 string that contains the image data.
+     */
     public String convertBufferedImageToBase64(BufferedImage bufferedImage) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(bufferedImage, "png", baos);
@@ -99,4 +104,45 @@ public class PictureHandler {
             return null;
         }
     }
+
+    /**
+     * The default User image is applied when a User cannot resolve it's
+     * picture.
+     *
+     * @return The default plant picture for any user.
+     */
+    public BufferedImage getDEFAULT_USER() {
+        return DEFAULT_USER;
+    }
+
+    /**
+     * The default plant image is applied when a plant cannot resolve it's
+     * picture.
+     *
+     * @return The default plant picture for any plant.
+     */
+    public BufferedImage getDEFAULT_PLANT() {
+        return DEFAULT_PLANT;
+    }
+
+    /**
+     * The default product image is applied when a product cannot resolve it's
+     * picture.
+     *
+     * @return The default product picture for any product.
+     */
+    public BufferedImage getDEFAULT_PRODUCT() {
+        return DEFAULT_PRODUCT;
+    }
+
+    /**
+     * The default true is a placeholder image of 512x512 pixels that can be
+     * applied to all types of image data that don't have a defined image.
+     *
+     * @return A placeholder that can be applied to everything.
+     */
+    public BufferedImage getDEFAULT_TRUE() {
+        return DEFAULT_TRUE;
+    }
+
 }

@@ -32,7 +32,7 @@ import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
  *
  * @see GZDBConnector
  * @author Glamdring (Σxz)
- * @version 1.3.0
+ * @version 1.3.1
  * @since 0.1
  */
 public class GZDBExecutor {
@@ -95,7 +95,8 @@ public class GZDBExecutor {
     private PreparedStatement preparedStatement;
 
     /**
-     * Assigns each parameter to their private field equivalent.
+     * Assigns each parameter to their private field equivalent for usage on
+     * executing SQL Statements.
      *
      * @param preparedStatement The object that executes every SQL Statement.
      * @param connection A MySQL Server connection.
@@ -454,8 +455,8 @@ public class GZDBExecutor {
      *
      * @param selectMap A map containing all the values of each condition and
      * their respective fields to be applied on.
-     * @return A list that provides different maps containing all the values returned by the SQL Select
-     * Statement.
+     * @return A list that provides different maps containing all the values
+     * returned by the SQL Select Statement.
      * @throws SQLException If the statement is not able to be executed.
      * @throws GZDBResultException If the method
      * {@link #getSelectStatement(LinkedHashMap<String, Object>)} does not run
@@ -466,6 +467,46 @@ public class GZDBExecutor {
         String statement = getSelectStatement(selectMap);
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement = setPreparedStatementArguments(preparedStatement, selectMap, typesMap);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        ArrayList<LinkedHashMap<String, Object>> resultList = getResultMapWithWhereClause(resultSet, typesMap);
+        return resultList;
+    }
+
+    /**
+     * Creates an SQL Select Statement to be used for further execution.
+     *
+     * @return A SQL Select Statement string with the adequate format and ready
+     * to be filled.
+     * @throws SQLException If the method {@link #getTableFields()} does not run
+     * correctly. See {@link #makeWhereClause(LinkedHashMap)}.
+     * @throws GZDBResultException If the field to be selected is not contained
+     * in the table. See {@link #makeWhereClause(LinkedHashMap)}.
+     */
+    private String getSelectAllStatement() throws SQLException, GZDBResultException {
+        statementBuilder = new StringBuilder();
+        statementBuilder.append(action.getAction());
+        statementBuilder.append(SPACE_CHAR);
+        statementBuilder.append(EVERYTHING_CHAR);
+        statementBuilder.append(SPACE_CHAR);
+        statementBuilder.append(GZDBReserved.FROM.getKeyword());
+        statementBuilder.append(SPACE_CHAR);
+        statementBuilder.append(table.getTable());
+        return statementBuilder.toString();
+    }
+
+    /**
+     * Executes a SQL Select Statement from the predefined table.
+     *
+     * @return A list that provides all the elements from the given table.
+     * @throws SQLException If the statement is not able to be executed.
+     * @throws GZDBResultException If the method
+     * {@link #getSelectStatement(LinkedHashMap<String, Object>)} does not run
+     * correctly.
+     */
+    public ArrayList<LinkedHashMap<String, Object>> executeSelectAll() throws SQLException, GZDBResultException {
+        LinkedHashMap<String, String> typesMap = getTableTypes();
+        String statement = getSelectAllStatement();
+        preparedStatement = connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
         ArrayList<LinkedHashMap<String, Object>> resultList = getResultMapWithWhereClause(resultSet, typesMap);
         return resultList;

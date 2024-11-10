@@ -49,27 +49,28 @@ public class GZDBSuperManager {
     }
 
     /**
-     * Establishes a connection to the MySQL Server and database utilizing user
-     * defined credentials as parameters.
-     *
-     * @param urlDB The URL where the MySQL Server and database is located on.
-     * @param usernameDB The username to use for accessing the MySQL Server.
-     * @param passwordDB The respective password to grant access to the MySQL
-     * Server.
-     * @throws GZDBResultException If the table cannot be found or the
-     * connection cannot be resolved.
-     */
-    public GZDBSuperManager(String urlDB, String usernameDB, String passwordDB) throws GZDBResultException {
-        gzdbc = new GZDBConnector(urlDB, usernameDB, passwordDB);
-    }
-
-    /**
      * Resets the insertion and restriction maps to be used as new, so any
      * garbage data is not utilized on new usages.
      */
     public void resetMaps() {
         insertMap.clear();
         restrictionMap.clear();
+    }
+
+    /**
+     * Adds the confirmation message to a String for future usage as feedback of
+     * an update.
+     *
+     * @param messageBuilder The string that builds the complete feedback
+     * message.
+     * @param message The message to append.
+     */
+    public void appendUpdateMessage(StringBuilder messageBuilder, String message) {
+        char lineFeed = 10;
+        char carriageReturn = 13;
+        messageBuilder.append(message);
+        messageBuilder.append(lineFeed);
+        messageBuilder.append(carriageReturn);
     }
 
     /**
