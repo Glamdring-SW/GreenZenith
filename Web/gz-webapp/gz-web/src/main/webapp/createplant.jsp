@@ -45,9 +45,9 @@
                 <form action="Handlers/plant_controller.jsp" method="post" enctype="multipart/form-data" class="form-input">
                     <div class="mb-3">
                         <label class="form-label" for="plantPicture">Foto de la planta.</label>            
-                        <div  class="form-control">
-                        <input type="file" id="plantPicture" name="plantPicture" accept=".png, .jpg, .jpeg" onchange="previewImage(event)">
-                        <img class="img-fluid rounded responsive-img mx-auto d-block" style="width: 10vh;" id="preview" src="" alt="">
+                        <div class="form-control">
+                            <input type="file" id="plantPicture" name="plantPicture" accept=".png, .jpg, .jpeg" onchange="previewImage(event)">
+                            <img class="img-fluid rounded responsive-img mx-auto d-block" style="width: 10vh;" id="preview" src="" alt="">
                         </div>
                     </div>
                     <div class="mb-3">
@@ -60,7 +60,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="plantingDate" class="form-label">Fecha de plantado</label>
-                        <input type="date" class="form-control" id="plantingDate" name="plantingDate" max="2024-11-06" 
+                        <input type="date" class="form-control" id="plantingDate" name="plantingDate"
                                placeholder="Dia en el que fue plantada." required>
                     </div>
                     <div class="mb-3">
@@ -93,6 +93,15 @@
                     preview.style.display = 'none';
                 }
             }
+            function setDateLimits() {
+                const inputDate = document.getElementById("plantingDate");
+                const today = new Date();
+                const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                const maxDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+                inputDate.min = maxDate.toISOString().split("T")[0];
+                inputDate.max = minDate.toISOString().split("T")[0];
+            }
+            window.onload = setDateLimits;
         </script>
     </body>
 </html>

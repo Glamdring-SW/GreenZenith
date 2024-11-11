@@ -17,6 +17,7 @@
         <title>Explore Plants</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="src/stylesplantexplore.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
@@ -32,23 +33,23 @@
             <div class="row g-4">
                 <% for (Plant plant : user.getPlants().getPlantList()) { %>
                 <%
+                    request.setAttribute("id", plant.getId());
                     request.setAttribute("name", plant.getName());
                     request.setAttribute("description", plant.getDescription());
                     request.setAttribute("quantity", plant.getQuantity());
-                    request.setAttribute("schedule", plant.getSchedule());
                     request.setAttribute("plantingDate", plant.getPlantingDate());
+                    request.setAttribute("schedule", plant.getSchedule());
                     request.setAttribute("plantPicture", plant.getPictureBase64());
                 %>
                 <jsp:include page="plantinfo.jsp"/>
                 <% } %>
             </div>
-            <% }%>
+            <%}%>
             <div class="text-center my-3">
                 <a href="createplant.jsp" class="create-plant-button">
                     Añadir planta.
                 </a>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

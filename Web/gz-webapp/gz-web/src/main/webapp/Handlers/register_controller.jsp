@@ -16,64 +16,72 @@
     DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
     JavaxServletFileUpload upload = new JavaxServletFileUpload(factory);
     List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) request);
-    
+
     String username = null;
     String email = null;
     String password = null;
-    int age = -1;
+    int age = 0;
     BufferedImage profilePicture = null;
     String mimeType = null;
-    
+    boolean defaultFlag = true;
+
     for (FileItem item : formItems) {
         if (item.isFormField()) {
             String fieldName = item.getFieldName();
             String fieldValue = item.getString();
             if (fieldName.equals("userName")) {
-                username = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    username = fieldValue;
+                }
             }
             if (fieldName.equals("email")) {
-                email = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    email = fieldValue;
+                }
             }
             if (fieldName.equals("password")) {
-                password = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    password = fieldValue;
+                }
             }
             if (fieldName.equals("age")) {
-                age = Integer.parseInt(fieldValue);
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    age = Integer.parseInt(fieldValue);
+                } else {
+                    age = 0;
+                }
             }
         } else {
             profilePicture = ImageIO.read(item.getInputStream());
             mimeType = item.getContentType();
+            if (!mimeType.equals("application/octet-stream")) {
+                defaultFlag = false;
+            }
         }
     }
-    
-    if (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif")
-            && username != null && email != null && password != null && age != -1 && mimeType != null) {
+
+    if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
         try {
             User user;
-            if (profilePicture == null) {
-                user = new User(username, email, password, age, ImageIO.read(new File("../img/default_profilePicture.png")));
+            if (defaultFlag) {
+                user = new User(username, email, password, age, null);
             } else {
                 user = new User(username, email, password, age, profilePicture);
             }
             session.setAttribute("User", user);
-            response.sendRedirect("../profile.jsp");
+            response.sendRedirect("../homepage.jsp");
         } catch (InvalidUserException e) {
-            session.setAttribute("jspErrorRegister", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar tus datos personales de acuerdo a las instrucciones.");
-            session.setAttribute("jspErrorLogin", null);
-            session.setAttribute("jspErrorPlantCreate", null);
-            session.setAttribute("jspErrorUserUpdate", null);
-            response.sendRedirect("../error_module.jsp");
+            request.setAttribute("jspErrorRegister", e.getMessage());
+            RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+            dispatch.forward(request, response);
         } catch (GZDBResultException e) {
-            session.setAttribute("jspErrorRegister", "Estamos teniendo problemas en nuestros servidores, intentalo de nuevo mas tarde.");
-            session.setAttribute("jspErrorLogin", null);
-            session.setAttribute("jspErrorPlantCreate", null);
-            response.sendRedirect("../error_module.jsp");
+            request.setAttribute("jspErrorRegister", e.getMessage());
+            RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+            dispatch.forward(request, response);
         }
     } else {
-        session.setAttribute("jspErrorRegister", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
-        session.setAttribute("jspErrorLogin", null);
-        session.setAttribute("jspErrorUserUpdate", null);
-        session.setAttribute("jspErrorPlantCreate", null);
-        response.sendRedirect("../emptyprofile.jsp");
+        request.setAttribute("jspErrorRegister", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
+        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+        dispatch.forward(request, response);
     }
 %>

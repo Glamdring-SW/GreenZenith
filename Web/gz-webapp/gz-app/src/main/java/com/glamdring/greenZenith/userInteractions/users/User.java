@@ -454,13 +454,13 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
      * @throws InvalidUserException If the plant's ID and name are not
      * correspondant or cannot be resolved correctly.
      */
-    public String updatePlantBatch(int id, String oldName, String newName, LocalDate newPlantingDate, String newDescription, int newQuantity, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) throws InvalidUserException {
+    public String updatePlantBatch(int id, String oldName, String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) throws InvalidUserException {
         if (oldName == null || oldName.isBlank()) {
             throw new InvalidUserException(UserExceptions.PLANT_ID);
         }
         try {
             if (plants.getFromMap(id).getName().equals(oldName)) {
-                return plants.update(id, newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
+                return plants.update(id, newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture, this);
             } else {
                 throw new InvalidUserException(UserExceptions.PLANT_ID);
             }
@@ -511,7 +511,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
         int updateCount = 0;
         StringBuilder messageBuilder = new StringBuilder();
         try {
-            if (newPassword != null && !newPassword.isBlank() && !newName.equals(this.username)) {
+            if (newPassword != null && !newPassword.isBlank() && !newPassword.equals(this.password)) {
                 appendUpdateMessage(messageBuilder, setPassword(oldPassword, newPassword));
                 updateCount++;
             }
@@ -532,7 +532,7 @@ public class User extends GZDBSuperManager implements Attributable, Killable, Se
                 messageBuilder.append(e.getMessage());
             }
         }
-        if (newEmail != null && !newEmail.isBlank()  && !newEmail.equals(this.email)) {
+        if (newEmail != null && !newEmail.isBlank() && !newEmail.equals(this.email)) {
             try {
                 appendUpdateMessage(messageBuilder, setEmail(newEmail));
                 updateCount++;

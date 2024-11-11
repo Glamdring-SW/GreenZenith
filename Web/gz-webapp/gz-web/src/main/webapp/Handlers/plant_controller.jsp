@@ -26,63 +26,67 @@
     String name = null;
     String description = null;
     LocalDate localPlantDate = null;
-    java.sql.Date plantingDate = null;
-    int quantity = -1;
+    int quantity = 0;
     BufferedImage plantPicture = null;
     String mimeType = null;
-    LocalTime waterTime = null;
-    ArrayList<Time> schedule = new ArrayList<>();
+    ArrayList<LocalTime> schedule = new ArrayList<>();
+    boolean defaultFlag = true;
 
     for (FileItem item : formItems) {
         if (item.isFormField()) {
             String fieldName = item.getFieldName();
             String fieldValue = item.getString();
             if (fieldName.equals("name")) {
-                name = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    name = fieldValue;
+                }
             }
             if (fieldName.equals("description")) {
-                description = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    description = fieldValue;
+                }
             }
             if (fieldName.equals("plantingDate")) {
-                localPlantDate = LocalDate.parse(fieldValue);
-                Date plantingDateNoSQL = Date.from(localPlantDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                plantingDate = new java.sql.Date(plantingDateNoSQL.getTime());
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    localPlantDate = LocalDate.parse(fieldValue);
+                }
             }
             if (fieldName.equals("quantity")) {
-                quantity = Integer.parseInt(fieldValue);
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    quantity = Integer.parseInt(fieldValue);
+                }
             }
             if (fieldName.equals("waterTime")) {
-                waterTime = LocalTime.parse(fieldValue);
-                schedule.add(Time.valueOf(waterTime));
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    schedule.add(LocalTime.parse(fieldValue));
+                }
             }
         } else {
             plantPicture = ImageIO.read(item.getInputStream());
             mimeType = item.getContentType();
+            if (!mimeType.equals("application/octet-stream")) {
+                defaultFlag = false;
+            }
         }
     }
 
-    if (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif")
-            && name != null && description != null && plantingDate != null && quantity != -1 && plantPicture != null && schedule != null && mimeType != null) {
+    if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
         try {
             User user = (User) session.getAttribute("User");
             if (plantPicture == null) {
-                user.getPlants().add(new Plant(name, plantingDate, description, quantity, schedule, ImageIO.read(new File("../img/default_profilePicture.png")), user));
+                user.addPlant(name, description, quantity, localPlantDate, schedule, null);
             } else {
-                user.getPlants().add(new Plant(name, plantingDate, description, quantity, schedule, plantPicture, user));
+                user.addPlant(name, description, quantity, localPlantDate, schedule, plantPicture);
             }
             response.sendRedirect("../plantsexplore.jsp");
         } catch (InvalidUserException e) {
-            session.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo.");
-            session.setAttribute("jspErrorRegister", null);
-            session.setAttribute("jspErrorLogin", null);
-            session.setAttribute("jspErrorUserUpdate", null);
-            response.sendRedirect("../error_module.jsp");
+            request.setAttribute("jspErrorPlantCreate", e.getMessage());
+            RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+            dispatch.forward(request, response);
         }
     } else {
-        session.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
-        session.setAttribute("jspErrorRegister", null);
-        session.setAttribute("jspErrorUserUpdate", null);
-        session.setAttribute("jspErrorLogin", null);
-        response.sendRedirect("../error_module.jsp");
+        request.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
+        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+        dispatch.forward(request, response);
     }
 %>

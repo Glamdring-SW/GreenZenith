@@ -533,7 +533,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
                 defaultFlag = true;
             }
             owner.restrictionMap.put("ID", id);
-            owner.gzdbc.update(GZDBTables.USER, owner.insertMap, owner.restrictionMap);
+            owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
             if (!defaultFlag) {
                 this.plantPicture = newPlantPicture;
                 return PlantConfirmations.PICTURE_UPDATE.getConfirmationMessage();

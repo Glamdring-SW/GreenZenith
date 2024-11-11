@@ -1,6 +1,7 @@
 package com.glamdring.greenZenith.userInteractions.plants;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import com.glamdring.greenZenith.userInteractions.users.User;
  * @version 1.1.0
  * @since 0.1
  */
-public class PlantList {
+public class PlantList implements Serializable {
 
     /**
      * A list containing all the specified plants.
@@ -76,6 +77,10 @@ public class PlantList {
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
+    }
+
+    public boolean isEmpty() {
+        return plantList.isEmpty() && plantMap.isEmpty();
     }
 
     /**
@@ -157,11 +162,20 @@ public class PlantList {
      * @throws InvalidPlantException If the ID does not resolve to any plant
      * registry.
      */
-    public String update(int id, String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture) throws InvalidPlantException {
+    public String update(int id, String newName, String newDescription, int newQuantity, LocalDate newPlantingDate, ArrayList<LocalTime> newSchedule, BufferedImage newPlantPicture, User owner) throws InvalidPlantException {
         if (plantMap.get(id) == null) {
             throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
-        return plantMap.get(id).updatePlantBatch(newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
+        String returnMessage = plantMap.get(id).updatePlantBatch(newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
+        for (int i = 0; i < plantList.size(); i++) {
+            if (plantList.get(i).getId() == id) {
+                plantList.remove(i);
+                plantMap.remove(i);
+                break;
+            }
+        }
+        add(new Plant(id, owner));
+        return returnMessage;
     }
 
     /**
@@ -174,9 +188,9 @@ public class PlantList {
     public void delete(int id) throws InvalidPlantException {
         for (int i = 0; i < plantList.size(); i++) {
             if (plantList.get(i).getId() == id) {
-                plantMap.get(id).delete();
+                plantMap.get(i).delete();
                 plantList.remove(i);
-                plantMap.remove(id);
+                plantMap.remove(i);
                 break;
             }
         }

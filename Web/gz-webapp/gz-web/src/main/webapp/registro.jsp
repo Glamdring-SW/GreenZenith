@@ -68,24 +68,24 @@
                                             <label for="userName" class="form-label color-title">Nombre de Usuario</label>
                                             <input type="text" class="form-control" id="userName" name="userName" placeholder="Introduce nombre"
                                                    pattern="^.{4,49}$" required="true">
-                                            <div id="userNameError" class="error"></div>
+                                            <div id="userNameError" class="error  small"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="email" class="form-label color-title">Email</label>
                                             <input type="email" class="form-control" id="email" name="email" placeholder="Introduce email"
-                                                   pattern="^(?=.{1,99}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$" required="true">
-                                            <div id="emailError" class="error"></div>
+                                                   pattern="^[a-zA-Z0-9!#$%&’*+\-\/=?^_`{|}~\.]+@{1}(?:gmail|yahoo|hotmail|outlook|msn|aol|live|mail|ymail|comcast|icloud|protonmail|wanadoo|zoho)(?:\.[a-z]{2,3})?(?:\.[a-z]{2}|)$" required="true">
+                                            <div id="emailError" class="error  small"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="password" class="form-label color-title">Contraseña</label>
                                             <input type="password" class="form-control" id="password" name="password" placeholder="Introduce contraseña"
-                                                   pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.+\d)(?=.+[!-\/\[-`{-~])[!-~]{12,100}$" required="true">
-                                            <div id="passwordError" class="error"></div>
+                                                   pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.+\d)(?=.+[\\u0021-\\u002F\\u003A-\\u0040\\u005B-\\u0060\\u007B-\\u007E\\u00A1-\\u00BF\\u2000-\\u206F\\u2190-\\u21FF\\u2600-\\u26FF\\u2700-\\u27BF])[^\r\n]{12,100}$" required="true">
+                                            <div id="passwordError" class="error  small"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="userAge" class="form-label color-title">Fecha de nacimiento</label>
-                                            <input type="date" class="form-control" id="userAge" name="userAge" max="2006-11-01" required="true">
-                                            <div id="ageError" class="error"></div>
+                                            <input type="date" class="form-control" id="userAge" name="userAge" required="true">
+                                            <div id="ageError" class="error  small"></div>
                                         </div>
                                         <label for="age" hidden="true">Edad</label>
                                         <input type="number" id="age" name="age" required="true" hidden="true">
@@ -132,19 +132,19 @@
 
                 const userName = document.getElementById('userName').value;
                 if (!userName.match(/^.{4,49}$/)) {
-                    document.getElementById('userNameError').innerText = 'El nombre de ususario es obligatorio.';
+                    document.getElementById('userNameError').innerText = 'El nombre de no puede ser utilizado.';
                     valid = false;
                 }
 
                 const email = document.getElementById('email').value;
-                if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-                    document.getElementById('emailError').innerText = 'El correo electrónico debe ser válido.';
+                if (!email.match(/^[a-zA-Z0-9!#$%&’*+\-\/=?^_`{|}~\.]+@{1}(?:gmail|yahoo|hotmail|outlook|msn|aol|live|mail|ymail|comcast|icloud|protonmail|wanadoo|zoho)(?:\.[a-z]{2,3})?(?:\.[a-z]{2}|)$/)) {
+                    document.getElementById('emailError').innerText = 'El correo electrónico debe ser verdadero.';
                     valid = false;
                 }
 
                 const password = document.getElementById('password').value;
-                if (!password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.+\d)(?=.+[!-\/\[-`{-~])[!-~]{12,100}$/)) {
-                    document.getElementById('passwordError').innerText = 'La contraseña no es segura.';
+                if (!password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.+\d)(?=.+[\\u0021-\\u002F\\u003A-\\u0040\\u005B-\\u0060\\u007B-\\u007E\\u00A1-\\u00BF\\u2000-\\u206F\\u2190-\\u21FF\\u2600-\\u26FF\\u2700-\\u27BF])[^\r\n]{12,100}$/)) {
+                    document.getElementById('passwordError').innerText = 'La contraseña debe tener mayusculas, numeros y caracteres especiales.';
                     valid = false;
                 }
 
@@ -153,7 +153,7 @@
                 if (document.getElementById('userAge').value === '') {
                     document.getElementById('ageError').innerText = 'Debes llenar este campo';
                     valid = false;
-                } else if (age < 18) {
+                } else if (age < 12) {
                     document.getElementById('ageError').innerText = 'Debes ser mayor de edad';
                     valid = false;
                 } else if (age > 120) {
@@ -164,6 +164,16 @@
                 }
                 return valid;
             }
+
+            function setDateLimits() {
+                const inputDate = document.getElementById("userAge");
+                const today = new Date();
+                const minDate = new Date(today.getFullYear() - 12, today.getMonth(), today.getDate());
+                const maxDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
+                inputDate.min = maxDate.toISOString().split("T")[0];
+                inputDate.max = minDate.toISOString().split("T")[0];
+            }
+            window.onload = setDateLimits;
         </script>
     </body>
 </html>

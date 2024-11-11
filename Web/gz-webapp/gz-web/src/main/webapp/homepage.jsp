@@ -1,5 +1,8 @@
 <%@page import="com.glamdring.greenZenith.userInteractions.users.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    User user = (User) session.getAttribute("User");
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,7 +31,17 @@
                                 <div class="p-2 body-3" >Mantiene</div>
                                 <div class="p-2 body-3">Mejora</div>
                             </div>
+                            <%
+                                if (user == null) {
+                            %>
                             <a class="btn btn-primary btn-lg button-color" href="registro.jsp" role="button"><b>R E G I S T R A R S E</b></a>
+                            <%
+                                } else {
+                            %>
+                            <a class="btn btn-primary btn-lg button-color" href="plantsexplore.jsp" role="button"><b>MIS PLANTAS</b></a>
+                             <%
+                                }
+                            %>
                         </div>
                     </div>
                 </div>

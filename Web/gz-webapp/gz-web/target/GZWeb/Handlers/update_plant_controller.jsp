@@ -16,14 +16,15 @@
 <%@page import="com.glamdring.greenZenith.exceptions.database.GZDBResultException"%>
 <%@page import="com.glamdring.greenZenith.exceptions.application.user.InvalidUserException"%>
 <%@page import="com.glamdring.greenZenith.userInteractions.users.User"%>
-<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
     JavaxServletFileUpload upload = new JavaxServletFileUpload(factory);
     List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) request);
 
-    String name = null;
+    int id = 0;
+    String oldName = null;
+    String newName = null;
     String description = null;
     LocalDate localPlantDate = null;
     int quantity = 0;
@@ -36,9 +37,19 @@
         if (item.isFormField()) {
             String fieldName = item.getFieldName();
             String fieldValue = item.getString();
+            if (fieldName.equals("id")) {
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    id = Integer.parseInt(fieldValue);
+                }
+            }
+            if (fieldName.equals("oldName")) {
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    oldName = fieldValue;
+                }
+            }
             if (fieldName.equals("name")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    name = fieldValue;
+                    newName = fieldValue;
                 }
             }
             if (fieldName.equals("description")) {
@@ -69,24 +80,13 @@
             }
         }
     }
-
+    User user = (User) session.getAttribute("User");
     if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
-        try {
-            User user = (User) session.getAttribute("User");
-            if (plantPicture == null) {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, null);
-            } else {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, plantPicture);
-            }
-            response.sendRedirect("../plantsexplore.jsp");
-        } catch (InvalidUserException e) {
-            request.setAttribute("jspErrorPlantCreate", e.getMessage());
-            RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
-            dispatch.forward(request, response);
+        if (defaultFlag) {
+            user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, null);
+        } else {
+            user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, plantPicture);
         }
-    } else {
-        request.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
-        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
-        dispatch.forward(request, response);
     }
+    response.sendRedirect("../plantsexplore.jsp");
 %>

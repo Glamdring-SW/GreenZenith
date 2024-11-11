@@ -1,14 +1,11 @@
 @font-face {
-    font-family: 'CustomFont';
-    src: url('fonts/Agrandir') format('otf');
-    font-weight: normal;
-    font-style: normal;
+    font-family: CustomFont;
+    src: url(../fonts/AgrandirFontFamily/Agrandir/Agrandir-Regular.otf);
 }
-
 body {
     margin: 0;
     background-color: #edf4ef; /* Background color */
-    font-family: 'CustomFont', sans-serif;
+    font-family: CustomFont;
     font-size: 16px; /* Adjusted for readability */
     margin-top: 11vh;
 }
@@ -32,10 +29,10 @@ body {
 }
 
 .custom-navbar .nav-link:hover {
-    color: #c4d8a4; 
+    color: #c4d8a4;
 }
 
-.navbar .nav-link { 
+.navbar .nav-link {
     margin-left: 3vw;
     margin-right: 3vw;
     color: #231f20;

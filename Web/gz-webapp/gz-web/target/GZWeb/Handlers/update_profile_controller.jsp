@@ -17,66 +17,59 @@
     JavaxServletFileUpload upload = new JavaxServletFileUpload(factory);
     List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) request);
 
-    String username = null;
-    String email = null;
+    String newName = null;
+    String newEmail = null;
     String oldPassword = null;
     String newPassword = null;
-    int age = -1;
-    BufferedImage profilePicture = null;
+    int newAge = 0;
+    BufferedImage newPicture = null;
     String mimeType = null;
+    boolean defaultFlag = true;
 
     for (FileItem item : formItems) {
         if (item.isFormField()) {
             String fieldName = item.getFieldName();
             String fieldValue = item.getString();
             if (fieldName.equals("userName")) {
-                username = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    newName = fieldValue;
+                }
             }
             if (fieldName.equals("email")) {
-                email = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    newEmail = fieldValue;
+                }
             }
             if (fieldName.equals("oldPassword")) {
-                oldPassword = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    oldPassword = fieldValue;
+                }
             }
             if (fieldName.equals("newPassword")) {
-                newPassword = fieldValue;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    newPassword = fieldValue;
+                }
             }
             if (fieldName.equals("age")) {
-                if (!fieldValue.isEmpty() && !fieldValue.isBlank()) {
-                    age = Integer.parseInt(fieldValue);
-                } else {
-                    age = 0;
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    newAge = Integer.parseInt(fieldValue);
                 }
             }
         } else {
-            profilePicture = ImageIO.read(item.getInputStream());
+            newPicture = ImageIO.read(item.getInputStream());
             mimeType = item.getContentType();
+            if (!mimeType.equals("application/octet-stream")) {
+                defaultFlag = false;
+            }
         }
     }
-
-    try {
-        User user = (User) session.getAttribute("User");
-        if (!oldPassword.isEmpty() && !oldPassword.isBlank() && !newPassword.isEmpty() && !newPassword.isBlank()) {
-            user.setPassword(oldPassword, newPassword);
+    User user = (User) session.getAttribute("User");
+    if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
+        if (defaultFlag) {
+            user.updateUserBatch(newName, newEmail, newAge, null, oldPassword, newPassword);
+        } else {
+            user.updateUserBatch(newName, newEmail, newAge, newPicture, oldPassword, newPassword);
         }
-        if (!username.isEmpty() && !username.isBlank()) {
-            user.setName(username);
-        }
-        if (!email.isEmpty() && !email.isBlank()) {
-            user.setEmail(email);
-        }
-        if (age != 0) {
-            user.setAge(age);
-        }
-        if (profilePicture != null) {
-            user.setPicture(profilePicture);
-        }
-        response.sendRedirect("../profile.jsp");
-    } catch (InvalidUserException e) {
-        session.setAttribute("jspErrorRegister", null);
-        session.setAttribute("jspErrorLogin", null);
-        session.setAttribute("jspErrorPlantCreate", null);
-        session.setAttribute("jspErrorUserUpdate", e.getMessage());
-        response.sendRedirect("../error_module.jsp");
     }
+    response.sendRedirect("../profile.jsp");
 %>

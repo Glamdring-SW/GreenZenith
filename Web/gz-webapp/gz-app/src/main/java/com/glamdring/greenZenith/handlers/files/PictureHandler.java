@@ -3,6 +3,7 @@ package com.glamdring.greenZenith.handlers.files;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ import javax.imageio.ImageIO;
  * @version 0.0.1
  * @since 0.1
  */
-public class PictureHandler {
+public class PictureHandler implements Serializable {
 
     /**
      * The default profile picture of a User.

@@ -11,18 +11,14 @@
         session.setAttribute("User", user);
         response.sendRedirect("../profile.jsp");
     } catch (InvalidUserException e) {
-        session.setAttribute("jspErrorLogin", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar tu correo y contraseña correctos."
-                + "\n" + e.getMessage() + "\n" + email + "\n" + password);
-        session.setAttribute("jspErrorRegister", null);
-        session.setAttribute("jspErrorUserUpdate", null);
-        session.setAttribute("jspErrorPlantCreate", null);
+        request.setAttribute("jspErrorLogin", e.getMessage());
+        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+        dispatch.forward(request, response);
         response.sendRedirect("../error_module.jsp");
     } catch (GZDBResultException e) {
-        session.setAttribute("jspErrorLogin", "Estamos teniendo problemas en nuestros servidores, intentalo de nuevo mas tarde.");
-        session.setAttribute("jspErrorRegister", null);
-        session.setAttribute("jspErrorUserUpdate", null);
-        session.setAttribute("jspErrorPlantCreate", null);
-        response.sendRedirect("../error_module.jsp");
+        request.setAttribute("jspErrorLogin", e.getMessage());
+        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+        dispatch.forward(request, response);
     }
 
 %>

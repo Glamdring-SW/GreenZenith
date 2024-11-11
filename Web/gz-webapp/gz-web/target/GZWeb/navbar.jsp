@@ -11,17 +11,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="login.jsp">LogIn</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="registro.jsp.jsp">Registro</a>
-                </li>
                 <%
-                    if (user != null) {
+                    if (user == null) {
                 %>
                 <li class="nav-item">
-                    <a class="nav-link" href="plantsexplore.jsp">Mis Plantas</a>
+                    <a class="nav-link" aria-current="page" href="login.jsp">LogIn</a>
                 </li>
                 <%
                     }
@@ -33,18 +27,18 @@
                 -->
             </ul>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
+                <li class="nav-item">
                     <a href="profile.jsp">
                         <%
                             if (user == null) {
                         %>
-                        <img src="img/default_profilePicture.png" class="img-fluid responsive-img profile-photo-preview" 
-                             style="width: 2.25vw; height: 2.25vw;" alt="DefaultUser">
+                        <img src="img/default_profilePicture.png" class="img-fluid responsive-img profile-photo-preview rounded-circle" 
+                             style="width: 3vw; height: 3vw; left: 97.5%;" alt="DefaultUser">
                         <%
                         } else {
                         %>
-                        <img src="data:image/png;base64, <%= user.getBase64Picture()%>" class="img-fluid responsive-img profile-photo-preview" 
-                             style="width: 2.25vw; height: 2.25vw;" alt="User">
+                        <img src="data:image/png;base64, <%= user.getBase64Picture()%>" class="img-fluid responsive-img profile-photo-preview rounded-circle" 
+                             style="width: 3vw; height: 3vw; left: 97.5%;" alt="User">
                         <%
                             }
                         %>
