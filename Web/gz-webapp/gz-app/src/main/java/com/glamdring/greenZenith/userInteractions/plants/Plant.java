@@ -130,11 +130,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             this.owner = owner;
             LinkedHashMap<String, Object> plantMap = new LinkedHashMap<>();
             plantMap.put("ID", id);
-            plantMap.put("PUser_ID", owner.getId());
             ArrayList<LinkedHashMap<String, Object>> resultList = owner.gzdbc.select(GZDBTables.PLANT, plantMap);
-            if (resultList.size() != 1) {
-                throw new InvalidPlantException(PlantExceptions.INEXISTANT);
-            }
             LinkedHashMap<String, Object> resultMap = resultList.get(0);
             this.name = (String) resultMap.get("Name");
             this.plantingDate = (Date) resultMap.get("PlantingDate");

@@ -82,7 +82,7 @@ public class GZFormatter {
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidMaxLength(String input, int maxLength) {
-        if (input == null) {
+        if (input == null || input.isBlank()) {
             return false;
         }
         return input.length() <= maxLength;
@@ -97,7 +97,7 @@ public class GZFormatter {
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidMinLength(String input, int minLength) {
-        if (input == null) {
+        if (input == null || input.isBlank()) {
             return false;
         }
         return input.length() >= minLength;
@@ -113,7 +113,7 @@ public class GZFormatter {
      * @return Approves or negates the validity of the input.
      */
     public static boolean isValidLength(String input, int minLength, int maxLength) {
-        if (input == null) {
+        if (input == null || input.isBlank()) {
             return false;
         }
         return input.length() >= minLength && input.length() <= maxLength;
