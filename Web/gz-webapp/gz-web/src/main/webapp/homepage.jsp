@@ -17,7 +17,7 @@
         <div class="navbar">
             <jsp:include page="navbar.jsp" />
         </div>
-        <div class="container my-5">
+        <div class="container my-4">
             <div class="card custom-navbar">
                 <div class="row g-0">
                     <div class="col-md-6 image-container">
@@ -47,5 +47,28 @@
                 </div>
             </div>
         </div>
+        <div id="scrollArrow" class="scroll-arrow">
+           <img src="img/arrowpoint.png" class="pointer">
+        </div>
     </body>
+    <script>
+        window.onscroll = function() {
+        var distanciaScroll = window.scrollY;
+        var navbar = document.querySelector(".custom-navbar");
+        var body = document.body;
+        
+        if (distanciaScroll > 350) {
+            body.style.backgroundColor = "white";
+            navbar.classList.add("custom-navbar-scrolled");
+        } else {
+            body.style.backgroundColor = ""; 
+            navbar.classList.remove("custom-navbar-scrolled");
+        }if (distanciaScroll > 350) { // Cambia el valor a lo que necesites
+            scrollArrow.style.display = 'none'; // Oculta la flecha después de hacer scroll
+        } else {
+            scrollArrow.style.display = 'block'; // Muestra la flecha si no se ha hecho scroll
+        }
+    };
+    </script>
+
 </html>

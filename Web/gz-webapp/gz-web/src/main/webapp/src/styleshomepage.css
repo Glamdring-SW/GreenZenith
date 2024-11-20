@@ -41,16 +41,15 @@
 body {
     background-size: cover;
     background-position: center;
-    height: 100vh;
-    margin-top: 11vh;
-    display: flex;
+    height: 1500px;
+    margin-top: 17vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     font-family: CustomFont;
-    font-size: 30px
+    font-size: 30px;
 }
+
 
 .body-3 {
     align-items: left;
@@ -73,6 +72,10 @@ body {
     aspect-ratio: 1;
     overflow: hidden;
     position: relative;
+}
+
+body, .navbar {
+    transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition for background and text color */
 }
 
 .responsive-img {
@@ -100,9 +103,41 @@ body {
 }
 
 .sizing-brand{
-    font-size: 2vw;
+    font-size: 2rem;
 }
 
 .color{
     color: #231f20;
+}
+
+.custom-navbar-scrolled {
+    background-color: #53ad5f !important; 
+}
+
+body-scrolled {
+    background-color: white;
+}
+
+.scroll-arrow {
+    position: fixed;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #231f20;
+    animation: bounce 1s infinite; /* Animación que hace que la flecha rebote */
+    cursor: pointer;
+}@keyframes bounce {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.pointer {
+    max-width: 45px;
 }
