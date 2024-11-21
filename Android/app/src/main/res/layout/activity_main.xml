@@ -12,8 +12,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30pt"
         android:text="GreenZenith"
-        android:textSize="50dp" />
+        android:textSize="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30pt"
+        android:text="Tus plantas,\n tus suenos"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/homePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30pt"
+        android:background="@android:color/black"
+        android:text="Pagina Principal" />
 
 </LinearLayout>
