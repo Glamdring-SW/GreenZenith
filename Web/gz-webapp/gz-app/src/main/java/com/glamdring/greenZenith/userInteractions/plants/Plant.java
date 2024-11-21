@@ -403,7 +403,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             owner.restrictionMap.put("ID", id);
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
             this.name = newName;
-            return PlantConfirmations.NAME_UPDATE.getConfirmationMessage();
+            return PlantConfirmations.NAME.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
@@ -418,7 +418,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      * accepted length or the user does not provide a database connection.
      */
     private String setDescription(String newDescription) throws InvalidPlantException {
-        if (!GZFormatter.isValidMaxLength(newDescription, 500)) {
+        if (newDescription.length() > 500) {
             throw new InvalidPlantException(PlantExceptions.LENGTH_DESCRIPTION);
         }
         try {
@@ -427,7 +427,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             owner.restrictionMap.put("ID", id);
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
             this.description = newDescription;
-            return PlantConfirmations.DESCRIPTION_UPDATE.getConfirmationMessage();
+            return PlantConfirmations.DESCRIPTION.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
@@ -451,7 +451,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             owner.restrictionMap.put("ID", id);
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
             this.quantity = newQuantity;
-            return PlantConfirmations.QUANTITY_UPDATE.getConfirmationMessage();
+            return PlantConfirmations.QUANTITY.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
@@ -478,7 +478,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
             owner.restrictionMap.put("ID", id);
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
             this.plantingDate = Date.valueOf(newPlantingDate);
-            return PlantConfirmations.PLANTINGDATE_UPDATE.getConfirmationMessage();
+            return PlantConfirmations.PLANTINGDATE.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
@@ -504,7 +504,7 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
                 owner.gzdbc.update(GZDBTables.PLANTSCHEDULE, owner.insertMap, owner.restrictionMap);
                 this.schedule.add(Time.valueOf(waterTime));
             }
-            return PlantConfirmations.SCHEDULE_UPDATE.getConfirmationMessage();
+            return PlantConfirmations.SCHEDULE.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidPlantException(PlantExceptions.OWNER, e);
         }
@@ -520,17 +520,15 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
      */
     private String setPlantPicture(BufferedImage newPlantPicture) throws InvalidPlantException {
         try {
-            boolean defaultFlag = false;
             owner.resetMaps();
             if (newPlantPicture != null) {
                 owner.insertMap.put("Picture", owner.getPictureHandler().convertBufferedImageToBlob(newPlantPicture, owner.getConnection()));
             } else {
                 owner.insertMap.put("Picture", owner.getPictureHandler().convertBufferedImageToBlob(owner.getPictureHandler().getDEFAULT_PLANT(), owner.getConnection()));
-                defaultFlag = true;
             }
             owner.restrictionMap.put("ID", id);
             owner.gzdbc.update(GZDBTables.PLANT, owner.insertMap, owner.restrictionMap);
-            if (!defaultFlag) {
+            if (newPlantPicture != null) {
                 this.plantPicture = newPlantPicture;
                 return PlantConfirmations.PICTURE_UPDATE.getConfirmationMessage();
             } else {

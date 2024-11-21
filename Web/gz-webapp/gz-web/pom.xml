@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.glamdring.greenzenith</groupId>
         <artifactId>gz-webapp</artifactId>
-        <version>0.2</version>
+        <version>0.3</version>
     </parent>
 
     <groupId>com.glamdring.greenzenith.web</groupId>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.glamdring.greenzenith</groupId>
             <artifactId>gz-app</artifactId>
-            <version>0.2</version>
+            <version>0.3</version>
         </dependency>
     </dependencies>
 

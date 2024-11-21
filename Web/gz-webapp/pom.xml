@@ -4,7 +4,7 @@
 
   <groupId>com.glamdring.greenzenith</groupId>
   <artifactId>gz-webapp</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
   <packaging>pom</packaging>
 
   <name>Green Zenith WebApp</name>

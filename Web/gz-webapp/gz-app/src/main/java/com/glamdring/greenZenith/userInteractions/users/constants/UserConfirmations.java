@@ -57,7 +57,7 @@ public enum UserConfirmations {
     NOCHANGES("No se realizo ningun cambio o actualizacion."),;
 
     /**
-     * Holds the value of each item's predefined exception message.
+     * Holds the value of each item's predefined confirmation message.
      */
     private final String confirmationMessage;
 

@@ -15,32 +15,32 @@ public enum ProductExceptions {
      * The length of the User's product name does not follow the established
      * restrictions.
      */
-    LENGTH_TITLE("InvalidProductTitleLength"),
+    LENGTH_TITLE("El titulo del producto excede los 30 caracteres"),
     /**
      * The length of the User's product description does not follow the
      * established restrictions.
      */
-    LENGTH_DESCRIPTION("InvalidProductDescriptionLength"),
+    LENGTH_DESCRIPTION("La descripcion del producto es mayor de 250 caracteres."),
     /**
      * The price of the User's product is not a valid number.
      */
-    PRICE("InvalidProductPrice"),
+    PRICE("El precio ingresado no es un numero valido."),
     /**
      * The quantity of the User's product is not a valid number.
      */
-    QUANTITY("InvalidProductQuantity"),
+    QUANTITY("La cantidad ingresada no es valida."),
     /**
      * The image of the User's product can not be utilized.
      */
-    IMAGE("InvalidProductPicture"),
+    IMAGE("La imagen ingresada no puede ser utilizada."),
     /**
      * The plant that is being sold by a User is not valid.
      */
-    PLANTSALE("InvalidProductPlantParent"),
+    PLANTSALE("La planta para este producto no puede ser utilizada."),
     /**
      * The data or connection of the owner of this product is not valid.
      */
-    SELLER("InvalidProductSeller"),;
+    SELLER("El vendedor de este producto no es valido."),;
 
     /**
      * Holds the value of each item's predefined exception message.

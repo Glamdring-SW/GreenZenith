@@ -10,42 +10,42 @@ package com.glamdring.greenZenith.userInteractions.plants.constants;
  */
 public enum PlantConfirmations {
 
- /**
-     * If the update of a user's name was successful.
-     */
-    NAME_UPDATE("El nombre de la planta fue actualizado correctamente."),
     /**
-     * If the update of a user's email was successful.
+     * If the update of a plant's name was successful.
      */
-    DESCRIPTION_UPDATE("La descripcion de la planta fue actualizada correctamente."),
+    NAME("El nombre de la planta fue actualizado correctamente."),
     /**
-     * If the update of a user's age was successful.
+     * If the update of a plant's description was successful.
      */
-    QUANTITY_UPDATE("La cantidad total de plantas de este tipo fue actualizada correctamente."),
+    DESCRIPTION("La descripcion de la planta fue actualizada correctamente."),
     /**
-     * If the update of a user's picture was successful.
+     * If the update of a plant's quantity was successful.
      */
-    PLANTINGDATE_UPDATE("La fecha de plantado fue actualizada correctamente."),
+    QUANTITY("La cantidad total de plantas de este tipo fue actualizada correctamente."),
     /**
-     * If the update of a user's picture was not successful but we resorted to
-     * use the default profile picture..
+     * If the update of a plant's date was successful.
+     */
+    PLANTINGDATE("La fecha de plantado fue actualizada correctamente."),
+    /**
+     * If the update of a plant's picture was not successful but we resorted to
+     * use the default profile picture.
      */
     PICTURE_DEFAULT("La imagen de esta planta no pudo ser utilizada, se asigno una imagen por defecto."),
     /**
-     * If the update of a user's name password was successful.
+     * If the update of a plant's picture was successful.
      */
     PICTURE_UPDATE("La imagen de esta planta fue actualizada correctamente."),
-     /**
-     * If the update of a user's name password was successful.
-     */
-    SCHEDULE_UPDATE("El horario de riego de esta planta fue actualizado correctamente."),
     /**
-     * If the update of a user's administrator access was successful.
+     * If the update of a plant's schedule was successful.
+     */
+    SCHEDULE("El horario de riego de esta planta fue actualizado correctamente."),
+    /**
+     * If no changes were made to the plant.
      */
     NOCHANGES("No se realizo ningun cambio o actualizacion."),;
 
     /**
-     * Holds the value of each item's predefined exception message.
+     * Holds the value of each item's predefined confirmation message.
      */
     private final String confirmationMessage;
 

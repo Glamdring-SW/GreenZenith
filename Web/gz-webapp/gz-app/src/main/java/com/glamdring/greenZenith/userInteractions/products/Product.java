@@ -18,6 +18,7 @@ import com.glamdring.greenZenith.userInteractions.Attributable;
 import com.glamdring.greenZenith.userInteractions.Interactable;
 import com.glamdring.greenZenith.userInteractions.Killable;
 import com.glamdring.greenZenith.userInteractions.plants.Plant;
+import com.glamdring.greenZenith.userInteractions.products.constants.ProductConfirmations;
 import com.glamdring.greenZenith.userInteractions.users.User;
 
 /**
@@ -89,12 +90,10 @@ public class Product implements Killable, Attributable, Interactable, Serializab
             throw new InvalidProductException(ProductExceptions.SELLER);
         }
         try {
-
-        this.id = id;
+            this.id = id;
             LinkedHashMap<String, Object> productMap = new LinkedHashMap<>();
             productMap.put("ID", id);
             LinkedHashMap<String, Object> resultMap = gzdbc.select(GZDBTables.PRODUCT, productMap).get(0);
-
             this.title = (String) resultMap.get("Title");
             this.description = (String) resultMap.get("Description");
             this.price = (BigDecimal) resultMap.get("Price");
@@ -131,22 +130,20 @@ public class Product implements Killable, Attributable, Interactable, Serializab
         }
         try {
 
-        this.id = id;
-        this.plantSale = plantSale;
-        this.seller = plantSale.getOwner();
+            this.id = id;
+            this.plantSale = plantSale;
+            this.seller = plantSale.getOwner();
 
             LinkedHashMap<String, Object> productMap = new LinkedHashMap<>();
             productMap.put("ID", id);
             LinkedHashMap<String, Object> resultMap = seller.gzdbc.select(GZDBTables.PRODUCT, productMap).get(0);
 
-
-            
             this.title = (String) resultMap.get("Title");
             this.description = (String) resultMap.get("Description");
             this.price = (BigDecimal) resultMap.get("Price");
             this.quantity = (int) resultMap.get("Quantity");
 
-              if (resultMap.get("Picture") != null) {
+            if (resultMap.get("Picture") != null) {
                 this.productPicture = seller.getPictureHandler().convertBlobToBufferedImage((Blob) resultMap.get("Picture"));
             } else {
                 this.productPicture = seller.getPictureHandler().getDEFAULT_PRODUCT();
@@ -171,44 +168,44 @@ public class Product implements Killable, Attributable, Interactable, Serializab
      */
     public Product(String title, String description, BigDecimal price, int quantity,
             BufferedImage productPicture, Plant plantSale) throws InvalidProductException {
-                try {
-        if (!GZFormatter.isValidMaxLength(title, 30)) {
-            throw new InvalidProductException(ProductExceptions.LENGTH_TITLE);
-        }
-        if (price.compareTo(BigDecimal.ZERO) > 0) {
-            throw new InvalidProductException(ProductExceptions.PRICE);
-        }
-        if (quantity > plantSale.getQuantity()) {
-            throw new InvalidProductException(ProductExceptions.QUANTITY);
-        }
-        
-        this.seller = plantSale.getOwner();
-        
-        LinkedHashMap<String, Object> productMap = new LinkedHashMap<>();
-        productMap.put("Title", title);
-        productMap.put("Description", description);
-        productMap.put("Price", price);
-        productMap.put("Quantity", quantity);
-        productMap.put("Plant_ID", seller.getId());
-        if (productPicture != null) {
-            productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(productPicture, seller.getConnection()));
-        } else {
-            productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(seller.getPictureHandler().getDEFAULT_PRODUCT(), seller.getConnection()));
-        }
-        seller.gzdbc.insert(GZDBTables.PRODUCT, productMap);
-        this.id = (int) seller.gzdbc.select(GZDBTables.PRODUCT, productMap).get(0).get("ID");
-        
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.plantSale = plantSale;
+        try {
+            if (!GZFormatter.isValidMaxLength(title, 30)) {
+                throw new InvalidProductException(ProductExceptions.LENGTH_TITLE);
+            }
+            if (price.compareTo(BigDecimal.ZERO) > 0) {
+                throw new InvalidProductException(ProductExceptions.PRICE);
+            }
+            if (quantity > plantSale.getQuantity()) {
+                throw new InvalidProductException(ProductExceptions.QUANTITY);
+            }
 
-        if (productPicture != null) {
-            this.productPicture = productPicture;
-        } else {
-            this.productPicture = seller.getPictureHandler().getDEFAULT_PRODUCT();
-        }
+            this.seller = plantSale.getOwner();
+
+            LinkedHashMap<String, Object> productMap = new LinkedHashMap<>();
+            productMap.put("Title", title);
+            productMap.put("Description", description);
+            productMap.put("Price", price);
+            productMap.put("Quantity", quantity);
+            productMap.put("Plant_ID", seller.getId());
+            if (productPicture != null) {
+                productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(productPicture, seller.getConnection()));
+            } else {
+                productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(seller.getPictureHandler().getDEFAULT_PRODUCT(), seller.getConnection()));
+            }
+            seller.gzdbc.insert(GZDBTables.PRODUCT, productMap);
+            this.id = (int) seller.gzdbc.select(GZDBTables.PRODUCT, productMap).get(0).get("ID");
+
+            this.title = title;
+            this.description = description;
+            this.price = price;
+            this.quantity = quantity;
+            this.plantSale = plantSale;
+
+            if (productPicture != null) {
+                this.productPicture = productPicture;
+            } else {
+                this.productPicture = seller.getPictureHandler().getDEFAULT_PRODUCT();
+            }
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
@@ -281,47 +278,67 @@ public class Product implements Killable, Attributable, Interactable, Serializab
         return seller;
     }
 
-public String updateProductBatch(String newTitle, String newDescription, BigDecimal newPrice, int newQuantity, BufferedImage newProductPicture){
-    int updateCount = 0;
-    StringBuilder messageBuilder = new StringBuilder();
-    if (newTitle != null && !newTitle.isBlank() && !newTitle.equals(this.title)) {
-        try {
-            seller.appendUpdateMessage(messageBuilder, setTitle(newTitle));
-            updateCount++;
-        } catch (InvalidProductException e) {
-            seller.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+    /**
+     * Updates all the product's data an details, if any parameter is blank or null, it does not get updated, and gives a confirmation message indicating all the changes made.
+     * @param newTitle The new title to be used for this product.
+     * @param newDescription The new description this product shows.
+     * @param newPrice The new price this product can be bought for.
+     * @param newQuantity The new quantity of this product.
+     * @param newProductPicture The new picture of this product.
+     * @return A confirmation message which explains all the changes made to this product or a special message if no change was made.
+     */
+    public String updateProductBatch(String newTitle, String newDescription, BigDecimal newPrice, int newQuantity, BufferedImage newProductPicture) {
+        int updateCount = 0;
+        StringBuilder messageBuilder = new StringBuilder();
+        if (newTitle != null && !newTitle.isBlank() && !newTitle.equals(this.title)) {
+            try {
+                seller.appendUpdateMessage(messageBuilder, setTitle(newTitle));
+                updateCount++;
+            } catch (InvalidProductException e) {
+                seller.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-    }
-    if (newDescription != null && !newDescription.equals(this.description)) {
-        try {
-            seller.appendUpdateMessage(messageBuilder, setDescription(newDescription));
-            updateCount++;
-        } catch (InvalidProductException e) {
-            seller.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newDescription != null && !newDescription.equals(this.description)) {
+            try {
+                seller.appendUpdateMessage(messageBuilder, setDescription(newDescription));
+                updateCount++;
+            } catch (InvalidProductException e) {
+                seller.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-    }
-    if (!newPrice.equals(BigDecimal.ZERO)  && newPrice != this.price) {
-        try {
-            seller.appendUpdateMessage(messageBuilder, setQuantity(newQuantity));
-            updateCount++;
-        } catch (InvalidProductException e) {
-            seller.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (!newPrice.equals(BigDecimal.ZERO) && newPrice != this.price) {
+            try {
+                seller.appendUpdateMessage(messageBuilder, setPrice(newPrice));
+                updateCount++;
+            } catch (InvalidProductException e) {
+                seller.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
-    }
-    if (newQuantity != 0 && newQuantity != this.quantity) {
-        try {
-            seller.appendUpdateMessage(messageBuilder, setQuantity(newQuantity));
-            updateCount++;
-        } catch (InvalidProductException e) {
-            seller.appendUpdateMessage(messageBuilder, e.getMessage());
-            messageBuilder.append(e.getMessage());
+        if (newQuantity != 0 && newQuantity != this.quantity) {
+            try {
+                seller.appendUpdateMessage(messageBuilder, setQuantity(newQuantity));
+                updateCount++;
+            } catch (InvalidProductException e) {
+                seller.appendUpdateMessage(messageBuilder, e.getMessage());
+                messageBuilder.append(e.getMessage());
+            }
         }
+        if (newProductPicture != null && newProductPicture != this.productPicture) {
+            try {
+                seller.appendUpdateMessage(messageBuilder, setProductPicture(newProductPicture));
+                updateCount++;
+            } catch (InvalidProductException e) {
+                seller.appendUpdateMessage(messageBuilder, e.getMessage());
+            }
+        }
+        if (updateCount == 0) {
+            return ProductConfirmations.NOCHANGES.getConfirmationMessage();
+        }
+        return messageBuilder.toString();
     }
-    return "";
-}
 
     /**
      * Sets the title that this product will display.
@@ -339,10 +356,10 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
             seller.restrictionMap.put("ID", id);
             seller.gzdbc.update(GZDBTables.PRODUCT, seller.insertMap, seller.restrictionMap);
             this.title = newTitle;
+            return ProductConfirmations.TITLE.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
-        return "";
     }
 
     /**
@@ -353,16 +370,19 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
      * length.
      */
     private String setDescription(String newDescription) throws InvalidProductException {
+        if (newDescription.length() > 250) {
+            throw new InvalidProductException(ProductExceptions.LENGTH_DESCRIPTION);
+        }
         try {
             seller.resetMaps();
             seller.insertMap.put("Description", newDescription);
             seller.restrictionMap.put("ID", id);
             seller.gzdbc.update(GZDBTables.PRODUCT, seller.insertMap, seller.restrictionMap);
             this.description = newDescription;
+            return ProductConfirmations.DESCRIPTION.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
-        return "";
     }
 
     /**
@@ -381,10 +401,10 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
             seller.restrictionMap.put("ID", id);
             seller.gzdbc.update(GZDBTables.PRODUCT, seller.insertMap, seller.restrictionMap);
             this.price = newPrice;
+            return ProductConfirmations.PRICE.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
-        return "";
     }
 
     /**
@@ -395,19 +415,19 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
      * this type of plant that the seller has.
      */
     private String setQuantity(int newQuantity) throws InvalidProductException {
-        if (newQuantity < plantSale.getQuantity()) {
+        if (newQuantity > plantSale.getQuantity()) {
             throw new InvalidProductException(ProductExceptions.QUANTITY);
         }
         try {
-        seller.resetMaps();
-        seller.insertMap.put("Quantity", newQuantity);
-        seller.restrictionMap.put("ID", id);
+            seller.resetMaps();
+            seller.insertMap.put("Quantity", newQuantity);
+            seller.restrictionMap.put("ID", id);
             seller.gzdbc.update(GZDBTables.PRODUCT, seller.insertMap, seller.restrictionMap);
             this.quantity = newQuantity;
+            return ProductConfirmations.QUANTITY.getConfirmationMessage();
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
-        return "";
     }
 
     /**
@@ -416,25 +436,24 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
      * @param newProductPicture The new picture to be displayed.
      */
     private String setProductPicture(BufferedImage newProductPicture) throws InvalidProductException {
-           try {
-            boolean defaultFlag = false;
+        try {
             seller.resetMaps();
             if (newProductPicture != null) {
                 seller.insertMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(newProductPicture, seller.getConnection()));
             } else {
                 seller.insertMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(seller.getPictureHandler().getDEFAULT_PRODUCT(), seller.getConnection()));
-                defaultFlag = true;
             }
             seller.restrictionMap.put("ID", id);
             seller.gzdbc.update(GZDBTables.PRODUCT, seller.insertMap, seller.restrictionMap);
-            if (!defaultFlag) {
+            if (newProductPicture != null) {
                 this.productPicture = newProductPicture;
+                return ProductConfirmations.PICTURE_UPDATE.getConfirmationMessage();
             } else {
                 this.productPicture = seller.getPictureHandler().getDEFAULT_PRODUCT();
+                return ProductConfirmations.PICTURE_DEFAULT.getConfirmationMessage();
             }
-            return "";
         } catch (GZDBResultException e) {
-            throw new InvalidProductException(ProductExceptions.IMAGE);
+            throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
     }
 
