@@ -7,7 +7,6 @@ import java.sql.Blob;
 import java.util.LinkedHashMap;
 
 import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
-import com.glamdring.greenZenith.exceptions.application.plant.constants.PlantExceptions;
 import com.glamdring.greenZenith.exceptions.application.product.InvalidProductException;
 import com.glamdring.greenZenith.exceptions.application.product.constants.ProductExceptions;
 import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
@@ -19,7 +18,6 @@ import com.glamdring.greenZenith.userInteractions.Attributable;
 import com.glamdring.greenZenith.userInteractions.Interactable;
 import com.glamdring.greenZenith.userInteractions.Killable;
 import com.glamdring.greenZenith.userInteractions.plants.Plant;
-import com.glamdring.greenZenith.userInteractions.plants.constants.PlantConfirmations;
 import com.glamdring.greenZenith.userInteractions.users.User;
 
 /**
@@ -322,6 +320,7 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
             messageBuilder.append(e.getMessage());
         }
     }
+    return "";
 }
 
     /**
@@ -343,6 +342,7 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
+        return "";
     }
 
     /**
@@ -362,6 +362,7 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
+        return "";
     }
 
     /**
@@ -383,6 +384,7 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
+        return "";
     }
 
     /**
@@ -405,6 +407,7 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
         } catch (GZDBResultException e) {
             throw new InvalidProductException(ProductExceptions.SELLER, e);
         }
+        return "";
     }
 
     /**
@@ -429,8 +432,9 @@ public String updateProductBatch(String newTitle, String newDescription, BigDeci
             } else {
                 this.productPicture = seller.getPictureHandler().getDEFAULT_PRODUCT();
             }
+            return "";
         } catch (GZDBResultException e) {
-            throw new InvalidProductException();
+            throw new InvalidProductException(ProductExceptions.IMAGE);
         }
     }
 
