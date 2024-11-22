@@ -8,7 +8,7 @@ body {
     background-size: cover;
     background-position: center;
     height: 100vh;
-    background-color: #fefef0;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center; /* Center vertically */
@@ -18,7 +18,7 @@ body {
 }
 
 .navbar .sizing-brand {
-    font-size: 2vw;
+    font-size: 2rem;
     color: #e5edd8;
 }
 
@@ -28,11 +28,11 @@ body {
     top: 0;
     font-size: 1.4rem;
     z-index: 1;
-    background-color: #675c5f;
+    background-color: #53ad5f;
 }
 
 .custom-navbar {
-    background-color:  #675c5f;
+    background-color:  #53ad5f;
 }
 
 .custom-navbar .nav-link:hover {
@@ -42,7 +42,7 @@ body {
 .navbar .nav-link { 
     margin-left: 3vw;
     margin-right: 3vw;
-    color: #e5edd8;
+    color: #231f20;
 }
 
 .container { /* Allow container to take available space */
@@ -55,12 +55,12 @@ body {
 .card {
     width: 50vw; /* Full width of the column */ 
     max-width: 500px; /* Prevents the card from getting too wide */
-    background-color: #e5edd8; /* Background color of the card */
+    background-color: #fefef0; /* Background color of the card */
 }
 
 .card-header {
-    background-color: #675c5f; /* Header background color */
-    color: #e5edd8; /* Header text color */
+    background-color: #4e8a51; /* Header background color */
+    color: #4e8a51; /* Header text color */
 }
 
 .card-body {
@@ -71,8 +71,8 @@ body {
 }
 
 .btn.button-color {
-    background-color: #675c5f; /* Button background */
-    border: 1px solid #5b554e; /* Border color */
+    background-color: #4e8a51; /* Button background */
+    border: 1px solid #4e8a51; /* Border color */
     color: #e5edd8; /* Button text color */
     padding: 0.5rem 1rem; /* Add padding for button */
 }

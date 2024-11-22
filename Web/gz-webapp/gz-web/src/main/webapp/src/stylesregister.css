@@ -8,8 +8,9 @@ body {
     background-size: cover;
     background-position: center;
     height: 100vh;
-    background-color: #fefef0;
+    background-color: white;
     display: flex;
+    overflow-x: hidden;
     overflow: scroll;
     flex-direction: column;
     justify-content: flex-start; /* Changed to start for layout below navbar */
@@ -25,24 +26,28 @@ body {
     top: 0;
     font-size: 1.4rem;
     z-index: 1;
-    background-color: #675c5f;
+    background-color: #53ad5f;
+}
+
+.sizing-brand{
+    font-size: 2rem;
 }
 
 .navbar .nav-link { 
     margin-left: 3vw;
     margin-right: 3vw;
-    color: #e5edd8;
+    color: #231f20;
 }
 
 .card {
-    background-color: #e5edd8;
+    background-color: #fefef0;
     margin: 0 auto;
     margin-bottom: 5vh;/* Center the card */
 }
 
 .card-header {
-    background-color: #675c5f; 
-    color: #e5edd8; 
+    background-color: #4e8a51; 
+    color: #1b211b; 
 }
 
 .card-body {
@@ -53,8 +58,8 @@ body {
 }
 
 .btn.button-color {
-    background-color: #675c5f; 
-    border: 1px solid #5b554e;
+    background-color: #4e8a51; 
+    border: 1px solid #4e8a51;
     color: #e5edd8; /* Button text color */
 }
 

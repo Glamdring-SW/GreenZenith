@@ -40,7 +40,7 @@ body {
     background-size: cover;
     background-position: center;
     overflow-x: hidden;
-    height: 1500px;
+    height: auto;
     margin-top: 17vh;
     flex-direction: column;
     justify-content: center;
@@ -159,10 +159,63 @@ body-scrolled {
     background-color: #f4f4f4;
     padding: 3rem 1rem;
     height: auto;
-    margin-top: 10rem; /* Add margin-top to prevent overlap from fixed navbar */
+    margin-top: 0;
 }
 
 .productos-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 0 1rem;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #95bf96 transparent;
+}
+
+.productos-container::-webkit-scrollbar {
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+.productos-container::-webkit-scrollbar-thumb {
+    background: #95bf96;
+    border-radius: 4px;
+}
+
+.productos-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.producto-item {
+    flex: 0 0 200px; /* Adjust width for each card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.producto-img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.producto-name {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: #627062;
+    text-align: center;
+}
+
+.vendedores-container {
     display: flex;
     overflow-x: auto;
     gap: 1.5rem;
@@ -171,50 +224,41 @@ body-scrolled {
     padding-right: 1rem;
 }
 
-.section-title {
-    text-align: center;
-    font-size: 2rem;
-    color: #627062;
-    margin-bottom: 2rem;
-}
-
-.producto-item {
-    width: 150px;
+.vendor-card {
+    width: 200px;
     text-align: center;
     flex-shrink: 0;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    background-color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.producto-item:hover {
+.vendor-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.producto-img {
-    width: 80%;
+.vendor-img {
+    width: 100%;
     height: auto;
     border-radius: 8px;
 }
 
-.producto-name {
+.vendor-name {
     margin-top: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #231f20;
 }
 
 @media (max-width: 768px) {
-    .productos-container {
+    .vendedores-container {
         flex-direction: column;
     }
 
-    .producto-item {
+    .vendor-card {
         width: 100%;
         margin-bottom: 1rem;
     }
 }
 
-.card-bod {
-    align-items: center !important;
-}

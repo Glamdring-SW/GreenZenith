@@ -69,65 +69,38 @@
                 </div>
             </div>
         </div>
+        
         <section class="productos-destacados">
             <h2 class="section-title">Productos Destacados</h2>
             <div class="productos-container">
                 <!-- Product Cards -->
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card h-100">
-                        <img src="img/default_productPicture.png" alt="Planta 1" class="card-img-top producto-img">
-                        <div class="card-body d-flex flex-column">
-                            <p class="producto-name card-text">Planta 1</p>
-                            <a href="#" class="btn btn-primary mt-auto">Ver Más</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Repeat for more product cards -->
+                <jsp:include page="highlighted_product.jsp" />                
+                <jsp:include page="highlighted_product.jsp" />               
+                <jsp:include page="highlighted_product.jsp" />              
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+                <jsp:include page="highlighted_product.jsp" />
+            </div>
+        </section>
+        <section class="productos-destacados">
+            <h2 class="section-title">Vendedores Destacados</h2>
+            <div class="productos-container">
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />
+                <jsp:include page="highlighted_profile.jsp" />\                
             </div>
         </section>
 
@@ -146,9 +119,9 @@
                 navbar.classList.remove("custom-navbar-scrolled");
             }
             if (distanciaScroll > 350) { 
-                scrollArrow.style.display = 'none'; // Oculta la flecha después de hacer scroll
+                scrollArrow.style.display = 'none';
             } else {
-                scrollArrow.style.display = 'block'; // Muestra la flecha si no se ha hecho scroll
+                scrollArrow.style.display = 'block';
             }
         };
         
