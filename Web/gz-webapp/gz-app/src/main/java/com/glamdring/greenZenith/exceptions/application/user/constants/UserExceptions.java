@@ -104,6 +104,17 @@ public enum UserExceptions {
      */
     PRODUCTS("La lista conteniendo sus productos no posee informacion valida."),
     /**
+     * The ID of the product does not match the provided criteria for identity
+     * validation.
+     *
+     */
+    PRODUCT_ID("La informacion de el producto seleccionado posee algun error."),
+    /**
+     * The the name of this product is a duplicate of another one.
+     *
+     */
+    PRODUCT_DUPLICATE("El nombre de esta producto ya esta en uso."),
+    /**
      * The format of the User's password does not follow the established format,
      */
     CART("Su carrito no posee informacion valida.");

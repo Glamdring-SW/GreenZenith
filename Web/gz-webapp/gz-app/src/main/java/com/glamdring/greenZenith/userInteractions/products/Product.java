@@ -27,7 +27,7 @@ import com.glamdring.greenZenith.userInteractions.users.User;
  * it.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1
  */
 public class Product implements Killable, Attributable, Interactable, Serializable {
@@ -161,6 +161,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
      * @param description The description of this product.
      * @param price The price users have to pay in order to buy this product.
      * @param quantity The amount of plants at sale.
+     * @param productPicture The picture to be used for display of this product.
      * @param plantSale The plant that is being sold.
      * @throws InvalidProductException If the title or description exceed the
      * allowed length, if the price is below or equal to zero, if the quantity
@@ -212,7 +213,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     }
 
     /**
-     * {@inheritDoc} The ID of this plant.
+     * {@inheritDoc} The ID of this product.
      */
     @Override
     public int getId() {
@@ -238,7 +239,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     /**
      * The price of this product.
      *
-     * @return A price of the respective currency.
+     * @return A price of this product using the respective currency.
      */
     public BigDecimal getPrice() {
         return price;
@@ -408,7 +409,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     }
 
     /**
-     * Sets the quantity of this plant that is for sale as a product.
+     * Sets the quantity of this product that is for sale as a product.
      *
      * @param newQuantity The new quantity to be put for sale.
      * @throws InvalidProductException If the quantity exceeds the amount of
@@ -458,7 +459,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     }
 
     /**
-     * {@inheritDoc}. The deletion of this plant registry completely.
+     * {@inheritDoc}. The deletion of this product registry completely.
      */
     @Override
     public void delete() {

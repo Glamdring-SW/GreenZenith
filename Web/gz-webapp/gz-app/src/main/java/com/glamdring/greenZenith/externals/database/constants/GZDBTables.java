@@ -5,7 +5,7 @@ package com.glamdring.greenZenith.externals.database.constants;
  * this garuantees a correct and precise usage of the SQL syntax.
  *
  * @author Glamdring (Σxz)
- * @version 1.0.1
+ * @version 1.1.0
  * @since 0.1
  */
 public enum GZDBTables {
@@ -16,20 +16,10 @@ public enum GZDBTables {
      */
     USER("PUser"),
     /**
-     * An additional table used for loading images, made for increasing
-     * performance.
-     */
-    USERPICTURE("UserPicture"),
-    /**
      * The established name of the table that contains the information of each
      * plant that a user owns.
      */
     PLANT("Plant"),
-    /**
-     * An additional table used for loading images, made for increasing
-     * performance.
-     */
-    PLANTPICTURE("PlantPicture"),
     /**
      * The established name of the table that contains the information of the
      * schedule of each plant
@@ -40,11 +30,6 @@ public enum GZDBTables {
      * product availiable on sale.
      */
     PRODUCT("Product"),
-    /**
-     * An additional table used for loading images, made for increasing
-     * performance.
-     */
-    PRODUCTPICTURE("ProductPicture"),
     /**
      * The established name of the table that contains the information of each
      * message sent and recieved by a user.

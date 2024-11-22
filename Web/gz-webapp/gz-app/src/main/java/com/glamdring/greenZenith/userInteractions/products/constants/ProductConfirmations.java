@@ -40,8 +40,7 @@ public enum ProductConfirmations {
      */
     NOCHANGES("No se realizo ningun cambio o actualizacion."),;
 
-
-     /**
+    /**
      * Holds the value of each item's predefined exception message.
      */
     private final String confirmationMessage;
@@ -60,7 +59,7 @@ public enum ProductConfirmations {
      * concise information.
      *
      * @return The predefined confirmation message string value held by the
-     * item.
+     *         item.
      */
     public String getConfirmationMessage() {
         return confirmationMessage;
