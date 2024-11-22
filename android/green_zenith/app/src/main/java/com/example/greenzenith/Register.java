@@ -1,7 +1,7 @@
 package com.example.greenzenith;
 
-import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,21 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-public class Login extends Fragment {
+public class Register extends Fragment {
 
-    EditText edit1, edit2;
+    EditText edit1, edit2, edit3, edit4, edit5;
     Button btn1, btn2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =inflater.inflate(R.layout.fragment_login, container, false);
+        View view =inflater.inflate(R.layout.fragment_register, container, false);
         edit1 = (EditText) view.findViewById(R.id.edit1);
         edit2 = (EditText) view.findViewById(R.id.edit2);
+        edit3 = (EditText) view.findViewById(R.id.edit3);
+        edit4 = (EditText) view.findViewById(R.id.edit4);
+        edit5 = (EditText) view.findViewById(R.id.edit5);
+
 
         btn1 = (Button) view.findViewById(R.id.btn1);
         btn1.setOnClickListener(new View.OnClickListener() {

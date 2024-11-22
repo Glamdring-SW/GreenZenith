@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class Information extends Fragment implements View.OnClickListener {
+public class Information extends Fragment  {
 
     ImageView img1;
     Button btn1, btn2;
@@ -24,21 +24,31 @@ public class Information extends Fragment implements View.OnClickListener {
         img1.setImageResource(R.drawable.spiderman);
 
         btn1 = (Button) view.findViewById(R.id.btn1);
-        btn1.setOnClickListener(this);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                Login login = new Login();
+                transaction.replace(R.id.fragmentContainer, login);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         btn2 = (Button) view.findViewById(R.id.btn2);
-        btn2.setOnClickListener(this);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                Register register = new Register();
+                transaction.replace(R.id.fragmentContainer, register);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
 
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        Login login = new Login();
-        transaction.replace(R.id.fragmentContainer, login);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-    }
 }
