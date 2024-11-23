@@ -33,7 +33,7 @@ public class PlantList implements Serializable {
     LinkedHashMap<Integer, Plant> plantMap = new LinkedHashMap<>();
 
     /**
-     * Initializes all the plants from the database. in a lit and map.
+     * Initializes all the plants from the database in a list and map.
      *
      * @param gzdbc A connection to the database to retrieve data correctly.
      * @throws InvalidPlantException The connection to the database is not
@@ -87,7 +87,7 @@ public class PlantList implements Serializable {
      * The list with all the defined plants, either from the total or from a
      * User.
      *
-     * @return A listh with the data of each plant.
+     * @return A list with the data of each plant.
      */
     public ArrayList<Plant> getPlantList() {
         return plantList;
@@ -157,6 +157,7 @@ public class PlantList implements Serializable {
      * @param newPlantingDate The new date of this plant.
      * @param newSchedule A new list of times to be watered on.
      * @param newPlantPicture The new picture of this plant.
+     * @param owner The owner of this plant.
      * @return A message indicating the successfulness and failure of the
      * update.
      * @throws InvalidPlantException If the ID does not resolve to any plant
@@ -179,13 +180,16 @@ public class PlantList implements Serializable {
     }
 
     /**
-     * Delest a plant from the database and then the list and maps/
+     * Deletes a plant from the database and then the list and maps.
      *
      * @param id The ID of the plant to be deleted.
      * @throws InvalidPlantException If the ID does not resolve to any plant
      * registry.
      */
     public void delete(int id) throws InvalidPlantException {
+        if (plantMap.get(id) == null) {
+            throw new InvalidPlantException(PlantExceptions.INEXISTANT);
+        }
         for (int i = 0; i < plantList.size(); i++) {
             if (plantList.get(i).getId() == id) {
                 plantMap.get(i).delete();
@@ -193,9 +197,6 @@ public class PlantList implements Serializable {
                 plantMap.remove(i);
                 break;
             }
-        }
-        if (plantMap.get(id) == null) {
-            throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
     }
 }

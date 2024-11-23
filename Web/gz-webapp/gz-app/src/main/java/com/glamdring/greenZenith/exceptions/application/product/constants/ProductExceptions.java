@@ -40,7 +40,16 @@ public enum ProductExceptions {
     /**
      * The data or connection of the owner of this product is not valid.
      */
-    SELLER("El vendedor de este producto no es valido."),;
+    SELLER("El vendedor de este producto no es valido."),
+    /**
+     * The connection to the database cannot be resolved.
+     */
+    DATABASE("El accesso a los datos de este producto no fue exitoso."),
+    /**
+     * The specified product data does not resolve to any real data within the
+     * database.
+     */
+    INEXISTANT("El producto especificado no existe."),;
 
     /**
      * Holds the value of each item's predefined exception message.

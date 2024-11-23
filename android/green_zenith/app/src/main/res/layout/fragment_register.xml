@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Login">
+    tools:context=".Register">
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,18 +18,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit1"
-        android:text="usuario"/>
+        android:text="USUARIO"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit2"
-        android:text="contrasena"/>
+        android:text="E-MAIL"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit3"
+        android:text="EDAD"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit4"
+        android:text="contrasena"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit5"
         android:text="confirmar contrasena"/>
 
     <Button
@@ -39,7 +51,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10pt"
         android:backgroundTint="#91D903"
-        android:text="Ingresar" />
+        android:text="GUARDAR" />
 
     <Button
         android:id="@+id/btn2"
