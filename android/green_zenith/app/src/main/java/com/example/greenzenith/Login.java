@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class Login extends Fragment {
 
     EditText edit1, edit2;
@@ -30,6 +32,7 @@ public class Login extends Fragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 Principal principal = new Principal();
                 transaction.replace(R.id.fragmentContainer, principal);

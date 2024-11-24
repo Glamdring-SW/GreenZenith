@@ -12,15 +12,20 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-    Button btn1;
+public class MainActivity extends AppCompatActivity {
+
+    BottomNavigationView nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        nav = findViewById(R.id.bottomNav);
+        nav.setVisibility(View.INVISIBLE);
 
         FirstScreen screen = new FirstScreen();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -29,9 +34,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View view) {
-        Intent i = new Intent(this, HomePage.class);
-        startActivity(i);
-    }
 }

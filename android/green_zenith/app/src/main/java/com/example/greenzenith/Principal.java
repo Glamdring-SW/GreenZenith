@@ -30,6 +30,8 @@ public class Principal extends Fragment implements AdapterView.OnItemClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        setHasOptionsMenu(true);
+
         View view = inflater.inflate(R.layout.fragment_principal, container, false);
 
         list = view.findViewById(R.id.list);
