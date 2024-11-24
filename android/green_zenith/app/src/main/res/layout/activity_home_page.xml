@@ -9,7 +9,7 @@
     tools:context=".HomePage">
 
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/fragmentContainer2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
