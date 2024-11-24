@@ -152,31 +152,127 @@ body-scrolled {
 
 .custom-spacing {
     margin-top: 50vh;
-    margin-bottom: 50vh;
+    margin-bottom: 21vh;
 }
 
+.featured-section {
+    padding: 4rem 0;
+    background-color: #fff;
+}
+
+.section-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 0 2rem;
+}
+
+.tab-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #627062;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: #95bf96;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.tab-button:hover::after {
+    width: 100%;
+}
+
+.tab-button.active {
+    color: #95bf96;
+    font-weight: 600;
+}
+
+.tab-button.active::after {
+    width: 100%;
+}
+
+.tab-content {
+    position: relative;
+    height: 60vh;
+}
+
+.tab-pane {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+    opacity: 1;
+}
+
+.vendor-img-wrapper{
+    height: 300px;
+    width: 300px;
+}
 .productos-destacados {
-    background-color: #f4f4f4;
-    padding: 3rem 1rem;
-    height: auto;
-    margin-top: 0;
+    background-color: #f8f9fa;
+    padding: 4rem 0 2rem;
+    position: relative;
 }
 
+.section-header {
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: #627062;
+    font-size: 2.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #95bf96;
+}
+
+/* Scrollable Container */
 .productos-container {
     display: flex;
     overflow-x: auto;
-    gap: 1rem;
-    padding: 0 1rem;
-    scrollbar-width: thin; /* For Firefox */
+    gap: 2rem;
+    height: 500px;
+    padding: 1rem 2rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
     scrollbar-color: #95bf96 transparent;
 }
 
 .productos-container::-webkit-scrollbar {
-    height: 8px; /* Horizontal scrollbar height */
+    height: 8px;
 }
 
 .productos-container::-webkit-scrollbar-thumb {
-    background: #95bf96;
+    background-color: #95bf96;
     border-radius: 4px;
 }
 
@@ -184,71 +280,99 @@ body-scrolled {
     background: transparent;
 }
 
+/* Product Card Styles */
 .producto-item {
-    flex: 0 0 200px; /* Adjust width for each card */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex: 0 0 300px;
     background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
+
 .producto-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.producto-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* Creates a square aspect ratio */
+    overflow: hidden;
 }
 
 .producto-img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 1rem;
+    height: 100%;
+    object-fit: cover; /* This ensures the image covers the area without distortion */
+}
+
+.producto-item:hover .producto-img {
+    transform: scale(1.05);
+}
+
+.producto-content {
+    padding: 1.5rem;
 }
 
 .producto-name {
-    margin-top: 0.5rem;
     font-size: 1.2rem;
     color: #627062;
-    text-align: center;
+    margin: 0.5rem 0;
+    font-weight: 600;
 }
 
-.vendedores-container {
-    display: flex;
-    overflow-x: auto;
-    gap: 1.5rem;
-    justify-content: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
+.price-tag {
+    display: inline-block;
+    background-color: #95bf96;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
 }
 
+/* Vendor Card Styles */
 .vendor-card {
-    width: 200px;
-    text-align: center;
-    flex-shrink: 0;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 0 0 300px;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .vendor-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .vendor-img {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.vendor-card:hover .vendor-img {
+    transform: scale(1.05);
+}
+
+.vendor-content {
+    padding: 1.5rem;
 }
 
 .vendor-name {
-    margin-top: 1rem;
     font-size: 1.2rem;
-    color: #231f20;
+    color: #627062;
+    margin: 0;
+    font-weight: 600;
 }
 
 @media (max-width: 768px) {

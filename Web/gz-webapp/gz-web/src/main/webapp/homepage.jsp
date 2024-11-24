@@ -10,7 +10,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Home Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="src/styleshomepage.css"> <!-- Adjusted the path -->
+        <link rel="stylesheet" href="src/styleshomepage.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body class="body-2">
@@ -70,40 +71,40 @@
             </div>
         </div>
         
-        <section class="productos-destacados">
-            <h2 class="section-title">Productos Destacados</h2>
-            <div class="productos-container">
-                <!-- Product Cards -->
-                <jsp:include page="highlighted_product.jsp" />                
-                <jsp:include page="highlighted_product.jsp" />               
-                <jsp:include page="highlighted_product.jsp" />              
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
-                <jsp:include page="highlighted_product.jsp" />
+        <!-- Interactive Featured Sections -->
+        <section class="feeatured section">
+            <div class="section-tabs">
+                <button class="tab-button active" data-tab="products">Productos Destacados</button>
+                <button class="tab-button" data-tab="vendors">Vendedores Destacados</button>
+            </div>
+            
+            <div class="tab-content">
+                <!-- Products Tab -->
+                <div class="tab-pane active" id="products">
+                    <div class="productos-container">
+                        <% for(int i = 0; i < 11; i++) { %>
+                            <jsp:include page="highlighted_product.jsp" />
+                        <% } %>
+                    </div>
+                </div>
+                
+                <!-- Vendors Tab -->
+                <div class="tab-pane" id="vendors">
+                    <div class="productos-container">
+                        <% for(int i = 0; i < 11; i++) { %>
+                            <jsp:include page="highlighted_profile.jsp" />
+                        <% } %>
+                    </div>
+                </div>
             </div>
         </section>
-        <section class="productos-destacados">
-            <h2 class="section-title">Vendedores Destacados</h2>
-            <div class="productos-container">
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />
-                <jsp:include page="highlighted_profile.jsp" />\                
-            </div>
-        </section>
-
+        <%
+            if (user != null) {
+        %>
+        <jsp:include page="message.jsp" />
+        <%
+            }
+        %>
     </body>
     <script>
         window.onscroll = function() {
@@ -136,8 +137,24 @@
                     animatedRow.classList.add("show");
                 }
             });
-        });
+            
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
 
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding pane
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+        });
         // Smooth scroll on arrow click
         document.addEventListener("DOMContentLoaded", function () {
             const scrollArrow = document.querySelector("#scrollArrow");
@@ -150,5 +167,7 @@
                 });
             });
         });
+        
+        
     </script>
 </html>

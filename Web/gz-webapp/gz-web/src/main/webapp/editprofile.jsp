@@ -83,6 +83,15 @@
                         <div id="userNameError" class="error small"></div>
                     </div>
                     <div class="mb-3">
+                        <label for="description" class="form-label color-title text-white">Descripción</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" 
+                                placeholder="Descripción de tu perfil" maxlength="500" 
+                                onkeyup="updateCharCounter()"></textarea>
+                        <div class="char-counter text-white">
+                            <span id="charCount">0</span>/500 caracteres
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label for="email" class="form-label color-title text-white">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Introduce el correo electronico nuevo"
                                pattern="^[a-zA-Z0-9!#$%&’*+\-\/=?^_`{|}~\.]+@{1}(?:gmail|yahoo|hotmail|outlook|msn|aol|live|mail|ymail|comcast|icloud|protonmail|wanadoo|zoho)(?:\.[a-z]{2,3})?(?:\.[a-z]{2}|)$">
@@ -161,6 +170,13 @@
                     document.getElementById('age').value = age;
                 }
                 return valid;
+            }
+            
+            function updateCharCounter() {
+                const textarea = document.getElementById('description');
+                const counter = document.getElementById('charCount');
+                const currentLength = textarea.value.length;
+                counter.textContent = currentLength;
             }
 
             function setDateLimits() {
