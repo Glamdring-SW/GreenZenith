@@ -56,4 +56,10 @@ public class Login extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity) getActivity()).setMenuEnabled(true);
+    }
+
 }

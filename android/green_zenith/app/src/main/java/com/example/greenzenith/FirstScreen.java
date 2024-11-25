@@ -31,6 +31,8 @@ public class FirstScreen extends Fragment {
             }
         });
 
+        ((MainActivity) getActivity()).setMenuEnabled(false);
+
         return view;
     }
 }

@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color3"
     tools:context=".FirstScreen">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="30pt"
+        android:textColor="@color/white"
         android:text="GreenZenith"
         android:textSize="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="30pt"
         android:text="Tus plantas,\n tus suenos"
-        android:textSize="30dp" />
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/homePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30pt"
-        android:background="@android:color/black"
-        android:text="Pagina Principal" />
+        android:background="@drawable/round_button"
+        android:text="PAGINA\nPRINCIPAL"
+        android:translationY="50dp" />
 
-</LinearLayout>
+</FrameLayout>
