@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,40 +7,51 @@
     tools:context=".User">
 
     <ImageView
+        android:id="@+id/userImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/userImage"/>
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="58dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="ejemplo2"
         android:id="@+id/userName"
-        android:textSize="20dp"/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="ejemplo1"
+        android:text="ejemplo2"
+        android:textSize="20dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="266dp" />
+
+    <TextView
         android:id="@+id/userInfo"
-        android:textSize="20dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ejemplo1"
+        android:textSize="20dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="210dp" />
 
     <Button
         android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10pt"
         android:backgroundTint="#91D903"
-        android:text="Editar Perfil" />
+        android:text="Editar Perfil"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="370dp" />
 
     <Button
         android:id="@+id/btn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10pt"
         android:backgroundTint="#FF9800"
-        android:text="Cerrar Sesion" />
+        android:text="Cerrar Sesion"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="442dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
