@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.glamdring.greenZenith.userInteractions.plants.Plant"%>
@@ -23,46 +24,52 @@
     JavaxServletFileUpload upload = new JavaxServletFileUpload(factory);
     List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) request);
 
+    int id = 0;
     String name = null;
+    String title = null;
     String description = "";
-    LocalDate localPlantDate = null;
+    BigDecimal price = null;
     int quantity = 0;
-    BufferedImage plantPicture = null;
+    BufferedImage productPicture = null;
     String mimeType = null;
-    ArrayList<LocalTime> schedule = new ArrayList<>();
     boolean defaultFlag = true;
 
     for (FileItem item : formItems) {
         if (item.isFormField()) {
-            String fieldName = item.getFieldName();
+            String fieldtitle = item.getFieldName();
             String fieldValue = item.getString();
-            if (fieldName.equals("name")) {
+            if (fieldtitle.equals("title")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    name = fieldValue;
+                    title = fieldValue;
                 }
             }
-            if (fieldName.equals("description")) {
+            if (fieldtitle.equals("description")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
                     description = fieldValue;
                 }
             }
-            if (fieldName.equals("plantingDate")) {
+            if (fieldtitle.equals("price")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    localPlantDate = LocalDate.parse(fieldValue);
+                    price = new BigDecimal(fieldValue);
                 }
             }
-            if (fieldName.equals("quantity")) {
+            if (fieldtitle.equals("quantity")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
                     quantity = Integer.parseInt(fieldValue);
                 }
             }
-            if (fieldName.equals("waterTime")) {
+            if (fieldtitle.equals("id")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    schedule.add(LocalTime.parse(fieldValue));
+                    id = Integer.parseInt(fieldValue);
+                }
+            }
+            if (fieldtitle.equals("name")) {
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    name = fieldValue;
                 }
             }
         } else {
-            plantPicture = ImageIO.read(item.getInputStream());
+            productPicture = ImageIO.read(item.getInputStream());
             mimeType = item.getContentType();
             if (!mimeType.equals("application/octet-stream")) {
                 defaultFlag = false;
@@ -73,19 +80,19 @@
     if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
         try {
             User user = (User) session.getAttribute("User");
-            if (plantPicture == null) {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, null);
+            if (productPicture == null) {
+                user.addProduct(title, description, price, quantity, null, user.getPlant(id, name));
             } else {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, plantPicture);
+                user.addProduct(title, description, price, quantity, productPicture, user.getPlant(id, name));
             }
-            response.sendRedirect("../plantsexplore.jsp");
+            response.sendRedirect("../productsexplore.jsp");
         } catch (InvalidUserException e) {
-            request.setAttribute("jspErrorPlantCreate", e.getMessage());
+            request.setAttribute("jspErrorProduct", e.getMessage());
             RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
             dispatch.forward(request, response);
         }
     } else {
-        request.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
+        request.setAttribute("jspErrorProduct", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
         RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
         dispatch.forward(request, response);
     }

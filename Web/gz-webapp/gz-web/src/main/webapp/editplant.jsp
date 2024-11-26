@@ -1,3 +1,4 @@
+<%@page import="com.glamdring.greenZenith.userInteractions.plants.Plant"%>
 <%@page import="com.glamdring.greenZenith.userInteractions.users.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -7,15 +8,16 @@
 <jsp:forward page="login.jsp"/>
 <%
     }
-    String plantId = (String) request.getParameter("id");
+    int plantId = Integer.parseInt((String) request.getParameter("id"));
     String plantName = (String) request.getParameter("oldName");
+    Plant plant = user.getPlant(plantId, plantName);
 %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Plant Information</title>
+        <title>Editar Una Planta</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="src/stylesplant.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -30,8 +32,7 @@
                     <input type="text" id="oldName" name="oldName" required hidden value="<%=plantName%>">
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <!-- Image Upload -->
+                        <div class="col-md-4">
                             <div class="image-upload-container" onclick="document.getElementById('plantPicture').click()">
                                 <input type="file" id="plantPicture" name="plantPicture" accept=".png, .jpg, .jpeg" 
                                        onchange="previewImage(event)" style="display: none;">
@@ -39,44 +40,39 @@
                                 <img class="image-preview" id="preview" src="" alt="" style="display: none;">
                             </div>
                         </div>
-                        <div class="col-md-6 d-flex flex-column justify-content-between">
-                            <!-- Cantidad Section -->
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">Cantidad</label>
-                                <div class="quantity-control">
-                                    <button type="button" class="quantity-btn" onclick="updateQuantity(-1)" id="decreaseBtn">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input type="number" class="form-control" id="quantity" name="quantity" 
-                                           min="1" max="999" value="1" readonly>
-                                    <button type="button" class="quantity-btn" onclick="updateQuantity(1)" id="increaseBtn">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                        <div class="col-md-8 d-flex flex-column justify-content-between">
+                            <div class="mb-6">
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="<%=plant.getName()%>">
+                            </div>
+                            <div class="mb-6">
+                                <label for="description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" 
+                                          placeholder="<%=plant.getDescription()%>" maxlength="500" 
+                                          onkeyup="updateCharCounter()"></textarea>
+                                <div class="char-counter">
+                                    <span id="charCount">0</span>/500 caracteres
                                 </div>
                             </div>
-                            <!-- Fecha de Plantado Section -->
-                            <div class="mb-3">
-                                <label for="plantingDate" class="form-label">Fecha de plantado</label>
-                                <input type="date" class="form-control" id="plantingDate" name="plantingDate">
-                            </div>
                         </div>
                     </div>
-
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre de la planta">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" 
-                                placeholder="Descripción de la planta" maxlength="500" 
-                                onkeyup="updateCharCounter()"></textarea>
-                        <div class="char-counter">
-                            <span id="charCount">0</span>/500 caracteres
+                        <label for="quantity" class="form-label">Cantidad</label>
+                        <div class="quantity-control">
+                            <button type="button" class="quantity-btn" onclick="updateQuantity(-1)" id="decreaseBtn">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="form-control" id="quantity" name="quantity" 
+                                   min="1" max="999" value="<%=plant.getQuantity()%>" readonly>
+                            <button type="button" class="quantity-btn" onclick="updateQuantity(1)" id="increaseBtn">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="plantingDate" class="form-label">Fecha de plantado</label>
+                        <input type="date" class="form-control" id="plantingDate" name="plantingDate">
+                    </div>
                     <div class="mb-3">
                         <label for="waterTime" class="form-label">Hora de Riego</label>
                         <input type="time" class="form-control" id="waterTime" name="waterTime">
@@ -95,7 +91,7 @@
 
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function() {
+                    reader.onload = function () {
                         preview.style.display = 'block';
                         preview.src = reader.result;
                         uploadIcon.style.display = 'none';
@@ -111,11 +107,11 @@
                 const input = document.getElementById('quantity');
                 const currentValue = parseInt(input.value) || 0;
                 const newValue = currentValue + change;
-                
+
                 if (newValue >= 1 && newValue <= 999) {
                     input.value = newValue;
                 }
-                
+
                 // Update buttons state
                 document.getElementById('decreaseBtn').disabled = newValue <= 1;
                 document.getElementById('increaseBtn').disabled = newValue >= 999;
@@ -137,11 +133,9 @@
                 inputDate.max = maxDate.toISOString().split("T")[0];
             }
 
-            window.onload = function() {
+            window.onload = function () {
                 setDateLimits();
                 updateCharCounter();
-                // Initialize quantity buttons state
-                document.getElementById('decreaseBtn').disabled = true;
             };
         </script>
     </body>

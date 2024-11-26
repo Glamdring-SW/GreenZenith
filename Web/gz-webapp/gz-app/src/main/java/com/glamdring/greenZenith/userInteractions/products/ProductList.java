@@ -5,12 +5,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import com.glamdring.greenZenith.exceptions.application.plant.InvalidPlantException;
 import com.glamdring.greenZenith.exceptions.application.product.InvalidProductException;
 import com.glamdring.greenZenith.exceptions.application.product.constants.ProductExceptions;
+import com.glamdring.greenZenith.exceptions.application.user.InvalidUserException;
 import com.glamdring.greenZenith.exceptions.database.GZDBResultException;
 import com.glamdring.greenZenith.externals.database.GZDBConnector;
 import com.glamdring.greenZenith.externals.database.constants.GZDBTables;
 import com.glamdring.greenZenith.userInteractions.plants.Plant;
+import com.glamdring.greenZenith.userInteractions.plants.PlantList;
+import com.glamdring.greenZenith.userInteractions.users.User;
 
 /**
  * Provides a list that contains all the products a User has for sale.
@@ -34,9 +38,10 @@ public class ProductList {
      * Initializes all the products from the database in a list and map.
      *
      * @param gzdbc A connection to the database to retrieve data correctly.
-     * @throws InvalidProductException If the access to the database cannot be resolved.
-    */
-         public ProductList(GZDBConnector gzdbc) throws InvalidProductException {
+     * @throws InvalidProductException If the access to the database cannot be
+     * resolved.
+     */
+    public ProductList(GZDBConnector gzdbc) throws InvalidProductException {
         try {
             ArrayList<LinkedHashMap<String, Object>> productListDB = gzdbc.selectAll(GZDBTables.PRODUCT);
             if (!productListDB.isEmpty()) {
@@ -52,8 +57,35 @@ public class ProductList {
     }
 
     /**
-     * The list with all the defined p, either from the total or from a
-     * User.
+     * Initializes the list and map of this user's products.
+     *
+     * @param owner The user to get all the products from.
+     * @throws InvalidPlantException If the user does not provide a valid
+     * connection.
+     */
+    public ProductList(User owner) throws InvalidProductException {
+        try {
+            PlantList plants = owner.getPlants();
+            for (Plant plant : plants.getPlantList()) {
+                owner.resetMaps();
+                owner.insertMap.put("Plant_ID", plant.getId());
+                ArrayList<LinkedHashMap<String, Object>> productListDB = owner.gzdbc.select(GZDBTables.PRODUCT, owner.insertMap);
+                if (!productListDB.isEmpty()) {
+                    for (LinkedHashMap<String, Object> product : productListDB) {
+                        int id = (int) product.get("ID");
+                        int plantSaleID = (int) product.get("Plant_ID");
+                        productList.add(new Product(id, new Plant(plantSaleID, owner)));
+                        productMap.put(id, new Product(id, new Plant(plantSaleID, owner)));
+                    }
+                }
+            }
+        } catch (GZDBResultException | InvalidPlantException | InvalidUserException e) {
+            throw new InvalidProductException(ProductExceptions.SELLER, e);
+        }
+    }
+
+    /**
+     * The list with all the defined p, either from the total or from a User.
      *
      * @return A list with the data of each plant.
      */
@@ -69,6 +101,15 @@ public class ProductList {
      */
     public LinkedHashMap<Integer, Product> getProductMap() {
         return productMap;
+    }
+
+    /**
+     * Checks if a User does not have any products in his possesion.
+     *
+     * @return If a product is owned by a User.
+     */
+    public boolean isEmpty() {
+        return productList.isEmpty() && productMap.isEmpty();
     }
 
     /**
@@ -114,7 +155,7 @@ public class ProductList {
         productMap.put(id, product);
     }
 
-        /**
+    /**
      * Updates all the data of a certain plant given by it's ID, any null or
      * empy parameters are not considered for the update.
      *
@@ -129,19 +170,11 @@ public class ProductList {
      * @throws InvalidProductException If the ID does not resolve to any plant
      * registry.
      */
-        public String update(int id, String newTitle, String newDescription, BigDecimal newPrice, int newQuantity, BufferedImage newProductPicture, Plant plantSale) throws InvalidProductException{
+    public String update(int id, String newTitle, String newDescription, BigDecimal newPrice, int newQuantity, BufferedImage newProductPicture) throws InvalidProductException {
         if (productMap.get(id) == null) {
             throw new InvalidProductException(ProductExceptions.INEXISTANT);
         }
         String returnMessage = productMap.get(id).updateProductBatch(newTitle, newDescription, newPrice, newQuantity, newProductPicture);
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getId() == id) {
-                productList.remove(i);
-                productMap.remove(i);
-                break;
-            }
-        }
-        add(new Product(id, plantSale));
         return returnMessage;
     }
 
@@ -158,9 +191,9 @@ public class ProductList {
         }
         for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getId() == id) {
-                productMap.get(i).delete();
+                productMap.get(id).delete();
                 productList.remove(i);
-                productMap.remove(i);
+                productMap.remove(id);
                 break;
             }
         }

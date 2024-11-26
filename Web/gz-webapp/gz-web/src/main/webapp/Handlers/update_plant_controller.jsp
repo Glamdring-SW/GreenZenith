@@ -80,13 +80,24 @@
             }
         }
     }
-    User user = (User) session.getAttribute("User");
+
     if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
-        if (defaultFlag) {
-            user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, null);
-        } else {
-            user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, plantPicture);
+        try {
+            User user = (User) session.getAttribute("User");
+            if (defaultFlag) {
+                user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, null);
+            } else {
+                user.updatePlantBatch(id, oldName, newName, description, quantity, localPlantDate, schedule, plantPicture);
+            }
+            response.sendRedirect("../plantsexplore.jsp");
+        } catch (InvalidUserException e) {
+            request.setAttribute("jspErrorPlantCreate", e.getMessage());
+            RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+            dispatch.forward(request, response);
         }
+    } else {
+        request.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
+        RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
+        dispatch.forward(request, response);
     }
-    response.sendRedirect("../plantsexplore.jsp");
 %>

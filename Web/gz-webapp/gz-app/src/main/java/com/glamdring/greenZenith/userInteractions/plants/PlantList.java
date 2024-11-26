@@ -62,10 +62,9 @@ public class PlantList implements Serializable {
      * connection.
      */
     public PlantList(User owner) throws InvalidPlantException {
-        super();
-        owner.resetMaps();
-        owner.insertMap.put("PUser_ID", owner.getId());
         try {
+            owner.resetMaps();
+            owner.insertMap.put("PUser_ID", owner.getId());
             ArrayList<LinkedHashMap<String, Object>> plantListDB = owner.gzdbc.select(GZDBTables.PLANT, owner.insertMap);
             if (!plantListDB.isEmpty()) {
                 for (LinkedHashMap<String, Object> plant : plantListDB) {
@@ -79,6 +78,11 @@ public class PlantList implements Serializable {
         }
     }
 
+    /**
+     * Checks if a User does not have any plants in his possesion.
+     *
+     * @return If a plant is owned by a User.
+     */
     public boolean isEmpty() {
         return plantList.isEmpty() && plantMap.isEmpty();
     }
@@ -168,14 +172,6 @@ public class PlantList implements Serializable {
             throw new InvalidPlantException(PlantExceptions.INEXISTANT);
         }
         String returnMessage = plantMap.get(id).updatePlantBatch(newName, newDescription, newQuantity, newPlantingDate, newSchedule, newPlantPicture);
-        for (int i = 0; i < plantList.size(); i++) {
-            if (plantList.get(i).getId() == id) {
-                plantList.remove(i);
-                plantMap.remove(i);
-                break;
-            }
-        }
-        add(new Plant(id, owner));
         return returnMessage;
     }
 
@@ -192,9 +188,9 @@ public class PlantList implements Serializable {
         }
         for (int i = 0; i < plantList.size(); i++) {
             if (plantList.get(i).getId() == id) {
-                plantMap.get(i).delete();
+                plantMap.get(id).delete();
                 plantList.remove(i);
-                plantMap.remove(i);
+                plantMap.remove(id);
                 break;
             }
         }

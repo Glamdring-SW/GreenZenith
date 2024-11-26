@@ -167,35 +167,31 @@ public class Product implements Killable, Attributable, Interactable, Serializab
      * allowed length, if the price is below or equal to zero, if the quantity
      * is bigger than the plant's quantity.
      */
-    public Product(String title, String description, BigDecimal price, int quantity,
-            BufferedImage productPicture, Plant plantSale) throws InvalidProductException {
+    public Product(String title, String description, BigDecimal price, int quantity, BufferedImage productPicture, Plant plantSale) throws InvalidProductException {
         try {
             if (!GZFormatter.isValidMaxLength(title, 30)) {
                 throw new InvalidProductException(ProductExceptions.LENGTH_TITLE);
             }
-            if (price.compareTo(BigDecimal.ZERO) > 0) {
+            if (price.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new InvalidProductException(ProductExceptions.PRICE);
             }
             if (quantity > plantSale.getQuantity()) {
                 throw new InvalidProductException(ProductExceptions.QUANTITY);
             }
-
             this.seller = plantSale.getOwner();
-
             LinkedHashMap<String, Object> productMap = new LinkedHashMap<>();
             productMap.put("Title", title);
             productMap.put("Description", description);
             productMap.put("Price", price);
             productMap.put("Quantity", quantity);
-            productMap.put("Plant_ID", seller.getId());
             if (productPicture != null) {
                 productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(productPicture, seller.getConnection()));
             } else {
                 productMap.put("Picture", seller.getPictureHandler().convertBufferedImageToBlob(seller.getPictureHandler().getDEFAULT_PRODUCT(), seller.getConnection()));
             }
+            productMap.put("Plant_ID", plantSale.getId());
             seller.gzdbc.insert(GZDBTables.PRODUCT, productMap);
             this.id = (int) seller.gzdbc.select(GZDBTables.PRODUCT, productMap).get(0).get("ID");
-
             this.title = title;
             this.description = description;
             this.price = price;
@@ -262,6 +258,16 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     }
 
     /**
+     * The respective image of this product in a Base64 encoding for easier web
+     * application manipulation, handling and loading.
+     *
+     * @return A string on Base64 with the picture information.
+     */
+    public String getPictureBase64() {
+        return seller.getPictureHandler().convertBufferedImageToBase64(productPicture);
+    }
+
+    /**
      * The plant that is being sold.
      *
      * @return The parent plant of this product.
@@ -280,13 +286,17 @@ public class Product implements Killable, Attributable, Interactable, Serializab
     }
 
     /**
-     * Updates all the product's data an details, if any parameter is blank or null, it does not get updated, and gives a confirmation message indicating all the changes made.
+     * Updates all the product's data an details, if any parameter is blank or
+     * null, it does not get updated, and gives a confirmation message
+     * indicating all the changes made.
+     *
      * @param newTitle The new title to be used for this product.
      * @param newDescription The new description this product shows.
      * @param newPrice The new price this product can be bought for.
      * @param newQuantity The new quantity of this product.
      * @param newProductPicture The new picture of this product.
-     * @return A confirmation message which explains all the changes made to this product or a special message if no change was made.
+     * @return A confirmation message which explains all the changes made to
+     * this product or a special message if no change was made.
      */
     public String updateProductBatch(String newTitle, String newDescription, BigDecimal newPrice, int newQuantity, BufferedImage newProductPicture) {
         int updateCount = 0;
@@ -309,7 +319,7 @@ public class Product implements Killable, Attributable, Interactable, Serializab
                 messageBuilder.append(e.getMessage());
             }
         }
-        if (!newPrice.equals(BigDecimal.ZERO) && newPrice != this.price) {
+        if (newPrice != null && !newPrice.equals(BigDecimal.ZERO) && newPrice != this.price) {
             try {
                 seller.appendUpdateMessage(messageBuilder, setPrice(newPrice));
                 updateCount++;

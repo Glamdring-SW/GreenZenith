@@ -37,10 +37,6 @@
                             %>
                             <a class="btn btn-primary btn-lg button-color" href="registro.jsp" role="button"><b>R E G I S T R A R S E</b></a>
                             <%
-                                } else {
-                            %>
-                            <a class="btn btn-primary btn-lg button-color" href="plantsexplore.jsp" role="button"><b>MIS PLANTAS</b></a>
-                             <%
                                 }
                             %>
                         </div>
@@ -50,7 +46,7 @@
         </div>
 
         <div id="scrollArrow" class="scroll-arrow">
-           <img src="img/arrowpoint.png" class="pointer">
+            <img src="img/arrowpoint.png" class="pointer">
         </div>
 
         <!-- Nueva Sección Animada -->
@@ -70,34 +66,33 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Interactive Featured Sections -->
+
+        <!--
         <section class="feeatured section">
             <div class="section-tabs">
                 <button class="tab-button active" data-tab="products">Productos Destacados</button>
                 <button class="tab-button" data-tab="vendors">Vendedores Destacados</button>
             </div>
-            
+
             <div class="tab-content">
-                <!-- Products Tab -->
                 <div class="tab-pane active" id="products">
                     <div class="productos-container">
-                        <% for(int i = 0; i < 11; i++) { %>
-                            <jsp:include page="highlighted_product.jsp" />
+                        <% for (int i = 0; i < 11; i++) { %>
+                        <jsp:include page="highlighted_product.jsp" />
                         <% } %>
                     </div>
                 </div>
-                
-                <!-- Vendors Tab -->
+
                 <div class="tab-pane" id="vendors">
                     <div class="productos-container">
-                        <% for(int i = 0; i < 11; i++) { %>
-                            <jsp:include page="highlighted_profile.jsp" />
+                        <% for (int i = 0; i < 11; i++) { %>
+                        <jsp:include page="highlighted_profile.jsp" />
                         <% } %>
                     </div>
                 </div>
             </div>
         </section>
+        -->
         <%
             if (user != null) {
         %>
@@ -105,27 +100,28 @@
         <%
             }
         %>
+
     </body>
     <script>
-        window.onscroll = function() {
+        window.onscroll = function () {
             var distanciaScroll = window.scrollY;
             var navbar = document.querySelector(".custom-navbar");
             var body = document.body;
-            
+
             if (distanciaScroll > 350) {
                 body.style.backgroundColor = "white";
                 navbar.classList.add("custom-navbar-scrolled");
             } else {
-                body.style.backgroundColor = ""; 
+                body.style.backgroundColor = "";
                 navbar.classList.remove("custom-navbar-scrolled");
             }
-            if (distanciaScroll > 350) { 
+            if (distanciaScroll > 350) {
                 scrollArrow.style.display = 'none';
             } else {
                 scrollArrow.style.display = 'block';
             }
         };
-        
+
         document.addEventListener("DOMContentLoaded", function () {
             const animatedRow = document.querySelector(".animated-row");
 
@@ -137,7 +133,7 @@
                     animatedRow.classList.add("show");
                 }
             });
-            
+
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabPanes = document.querySelectorAll('.tab-pane');
 
@@ -153,7 +149,7 @@
                     document.getElementById(tabId).classList.add('active');
                 });
             });
-            
+
         });
         // Smooth scroll on arrow click
         document.addEventListener("DOMContentLoaded", function () {
@@ -167,7 +163,7 @@
                 });
             });
         });
-        
-        
+
+
     </script>
 </html>

@@ -176,9 +176,6 @@ public class Plant implements Killable, Interactable, Attributable, Serializable
         if (!GZFormatter.isValidMaxLength(name, 25)) {
             throw new InvalidPlantException(PlantExceptions.LENGTH_NAME);
         }
-        if (!GZFormatter.isValidMaxLength(description, 500)) {
-            throw new InvalidPlantException(PlantExceptions.LENGTH_DESCRIPTION);
-        }
         if (quantity < 1) {
             throw new InvalidPlantException(PlantExceptions.QUANTITY);
         }

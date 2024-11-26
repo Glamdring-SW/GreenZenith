@@ -28,11 +28,12 @@
                 <h2 class="profile-name"><%= user.getName()%></h2>
                 <a href="editprofile.jsp" class="btn btn-outline-light btn-outline-light-custom">EDITAR PERFIL</a>
                 <a href="plantsexplore.jsp" class="btn btn-outline-light btn-outline-light-custom">MIS PLANTAS</a>
+                <a href="productsexplore.jsp" class="btn btn-outline-light btn-outline-light-custom">MIS PRODUCTOS</a>
                 <form action="Handlers/logOut.jsp" method="post">
                     <input type="submit" value="CERRAR SESION" class="btn btn-outline-light btn-outline-light-custom">
                 </form>
 
-                <!-- <a href="emptyprofile.jsp" class="btn btn-outline-light btn-outline-light-custom">MIS VENTAS</a>  -->
+                <!-- -->
                 <!--
                 <div class="social-icons mt-4">
                     <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>

@@ -13,7 +13,11 @@ public enum MessageExceptions {
     /**
      * The message's length exceeded the allowed value.
      */
-    LENGTH("InvalidMessageLength");
+    LENGTH("El mensaje es muy largo para ser enviado"),
+     /**
+     * The message's length exceeded the allowed value.
+     */
+    CONNECTION("No se pueden obtener los mensajes");
 
     /**
      * Holds the value of each item's predefined exception message.

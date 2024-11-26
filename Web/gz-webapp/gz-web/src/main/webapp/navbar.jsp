@@ -5,29 +5,47 @@
 %>
 <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container-fluid">
-        <!-- Brand -->
         <a class="sizing-brand nav-link" href="homepage.jsp">Green Zenith</a>
-        
-        <!-- Toggler -->
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
-        <!-- Navbar content -->
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Left-aligned items -->
-            <ul class="navbar-nav me-auto">
+
+            <ul class="navbar-nav">
                 <% if (user == null) { %>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="login.jsp">LogIn</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="login.jsp">LogIn</a>
+                </li>
                 <% } %>
+
+                <% if (user != null) { %>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="plantsexplore.jsp">Mis Plantas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="productsexplore.jsp">Mis Productos</a>
+                </li>
+                <% } %>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="marketplace.jsp">Marketplace</a>
+                </li>
             </ul>
-            
-            <!-- Right-aligned items -->
+
             <ul class="navbar-nav ms-auto align-items-center gap-3">
-                <!-- Cart Icon -->
+                <!--
+                <form class="d-flex" role="search">
+                  <li class="nav-item">
+                      <div class="input-group">
+                          <input class="form-control" type="search" placeholder="Buscar Plantas" 
+                                 aria-label="Search" style="width: 200px;">
+                              <button class="search-btn btn btn-outline-dark" type="submit">Buscar</button>
+                      </div>
+                  </li>
+                </form> 
+                -->
                 <li class="nav-item">
                     <a class="nav-link" href="cart.jsp">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" 
@@ -36,80 +54,64 @@
                         </svg>
                     </a>
                 </li>
-                
-                <!-- Search Bar -->
-                <li class="nav-item">
-                    <form class="d-flex" role="search">
-                        <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Buscar" 
-                                   aria-label="Search" style="width: 200px;">
-                            <button class="search-btn btn btn-outline-dark" type="submit">Buscar</button>
-                        </div>
-                    </form>
-                </li>
-                
-                <!-- Profile Picture -->
+
                 <li class="nav-item">
                     <a href="profile.jsp">
                         <% if (user == null) { %>
-                            <img src="img/default_profilePicture.png" 
-                                 class="img-fluid profile-photo-preview rounded-circle" 
-                                 style="width: 40px; height: 40px;" alt="DefaultUser">
-                        <% } else { %>
+                        <img src="img/default_profilePicture.png" 
+                             class="img-fluid profile-photo-preview rounded-circle" 
+                             style="width: 40px; height: 40px;" alt="DefaultUser">
+                            <% } else {%>
                             <img src="data:image/png;base64, <%= user.getBase64Picture()%>" 
                                  class="img-fluid profile-photo-preview rounded-circle" 
                                  style="width: 40px; height: 40px;" alt="User">
-                        <% } %>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+                                <% }%>
+                                </a>
+                                </li>
+                                </ul>
+                                </div>
+                                </div>
+                                </nav>
+                                <style>
+                                    @media (max-width: 991.98px) {
+                                        .navbar-nav {
+                                            gap: 1rem !important;
+                                        }
 
-<style>
-/* Previous styles */
-@media (max-width: 991.98px) {
-    .navbar-nav {
-        gap: 1rem !important;
-    }
-    
-    .navbar-nav .nav-item form {
-        width: 100%;
-    }
-    
-    .navbar-nav .nav-item form .input-group {
-        width: 100%;
-    }
-    
-    .navbar-nav .nav-item form .form-control {
-        width: 100% !important;
-    }
-}
+                                        .navbar-nav .nav-item form {
+                                            width: 100%;
+                                        }
 
-.navbar .container-fluid {
-    padding: 0.5rem 1rem;
-}
+                                        .navbar-nav .nav-item form .input-group {
+                                            width: 100%;
+                                        }
 
-.gap-3 {
-    gap: 1rem !important;
-}
+                                        .navbar-nav .nav-item form .form-control {
+                                            width: 100% !important;
+                                        }
+                                    }
 
-/* New search button styles */
-.search-btn.btn-outline-dark {
-    color: black;
-    border-color: black;
-    transition: all 0.3s ease;
-}
+                                    .navbar .container-fluid {
+                                        padding: 0.5rem 1rem;
+                                    }
 
-.search-btn.btn-outline-dark:hover {
-    background-color: #f8f9fa;
-    color: black;
-    border-color: black;
-}
+                                    .gap-3 {
+                                        gap: 1rem !important;
+                                    }
 
-/* Optional: Add focus state styling */
-.search-btn.btn-outline-dark:focus {
-    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
-}
-</style>
+                                    .search-btn.btn-outline-dark {
+                                        color: black;
+                                        border-color: black;
+                                        transition: all 0.3s ease;
+                                    }
+
+                                    .search-btn.btn-outline-dark:hover {
+                                        background-color: #f8f9fa;
+                                        color: black;
+                                        border-color: black;
+                                    }
+
+                                    .search-btn.btn-outline-dark:focus {
+                                        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+                                    }
+                                </style>

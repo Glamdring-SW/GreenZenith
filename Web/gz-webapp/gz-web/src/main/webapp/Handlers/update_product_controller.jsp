@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.glamdring.greenZenith.userInteractions.plants.Plant"%>
@@ -16,76 +17,79 @@
 <%@page import="com.glamdring.greenZenith.exceptions.database.GZDBResultException"%>
 <%@page import="com.glamdring.greenZenith.exceptions.application.user.InvalidUserException"%>
 <%@page import="com.glamdring.greenZenith.userInteractions.users.User"%>
-<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
     JavaxServletFileUpload upload = new JavaxServletFileUpload(factory);
     List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) request);
-
-    String name = null;
-    String description = "";
-    LocalDate localPlantDate = null;
-    int quantity = 0;
-    BufferedImage plantPicture = null;
+    
+    int id = 0;
+    String oldTitle = null;
+    String newTitle = null;
+    String newDescription = "";
+    BigDecimal newPrice = null;
+    int newQuantity = 0;
+    BufferedImage newProductPicture = null;
     String mimeType = null;
-    ArrayList<LocalTime> schedule = new ArrayList<>();
     boolean defaultFlag = true;
-
     for (FileItem item : formItems) {
         if (item.isFormField()) {
-            String fieldName = item.getFieldName();
+            String fieldtitle = item.getFieldName();
             String fieldValue = item.getString();
-            if (fieldName.equals("name")) {
+            if (fieldtitle.equals("id")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    name = fieldValue;
+                    id = Integer.parseInt(fieldValue);
                 }
             }
-            if (fieldName.equals("description")) {
+            if (fieldtitle.equals("oldTitle")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    description = fieldValue;
+                    oldTitle = fieldValue;
                 }
             }
-            if (fieldName.equals("plantingDate")) {
+            if (fieldtitle.equals("title")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    localPlantDate = LocalDate.parse(fieldValue);
+                    newTitle = fieldValue;
                 }
             }
-            if (fieldName.equals("quantity")) {
+            if (fieldtitle.equals("description")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    quantity = Integer.parseInt(fieldValue);
+                    newDescription = fieldValue;
                 }
             }
-            if (fieldName.equals("waterTime")) {
+            if (fieldtitle.equals("price")) {
                 if (fieldValue != null && !fieldValue.isBlank()) {
-                    schedule.add(LocalTime.parse(fieldValue));
+                    newPrice = new BigDecimal(fieldValue);
+                }
+            }
+            if (fieldtitle.equals("quantity")) {
+                if (fieldValue != null && !fieldValue.isBlank()) {
+                    newQuantity = Integer.parseInt(fieldValue);
                 }
             }
         } else {
-            plantPicture = ImageIO.read(item.getInputStream());
+            newProductPicture = ImageIO.read(item.getInputStream());
             mimeType = item.getContentType();
             if (!mimeType.equals("application/octet-stream")) {
                 defaultFlag = false;
             }
         }
     }
-
     if (defaultFlag || (mimeType.equals("image/png") || mimeType.equals("image/jpeg") || mimeType.equals("image/jpg") || mimeType.equals("image/gif"))) {
         try {
             User user = (User) session.getAttribute("User");
-            if (plantPicture == null) {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, null);
+            if (defaultFlag) {
+                user.updateProductBatch(id, oldTitle, newTitle, newDescription, newPrice, newQuantity, null);
             } else {
-                user.addPlant(name, description, quantity, localPlantDate, schedule, plantPicture);
+                user.updateProductBatch(id, oldTitle, newTitle, newDescription, newPrice, newQuantity, newProductPicture);
             }
-            response.sendRedirect("../plantsexplore.jsp");
+            response.sendRedirect("../productsexplore.jsp");
         } catch (InvalidUserException e) {
-            request.setAttribute("jspErrorPlantCreate", e.getMessage());
+            request.setAttribute("jspErrorProduct", e.getMessage());
             RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
             dispatch.forward(request, response);
         }
     } else {
-        request.setAttribute("jspErrorPlantCreate", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
+        request.setAttribute("jspErrorProduct", "Se ocasiono un error, intentalo de nuevo, recuerda ingresar una imagen valida, aceptamos PNGs, JPGs y JPEGs");
         RequestDispatcher dispatch = request.getRequestDispatcher("../error_module.jsp");
         dispatch.forward(request, response);
     }
