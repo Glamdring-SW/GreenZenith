@@ -11,14 +11,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Adapter extends BaseAdapter {
+public class AdapterUsers extends BaseAdapter {
 
     Context context;
     LayoutInflater inflater;
     ArrayList<User> users;
     DatabaseHelper helper;
 
-    public Adapter(Context context, ArrayList<User> users) {
+    public AdapterUsers(Context context, ArrayList<User> users) {
         this.context = context;
         this.users = users;
         this.inflater = LayoutInflater.from(context);

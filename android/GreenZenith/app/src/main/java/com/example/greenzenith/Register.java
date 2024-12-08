@@ -51,20 +51,20 @@ public class Register extends Fragment {
                         return;
                     }
 
-                    Boolean checkUser = helper.checkUser(email);
+                    Boolean checkUser = helper.checkUser(user);
                     if (checkUser) {
                         Toast.makeText(view.getContext(), "El email ya está registrado", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    Boolean insert = helper.insertUser(email, user, password);
+                    Boolean insert = helper.insertUser(user, email, password);
                     if (insert) {
                         Toast.makeText(view.getContext(), "Ingreso exitoso", Toast.LENGTH_SHORT).show();
                         MainActivity mainActivity = (MainActivity) getActivity();
                         if (mainActivity != null) {
-                            mainActivity.setEmail(email);
+                            mainActivity.setUser(user);
                             mainActivity.setMenuEnabled(true);
-                            mainActivity.replaceFragment(new UserPage(email));
+                            mainActivity.replaceFragment(new UserPage(user));
                         }
                     } else {
                         Toast.makeText(view.getContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();

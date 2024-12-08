@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class Notifications extends Fragment{
 
     ListView list;
-    ArrayList<Notification> notifications;
+    ArrayList<Plant> plants;
     DatabaseHelper helper;
-    public String email;
+    public String user;
 
-    public Notifications(String email){
-        this.email = email;
+    public Notifications(String user){
+        this.user = user;
     }
 
     @Override
@@ -30,9 +31,13 @@ public class Notifications extends Fragment{
         list = view.findViewById(R.id.listNoti);
 
         helper = new DatabaseHelper(view.getContext());
-        notifications = helper.getAllNotifications(email);
+        plants = helper.getAllPlants(user);
 
-        AdapterNoti adapter = new AdapterNoti(view.getContext(), notifications);
+        int idk = plants.size();
+
+        Toast.makeText(view.getContext(), "hay plantas" + idk, Toast.LENGTH_LONG).show();
+
+        AdapterPlants adapter = new AdapterPlants(view.getContext(), plants);
 
         list.setAdapter(adapter);
 

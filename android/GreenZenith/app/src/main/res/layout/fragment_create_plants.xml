@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1C1C1C"
-    tools:context=".CreateNotifications">
+    tools:context=".CreatePlants">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
-                android:text="Repetir"
+                android:text="Horario de Riego"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -92,42 +92,6 @@
                     android:background="@drawable/spinner_background"
                     android:padding="8dp" />
             </LinearLayout>
-
-            <!-- Grupo de Radiobuttons para Vibrar -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:text="VIBRAR"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_horizontal">
-
-                <RadioButton
-                    android:id="@+id/radioButtonAM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#FFFFFF"
-                    android:text="SI"
-                    android:textColor="#FFFFFF" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonPM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#FFFFFF"
-                    android:text="NO"
-                    android:textColor="#FFFFFF" />
-            </RadioGroup>
 
             <!-- Lista de Días -->
             <TextView

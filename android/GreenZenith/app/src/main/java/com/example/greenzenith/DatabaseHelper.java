@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -12,25 +13,25 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String databaseName = "StarBelle.db";
+    public static final String databaseName = "GreenZenith.db";
 
     public DatabaseHelper(@Nullable Context context) {
-        super(context, databaseName, null, 3);
+        super(context, databaseName, null, 5);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE users (email TEXT PRIMARY KEY, user TEXT, password TEXT)");
+        db.execSQL("CREATE TABLE users (user TEXT PRIMARY KEY, email TEXT, password TEXT)");
 
-        db.execSQL("CREATE TABLE notifications (" +
+        db.execSQL("CREATE TABLE plants (" +
                 "name TEXT PRIMARY KEY, " +
                 "description TEXT, " +
                 "hour INTEGER, " +
                 "minutes INTEGER, " +
-                "vibration INTEGER, " +
                 "days TEXT, " +
-                "email TEXT, " +
-                "FOREIGN KEY(email) REFERENCES users(email) ON DELETE CASCADE)");
+                "planting TEXT, " +
+                "user TEXT, " +
+                "FOREIGN KEY(user) REFERENCES users(user) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE days (" +
                 "id TEXT PRIMARY KEY, " +
@@ -42,24 +43,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "day6 TEXT, " +
                 "day7 TEXT, " +
                 "name TEXT, " +
-                "FOREIGN KEY(name) REFERENCES notifications(name) ON DELETE CASCADE)");
+                "FOREIGN KEY(name) REFERENCES plants(name) ON DELETE CASCADE)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS days");
-        db.execSQL("DROP TABLE IF EXISTS notifications");
+        db.execSQL("DROP TABLE IF EXISTS plants");
         db.execSQL("DROP TABLE IF EXISTS users");
         onCreate(db);
     }
 
-    public boolean insertUser(String email, String user, String password) {
+    public boolean insertUser(String user, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("email", email);
         contentValues.put("user", user);
+        contentValues.put("email", email);
         contentValues.put("password", password);
 
         long result = db.insert("users", null, contentValues);
@@ -67,33 +68,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean checkUser(String email) {
+    public boolean checkUser(String user) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE user = ?", new String[]{user});
         boolean exists = cursor.getCount() > 0;
         cursor.close();
         return exists;
     }
 
-    public Boolean checkUserPassword(String email, String password) {
+    public Boolean checkUserPassword(String user, String password) {
 
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ? and password = ?", new String[]{email, password});
+        Cursor cursor = MyDatabase.rawQuery("Select * from users where user = ? and password = ?", new String[]{user, password});
 
         if (cursor.getCount() > 0) {
+            cursor.close();
             return true;
         } else {
+            cursor.close();
             return false;
         }
 
     }
 
-    public Cursor getUser(String email){
+    public Cursor getUser(String user){
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("Select * from users where email = ? ", new String[]{email});
+        Cursor cursor = database.rawQuery("Select * from users where user = ? ", new String[]{user});
         return cursor;
     }
-
 
     public ArrayList<User> getAllUsers() {
         SQLiteDatabase myDB = null;
@@ -108,8 +110,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
 
-                    String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                     String username = cursor.getString(cursor.getColumnIndexOrThrow("user"));
+                    String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                     String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
 
                     User user = new User(username, email, password);
@@ -126,16 +128,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 myDB.close();
             }
         }
-
         return users;
     }
 
-    public boolean updateUserPwd(String email, String newPassword) {
+    public boolean updateUserPwd(String user, String newPassword) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("password", newPassword);
 
-        int rowsAffected = myDB.update("users", values, "email = ?", new String[]{email});
+        int rowsAffected = myDB.update("users", values, "user = ?", new String[]{user});
         if (rowsAffected > 0) {
             return true;
         } else {
@@ -143,24 +144,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateUserName(String email, String newUsername) {
+    public boolean updateUserEmail(String user, String newEmail) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("user", newUsername);
+        values.put("email", newEmail);
 
-        int rowsAffected = myDB.update("users", values, "email = ?", new String[]{email});
+        int rowsAffected = myDB.update("users", values, "user = ?", new String[]{user});
         return rowsAffected > 0;
     }
 
-
-    public boolean deleteUser(String email) {
+    public boolean deleteUser(String user) {
         SQLiteDatabase myDB = this.getWritableDatabase();
 
-        Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+        Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE user = ?", new String[]{user});
         if (cursor.getCount() > 0) {
             cursor.close();
 
-            int rowsAffected = myDB.delete("users", "email=?", new String[]{email});
+            int rowsAffected = myDB.delete("users", "user=?", new String[]{user});
             return rowsAffected > 0;
         } else {
             cursor.close();
@@ -168,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertNotification(String name, String description, int hour, int minutes, int vibration, String days, String email) {
+    public boolean insertplant(String name, String description, int hour, int minutes, String planting, String days, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -176,15 +176,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("description", description);
         contentValues.put("hour", hour);
         contentValues.put("minutes", minutes);
-        contentValues.put("vibration", vibration);
+        contentValues.put("planting", planting);
         contentValues.put("days", days);
-        contentValues.put("email", email);
+        contentValues.put("user", user);
 
-        long result = db.insert("notifications", null, contentValues);
+        long result = db.insert("plants", null, contentValues);
         return result != -1;
     }
 
-    public boolean updateNotification(String name, String description, int hour, int minutes, boolean vibration, String days) {
+    public boolean updateplant(String name, String description, int hour, int minutes, boolean vibration, String days) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -194,36 +194,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("vibration", vibration ? 1 : 0);
         contentValues.put("days", days);
 
-        int rowsAffected = db.update("notifications", contentValues, "name = ?", new String[]{name});
+        int rowsAffected = db.update("plants", contentValues, "name = ?", new String[]{name});
         return rowsAffected > 0;
     }
 
-    public boolean deleteNotification(String name) {
+    public boolean deleteplant(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete("notifications", "name = ?", new String[]{name});
+        int rowsDeleted = db.delete("plants", "name = ?", new String[]{name});
         return rowsDeleted > 0;
     }
 
-    public ArrayList<Notification> getAllNotifications(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Notification> notifications = new ArrayList<>();
+    public ArrayList<Plant> getAllPlants(String user) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        ArrayList<Plant> plants = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM notifications WHERE email = ?", new String[]{email});
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                int hour = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
-                int minutes = cursor.getInt(cursor.getColumnIndexOrThrow("minutes"));
-                boolean vibration = cursor.getInt(cursor.getColumnIndexOrThrow("vibration")) == 1;
-                String days = cursor.getString(cursor.getColumnIndexOrThrow("days"));
+        try {
+            db = this.getReadableDatabase();
+            cursor = db.rawQuery("SELECT * FROM plants WHERE user = ?", new String[]{user});
 
-                notifications.add(new Notification(name, description, hour, minutes, vibration, days, email));
-            } while (cursor.moveToNext());
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                    int hour = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
+                    int minutes = cursor.getInt(cursor.getColumnIndexOrThrow("minutes"));
+                    String planting = cursor.getString(cursor.getColumnIndexOrThrow("planting"));
+                    String days = cursor.getString(cursor.getColumnIndexOrThrow("days"));
+
+                    Log.d("DatabaseHelper", "Plant found: " + name);
+
+                    Plant plant = new Plant(name, description, hour, minutes, planting, days, user);
+                    plants.add(plant);
+                } while (cursor.moveToNext());
+            } else {
+                Log.d("DatabaseHelper", "No plants found for user: " + user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("DatabaseHelper", "Error in getAllPlants: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
         }
-        if (cursor != null) {
-        }
-        return notifications;
+
+        Log.d("DatabaseHelper", "Total plants retrieved: " + plants.size());
+        return plants;
     }
 
     public boolean insertDay(ArrayList<String> days, String name) {
@@ -298,6 +318,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
         if (cursor != null) {
+            cursor.close();
         }
         return daysList;
     }

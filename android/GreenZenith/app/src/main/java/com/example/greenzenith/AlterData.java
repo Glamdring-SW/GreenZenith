@@ -16,10 +16,10 @@ public class AlterData extends Fragment {
     DatabaseHelper helper;
     EditText editUser, editEmail, editPass1, editPass2;
     Button btn1, btn2;
-    private String email;
+    private String user;
 
-    public AlterData(String email){
-        this.email = email;
+    public AlterData(String user){
+        this.user = user;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class AlterData extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alter_data, container, false);
 
-        editUser = (EditText) view.findViewById(R.id.alter_user);
+        editEmail = (EditText) view.findViewById(R.id.alter_user);
         editPass1 = (EditText) view.findViewById(R.id.alter_pass);
 
         btn1 = (Button) view.findViewById(R.id.btn1);
@@ -35,27 +35,27 @@ public class AlterData extends Fragment {
             @Override
             public void onClick(View view) {
 
-                String user = editUser.getText().toString();
+                String email = editEmail.getText().toString();
                 String password = editPass1.getText().toString();
 
                 helper = new DatabaseHelper(view.getContext());
                 boolean flag = false;
 
-                if(password.equals("")||user.equals("")){
+                if(password.equals("")&&email.equals("")){
                     Toast.makeText(view.getContext(), "Llena algun campo", Toast.LENGTH_SHORT).show();
                 }
                 if (password.equals("")){
-                    flag = helper.updateUserName(email, user);
-                } else if (user.equals("")) {
-                        flag = helper.updateUserPwd(email, password);
+                    flag = helper.updateUserEmail(user, email);
+                } else if (email.equals("")) {
+                        flag = helper.updateUserPwd(user, password);
                 } else {
-                    flag = helper.updateUserName(email, user);
-                    flag = helper.updateUserPwd(email, password);
+                    flag = helper.updateUserEmail(user, email);
+                    flag = helper.updateUserPwd(user, password);
                 }
 
                 if (flag){
                     MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.replaceFragment(new UserPage(email));
+                    mainActivity.replaceFragment(new UserPage(user));
                     Toast.makeText(view.getContext(), "Cambio exitoso", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -66,7 +66,7 @@ public class AlterData extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.replaceFragment(new UserPage(email));
+                mainActivity.replaceFragment(new UserPage(user));
             }
         });
         return view;

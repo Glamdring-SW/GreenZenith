@@ -23,7 +23,7 @@
             android:id="@+id/alter_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="usuario"
+            android:hint="email"
             android:padding="8dp" />
 
         <EditText

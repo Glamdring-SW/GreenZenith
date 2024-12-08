@@ -42,9 +42,9 @@ public class DeleteUsers extends Fragment {
             }
         }
 
-        Adapter adapter = new Adapter(view.getContext(), users);
+        AdapterUsers adapterUsers = new AdapterUsers(view.getContext(), users);
 
-        list.setAdapter(adapter);
+        list.setAdapter(adapterUsers);
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setMenuEnabled(false);
 

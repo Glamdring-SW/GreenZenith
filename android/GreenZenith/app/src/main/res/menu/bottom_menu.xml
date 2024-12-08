@@ -8,13 +8,23 @@
         android:title="" />
 
     <item
-        android:id="@+id/navNotifications"
+        android:id="@+id/nav"
         android:icon="@drawable/notification"
         android:title="" />
 
     <item
-        android:id="@+id/navAdd"
+        android:id="@+id/navHome"
         android:icon="@drawable/add"
+        android:title="" />
+
+    <item
+        android:id="@+id/navAdd"
+        android:icon="@drawable/notification"
+        android:title="" />
+
+    <item
+        android:id="@+id/navNotifications"
+        android:icon="@drawable/notification"
         android:title="" />
 
 </menu>

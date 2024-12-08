@@ -15,11 +15,11 @@ public class UserPage extends Fragment {
     DatabaseHelper helper;
     Cursor cursor;
     TextView txt1, txt2, txt3;
-    public String email;
+    public String user;
     Button btn1, btn3, btn4;
 
-    public UserPage(String email){
-        this.email = email;
+    public UserPage(String user){
+        this.user = user;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class UserPage extends Fragment {
         txt3 = (TextView) view.findViewById(R.id.txt3);
 
         helper = new DatabaseHelper(view.getContext());
-        cursor = helper.getUser(email);
+        cursor = helper.getUser(user);
 
         if (cursor.getCount() == 0){
             Toast.makeText(view.getContext(), "no hay datos", Toast.LENGTH_SHORT).show();
@@ -49,7 +49,7 @@ public class UserPage extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.replaceFragment(new AlterData(email));
+                mainActivity.replaceFragment(new AlterData(user));
             }
         });
 
@@ -57,11 +57,11 @@ public class UserPage extends Fragment {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (helper.deleteUser(email)){
+                if (helper.deleteUser(user)){
                     Toast.makeText(view.getContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.setMenuEnabled(false);
-                    mainActivity.setEmail("");
+                    mainActivity.setUser("");
                     mainActivity.replaceFragment(new Principal());
                 } else {
                     Toast.makeText(view.getContext(), "algo a salido mal",  Toast.LENGTH_SHORT).show();
@@ -75,7 +75,7 @@ public class UserPage extends Fragment {
             public void onClick(View view) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.setMenuEnabled(false);
-                mainActivity.setEmail("");
+                mainActivity.setUser("");
                 mainActivity.replaceFragment(new Principal());
             }
         });

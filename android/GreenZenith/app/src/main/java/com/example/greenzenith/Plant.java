@@ -1,23 +1,23 @@
 package com.example.greenzenith;
 
-public class Notification {
+public class Plant {
 
     private String name;
     private String description;
     private int hour;
     private int minutes;
-    private boolean vibration;
+    private String planting;
     private String days;
-    private String email;
+    private String user;
 
-    public Notification(String nam, String description, int hour, int minutes, boolean vibration, String days, String email) {
-        this.name = nam;
+    public Plant(String name, String description, int hour, int minutes, String planting, String days, String user) {
+        this.name = name;
         this.description = description;
         this.hour = hour;
         this.minutes = minutes;
-        this.vibration = vibration;
+        this.planting = planting;
         this.days = days;
-        this.email = email;
+        this.user = user;
     }
 
     public String getName() {
@@ -52,12 +52,12 @@ public class Notification {
         this.minutes = minutes;
     }
 
-    public boolean isVibration() {
-        return vibration;
+    public String getPlanting() {
+        return planting;
     }
 
-    public void setVibration(boolean vibration) {
-        this.vibration = vibration;
+    public void setPlanting(String planting) {
+        this.planting = planting;
     }
 
     public String getDays() {
@@ -68,11 +68,11 @@ public class Notification {
         this.days = days;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUser() {
+        return user;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUser(String user) {
+        this.user = user;
     }
 }

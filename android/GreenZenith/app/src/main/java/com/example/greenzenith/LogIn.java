@@ -32,24 +32,24 @@ public class LogIn extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    String email = edit1.getText().toString();
+                    String user = edit1.getText().toString();
                     String password = edit2.getText().toString();
 
-                    if (email.isEmpty() || password.isEmpty()) {
+                    if (user.isEmpty() || password.isEmpty()) {
                         Toast.makeText(view.getContext(), "Llena todos los campos", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    Boolean checkCredentials = helper.checkUserPassword(email, password);
+                    Boolean checkCredentials = helper.checkUserPassword(user, password);
 
                     if (checkCredentials) {
                         Toast.makeText(view.getContext(), "ÉXITO", Toast.LENGTH_SHORT).show();
 
                         MainActivity mainActivity = (MainActivity) getActivity();
                         if (mainActivity != null) {
-                            mainActivity.setEmail(email);
+                            mainActivity.setUser(user);
                             mainActivity.setMenuEnabled(true);
-                            mainActivity.replaceFragment(new UserPage(email));
+                            mainActivity.replaceFragment(new UserPage(user));
                         }
                     } else {
                         Toast.makeText(view.getContext(), "Datos inválidos", Toast.LENGTH_SHORT).show();

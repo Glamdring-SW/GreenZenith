@@ -12,27 +12,27 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class AdapterNoti extends BaseAdapter {
+public class AdapterPlants extends BaseAdapter {
 
     Context context;
     LayoutInflater inflater;
-    ArrayList<Notification> notifications;
+    ArrayList<Plant> plants;
     DatabaseHelper helper;
 
-    public AdapterNoti(Context context, ArrayList<Notification> notifications) {
+    public AdapterPlants(Context context, ArrayList<Plant> plants) {
         this.context = context;
-        this.notifications = notifications;
+        this.plants = plants;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return notifications.size();
+        return plants.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return notifications.get(i);
+        return plants.get(i);
     }
 
     @Override
@@ -62,17 +62,17 @@ public class AdapterNoti extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Notification noti = notifications.get(i);
+        Plant plant = plants.get(i);
 
         holder.text1.setText(String.valueOf(i + 1));
-        holder.text2.setText(noti.getName());
-        holder.text3.setText(noti.getDescription());
-        holder.text4.setText(String.valueOf(noti.getHour())+ " horas | " + (String.valueOf(noti.getMinutes())) +"minutos");
+        holder.text2.setText(plant.getName());
+        holder.text3.setText(plant.getDescription());
+        //holder.text4.setText(String.valueOf(noti.getHour())+ " horas | " + (String.valueOf(noti.getMinutes())) +"minutos");
 
         helper = new DatabaseHelper(view.getContext());
-        String name = noti.getName();
+        String name = plant.getName();
 
-        ArrayList<String> days = helper.getDays(noti.getName());
+        ArrayList<String> days = helper.getDays(plant.getName());
 
         StringBuilder builder = new StringBuilder();
 
@@ -94,9 +94,9 @@ public class AdapterNoti extends BaseAdapter {
         holder.text5.setText("Días: " + result);
 
         holder.btn2.setOnClickListener(v -> {
-            if (helper.deleteNotification(name)){
+            if (helper.deleteplant(name)){
                 Toast.makeText(context, "notificacion eliminada " , Toast.LENGTH_SHORT).show();
-                notifications.remove(i);
+                plants.remove(i);
                 notifyDataSetChanged();
             } else {
                 Toast.makeText(context, "algo a salido mal",  Toast.LENGTH_SHORT).show();

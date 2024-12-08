@@ -19,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     int[] id = {R.id.navUser, R.id.navNotifications, R.id.navAdd};
-    private String email;
-
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int idk = item.getItemId();
             if (idk == id[0]){
-                replaceFragment(new UserPage(email));
+                replaceFragment(new UserPage(user));
             } else if (idk == id[1]){
-                replaceFragment(new Notifications(email));
+                replaceFragment(new Notifications(user));
             } else if (idk == id[2]){
-                replaceFragment(new CreateNotifications(email));
+                replaceFragment(new CreatePlants(user));
             }
             return true;
         });
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 
-    public String getEmail() {
-        return email;
+    public String getUser() {
+        return user;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public void scheduleNotification(Context context) {

@@ -19,36 +19,31 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class CreateNotifications extends Fragment {
+public class CreatePlants extends Fragment {
 
     private ListView listViewDays;
     private DayAdapter dayAdapter;
     private ArrayList<DayItem> dayList;
     private EditText nameEdit, descriptionEdit;
     private Spinner hourSpinner, minuteSpinner;
-    private RadioGroup vibrationGroup;
-    private RadioButton vibrationYes, vibrationNo;
     private Button btnConfirm;
     DatabaseHelper helper;
-    public String email;
+    public String user;
 
-    public CreateNotifications(String email){
-        this.email = email;
+    public CreatePlants(String user){
+        this.user = user;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_notifications, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_plants, container, false);
 
         listViewDays = view.findViewById(R.id.listViewDays);
         nameEdit = view.findViewById(R.id.name_edit);
         descriptionEdit = view.findViewById(R.id.description_edit);
         hourSpinner = view.findViewById(R.id.hour);
         minuteSpinner = view.findViewById(R.id.minute);
-        vibrationGroup = view.findViewById(R.id.radioGroup);
-        vibrationYes = view.findViewById(R.id.radioButtonAM);
-        vibrationNo = view.findViewById(R.id.radioButtonPM);
         btnConfirm = view.findViewById(R.id.btnConfirm);
 
         setupDays();
@@ -59,7 +54,7 @@ public class CreateNotifications extends Fragment {
         minuteSpinner.setEnabled(false);
 
         ArrayList<String> hoursList = new ArrayList<>();
-        hoursList.add("");
+        hoursList.add("HORAS");
         for (int i = 0; i <= 24; i++) {
             hoursList.add(String.valueOf(i));
         }
@@ -72,19 +67,14 @@ public class CreateNotifications extends Fragment {
         hourSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedHour = hourSpinner.getSelectedItem().toString();
 
                 minuteSpinner.setEnabled(true);
 
                 ArrayList<String> minutesList = new ArrayList<>();
-                minutesList.add("");
-                if (selectedHour.equals("13")) {
-                    minutesList.add("Eres");
-                    minutesList.add("Real?");
-                } else {
-                    for (int i = 0; i < 60; i += 15) {
-                        minutesList.add(String.valueOf(i));
-                    }
+                minutesList.add("MINUTOS");
+
+                for (int i = 0; i < 60; i += 15) {
+                    minutesList.add(String.valueOf(i));
                 }
 
                 ArrayAdapter<String> minutesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, minutesList);
@@ -117,7 +107,6 @@ public class CreateNotifications extends Fragment {
                 String description = descriptionEdit.getText().toString();
                 String hour = hourSpinner.getSelectedItem().toString();
                 String minute = minuteSpinner.getSelectedItem().toString();
-                int radio = vibrationGroup.getCheckedRadioButtonId() == R.id.radioButtonAM ? 1 : 0;
 
                 ArrayList<String>days = new ArrayList<>();
                 for (DayItem day : dayList) {
@@ -136,21 +125,20 @@ public class CreateNotifications extends Fragment {
                 helper = new DatabaseHelper(v.getContext());
 
                 try {
-                    Boolean insertNotification = helper.insertNotification(
+                    Boolean insertPlant = helper.insertplant(
                             name,
                             description,
                             Integer.parseInt(hour),
                             Integer.parseInt(minute),
-                            radio,
+                            "se planto un dia",
                             "si",
-                            email
+                            user
                     );
 
-                    if (insertNotification) {
+                    if (insertPlant) {
                         Toast.makeText(getContext(), "CREACIÓN EXITOSA", Toast.LENGTH_SHORT).show();
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        mainActivity.scheduleNotification(view.getContext());
-
+                        nameEdit.setText("");
+                        descriptionEdit.setText("");
                     } else {
                         Toast.makeText(getContext(), "Creación Fallida", Toast.LENGTH_SHORT).show();
                     }
@@ -160,18 +148,14 @@ public class CreateNotifications extends Fragment {
                 }
 
                 try {
-
                     Boolean insertDay = helper.insertDay(days, name);
-
                     if (!insertDay) {
                         Toast.makeText(getContext(), "Error al insertar día:", Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Error al insertar días: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Ocurrió un error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
