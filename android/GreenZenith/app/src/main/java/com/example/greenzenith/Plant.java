@@ -20,6 +20,15 @@ public class Plant {
         this.user = user;
     }
 
+    public Plant(String name, String description, int hour, int minutes, String planting, String days) {
+        this.name = name;
+        this.description = description;
+        this.hour = hour;
+        this.minutes = minutes;
+        this.planting = planting;
+        this.days = days;
+    }
+
     public String getName() {
         return name;
     }

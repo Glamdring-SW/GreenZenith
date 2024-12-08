@@ -246,6 +246,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return plants;
     }
 
+    public ArrayList<Plant> getAllPlants() {
+        SQLiteDatabase myDB = null;
+        Cursor cursor = null;
+        ArrayList<Plant> plants = new ArrayList<>();
+
+        try {
+            myDB = this.getReadableDatabase();
+
+            cursor = myDB.rawQuery("SELECT * FROM plants", null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                    int hour = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
+                    int minutes = cursor.getInt(cursor.getColumnIndexOrThrow("minutes"));
+                    String planting = cursor.getString(cursor.getColumnIndexOrThrow("planting"));
+                    String days = cursor.getString(cursor.getColumnIndexOrThrow("days"));
+
+                    Plant plant = new Plant(name, description, hour, minutes, planting, days);
+                    plants.add(plant);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (myDB != null) {
+                myDB.close();
+            }
+        }
+        return plants;
+    }
+
+
     public boolean insertDay(ArrayList<String> days, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

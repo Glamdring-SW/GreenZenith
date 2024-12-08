@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (idk == id[1]){
                 replaceFragment(new PlantsPage(user));
             } else if (idk == id[2]){
-
+                replaceFragment(new Marketplace(user));
             } else if (idk == id[3]){
 
             } else if (idk == id[4]){
