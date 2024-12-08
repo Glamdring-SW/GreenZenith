@@ -12,10 +12,17 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import android.app.DatePickerDialog;
 
 import java.util.ArrayList;
 
@@ -26,9 +33,11 @@ public class CreatePlants extends Fragment {
     private ArrayList<DayItem> dayList;
     private EditText nameEdit, descriptionEdit;
     private Spinner hourSpinner, minuteSpinner;
-    private Button btnConfirm;
+    private Button btnConfirm, btnExit, btnSelectDate;
     DatabaseHelper helper;
     public String user;
+    TextView tvSelectedDate;
+    String selectedDate;
 
     public CreatePlants(String user){
         this.user = user;
@@ -45,6 +54,9 @@ public class CreatePlants extends Fragment {
         hourSpinner = view.findViewById(R.id.hour);
         minuteSpinner = view.findViewById(R.id.minute);
         btnConfirm = view.findViewById(R.id.btnConfirm);
+        btnExit = view.findViewById(R.id.btnExit);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
 
         setupDays();
 
@@ -117,7 +129,7 @@ public class CreatePlants extends Fragment {
                     }
                 }
 
-                if (name.isEmpty() || hour.isEmpty() || minute.isEmpty()) {
+                if (name.isEmpty() || hour.isEmpty() || minute.isEmpty()||selectedDate.isEmpty()) {
                     Toast.makeText(getContext(), "Llena todos los campos requeridos", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -130,15 +142,15 @@ public class CreatePlants extends Fragment {
                             description,
                             Integer.parseInt(hour),
                             Integer.parseInt(minute),
-                            "se planto un dia",
+                            selectedDate,
                             "si",
                             user
                     );
 
                     if (insertPlant) {
                         Toast.makeText(getContext(), "CREACIÓN EXITOSA", Toast.LENGTH_SHORT).show();
-                        nameEdit.setText("");
-                        descriptionEdit.setText("");
+                        mainActivity.setMenuEnabled(true);
+                        mainActivity.replaceFragment(new PlantsPage(user));
                     } else {
                         Toast.makeText(getContext(), "Creación Fallida", Toast.LENGTH_SHORT).show();
                     }
@@ -162,7 +174,45 @@ public class CreatePlants extends Fragment {
             }
         });
 
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mainActivity.setMenuEnabled(true);
+                mainActivity.replaceFragment(new PlantsPage(user));
+
+            }
+        });
+
+        tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
+        btnSelectDate = view.findViewById(R.id.btnSelectDate);
+
+        btnSelectDate.setOnClickListener(v -> showDatePickerDialog());
+
         return view;
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                (view, year, month, dayOfMonth) -> {
+                    selectedDate = formatDate(year, month, dayOfMonth);
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePickerDialog.show();
+    }
+
+    private String formatDate(int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(calendar.getTime());
     }
 
     private void setupDays() {

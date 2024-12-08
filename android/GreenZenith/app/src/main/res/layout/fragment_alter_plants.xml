@@ -1,10 +1,9 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C1C1C"
-    tools:context=".CreatePlants">
+    tools:context=".AlterPlants">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:background="@drawable/title_background"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
-                android:text="Crear Planta"
+                android:text="Alterar Planta"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
@@ -39,46 +38,22 @@
                 android:id="@+id/name_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
                 android:background="@drawable/edittext_background"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"
                 android:textColorHint="#CCCCCC"
                 android:textColor="#FFFFFF" />
 
-            <!-- Campo de Descripción -->
             <EditText
                 android:id="@+id/description_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripcion"
                 android:background="@drawable/edittext_background"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"
                 android:textColorHint="#CCCCCC"
                 android:textColor="#FFFFFF" />
 
-            <TextView
-                android:id="@+id/tvSelectedDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:text="Seleccionar una fecha"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnSelectDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Seleccionar Fecha"
-                android:backgroundTint="#FF5733"
-                android:textColor="@android:color/white"
-                android:padding="12dp" />
-
-            <!-- Selector de Horas y Minutos -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,7 +88,6 @@
                     android:padding="8dp" />
             </LinearLayout>
 
-            <!-- Lista de Días -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,10 +102,10 @@
                 android:id="@+id/listViewDays"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:divider="#FFFFFF"
                 android:dividerHeight="1dp"
                 android:background="#4D4D4D" />
 
-            <!-- Botón Crear -->
             <Button
                 android:id="@+id/btnConfirm"
                 android:layout_marginTop="20dp"
@@ -144,7 +118,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:paddingHorizontal="32dp"
                 android:paddingVertical="12dp"
-                android:text="CREAR"
+                android:text="Guardar\nCambios"
                 android:textColor="#000000" />
 
             <Button
@@ -163,4 +137,5 @@
                 android:textColor="#000000" />
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

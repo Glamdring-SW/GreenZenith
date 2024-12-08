@@ -18,7 +18,7 @@ import com.example.greenzenith.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    int[] id = {R.id.navUser, R.id.navNotifications, R.id.navAdd};
+    int[] id = {R.id.navUser, R.id.navPlants, R.id.navHome, R.id.navSells, R.id.navNotifications};
     private String user;
 
     @Override
@@ -35,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
             if (idk == id[0]){
                 replaceFragment(new UserPage(user));
             } else if (idk == id[1]){
-                replaceFragment(new Notifications(user));
+                replaceFragment(new PlantsPage(user));
             } else if (idk == id[2]){
-                replaceFragment(new CreatePlants(user));
+
+            } else if (idk == id[3]){
+
+            } else if (idk == id[4]){
+
             }
             return true;
         });

@@ -57,6 +57,14 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/notiPlanting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="planting day"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp" />
+
+        <TextView
             android:id="@+id/notiDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#9D4DFF"
-            android:text="DESACTIVAR"
+            android:text="ALTERAR"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:paddingHorizontal="16dp"

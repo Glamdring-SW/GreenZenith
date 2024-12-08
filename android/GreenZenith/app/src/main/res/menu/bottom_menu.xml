@@ -8,18 +8,18 @@
         android:title="" />
 
     <item
-        android:id="@+id/nav"
-        android:icon="@drawable/notification"
+        android:id="@+id/navPlants"
+        android:icon="@drawable/plant"
         android:title="" />
 
     <item
         android:id="@+id/navHome"
-        android:icon="@drawable/add"
+        android:icon="@drawable/home"
         android:title="" />
 
     <item
-        android:id="@+id/navAdd"
-        android:icon="@drawable/notification"
+        android:id="@+id/navSells"
+        android:icon="@drawable/money"
         android:title="" />
 
     <item

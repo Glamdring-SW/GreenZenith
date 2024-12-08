@@ -54,6 +54,7 @@ public class AdapterPlants extends BaseAdapter {
             holder.text3 = view.findViewById(R.id.notiDescription);
             holder.text4 = view.findViewById(R.id.notiTime);
             holder.text5 = view.findViewById(R.id.notiDays);
+            holder.text6 = view.findViewById(R.id.notiPlanting);
             holder.btn2 = view.findViewById(R.id.btn2);
             holder.btn3 = view.findViewById(R.id.btn3);
 
@@ -67,7 +68,8 @@ public class AdapterPlants extends BaseAdapter {
         holder.text1.setText(String.valueOf(i + 1));
         holder.text2.setText(plant.getName());
         holder.text3.setText(plant.getDescription());
-        //holder.text4.setText(String.valueOf(noti.getHour())+ " horas | " + (String.valueOf(noti.getMinutes())) +"minutos");
+        holder.text4.setText(String.valueOf(plant.getHour())+ " horas | " + (String.valueOf(plant.getMinutes())) +"minutos");
+        holder.text6.setText(plant.getPlanting());
 
         helper = new DatabaseHelper(view.getContext());
         String name = plant.getName();
@@ -106,25 +108,10 @@ public class AdapterPlants extends BaseAdapter {
 
         holder.btn3.setOnClickListener(v -> {
 
-            if (holder.btn3.getText().equals("DESACTIVAR")){
-                Toast.makeText(context, "DESACTIVADO",  Toast.LENGTH_SHORT).show();
-                holder.btn3.setText("ACTIVAR");
-                holder.btn3.setBackgroundColor(Color.RED);
-                if (context instanceof MainActivity) {
-                    MainActivity mainActivity = (MainActivity) context;
-
-                    mainActivity.cancelNotification(context);
-                }
-            } else {
-                Toast.makeText(context, "ACTIVADO",  Toast.LENGTH_SHORT).show();
-                holder.btn3.setText("DESACTIVAR");
-                holder.btn3.setBackgroundColor(Color.BLUE);
-                if (context instanceof MainActivity) {
-                    MainActivity mainActivity = (MainActivity) context;
-
-                    mainActivity.scheduleNotification(context);
-                }
-            }
+            MainActivity mainActivity = (MainActivity) context;
+            Plant selectedPlant = plants.get(i);
+            mainActivity.setMenuEnabled(false);
+            mainActivity.replaceFragment(new AlterPlants(mainActivity.getUser(), selectedPlant));
 
         });
 
@@ -137,6 +124,7 @@ public class AdapterPlants extends BaseAdapter {
         TextView text3;
         TextView text4;
         TextView text5;
+        TextView text6;
         Button btn2;
         Button btn3;
     }
