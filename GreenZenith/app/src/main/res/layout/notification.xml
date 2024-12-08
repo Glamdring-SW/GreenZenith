@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="#5B554E"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="8dp"
+    android:layout_marginHorizontal="4dp"
+    android:elevation="4dp"
+    android:clipToPadding="false">
+
+
+    <ImageView
+        android:id="@+id/iV_plantPH"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/plant_placeholder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notiName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/notiDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="descripcion"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/notiTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 horas | 15 minutos"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/notiDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="days, idk"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#C3D7A3"
+            android:text="BORRAR"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp" />
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#C3D7A3"
+            android:text="DESACTIVAR"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

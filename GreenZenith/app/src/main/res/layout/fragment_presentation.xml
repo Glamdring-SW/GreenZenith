@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_gz">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="300dp"
+            android:shadowRadius="4"
+            android:text="Green Zenith"
+            android:textColor="#FFFFFF"
+            android:textSize="55sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-black"
+            android:shadowRadius="4"
+            android:text="Tus plantas, \n tus suenos"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/home_page"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="175dp"
+            android:backgroundTint="#E4ECD7"
+            android:elevation="6dp"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="10dp"
+            android:text="Home Page"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:cornerRadius="200000dp" />
+
+    </LinearLayout>
+</FrameLayout>

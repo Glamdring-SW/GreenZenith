@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#94B194">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="#E4ECD7"
+        android:backgroundTintMode="add"
+        android:clipToOutline="true"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@color/white"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/myImageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:contentDescription="Imagen principal"
+            android:src="@drawable/mountains"
+            app:cornerRadius="10dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-black"
+            android:shadowRadius="4"
+            android:text="Green Zenith"
+            android:textColor="#627062"
+            android:textSize="43sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif"
+            android:text="Descubre\nMantiene\nMejora"
+            android:textColor="#7E9896"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#94BE95"
+            android:elevation="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:shadowColor="#BFC8B6"
+            android:shadowDx="25"
+            android:shadowDy="25"
+            android:shadowRadius="50"
+            android:text="REGISTRARSE"
+            android:textAllCaps="true"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/logIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#94BE95"
+            android:elevation="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="INICIAR SESION"
+            android:textAllCaps="true"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+</FrameLayout>
